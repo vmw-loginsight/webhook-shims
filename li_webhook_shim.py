@@ -25,10 +25,10 @@ __status__ = "Beta"
 PORT=5001
 
 # Socialcast
-SOCIALCASTURL='https://er.staging.socialcast.com/api/webhooks/bdjJ6xFH2FNbzMbITw4Dz7-yFtw7Ue0wVy_RpqbWCmMnYSsPAA_brZLCvAM_el6EvZPL9UMco8l3ABVSr8LiJ-4tK-SItZBWvaTves7G9eU/aV5CNjtmG5bLMVekB3_FEhEWBNCbXwjM2W5wmTFpWsrza7xt9SgngFhb2k1FARzABYhuENlRLIMULhPGRJB1votKaj_oTde-hlQwIiKKTm4'
+SOCIALCASTURL=''
 
 # Slack
-SLACKURL='https://hooks.slack.com/services/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'
+SLACKURL=''
 
 #######################################
 # DO NOT CHANGE ANYTHHING BELOW HERE!!!
