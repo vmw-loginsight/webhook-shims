@@ -6,7 +6,7 @@ Shim information for Log Insight 3.3 and newer
 1. Download the shim
 2. Edit the shim and specify the variables desired
 3. Run the shim
-4. Connect to http://<IP>:<PORT>/ and read the information
+4. Connect to http://IP:PORT/ and read the information
 5. Configure Log Insight to send a webhook to one of the supported destinations
 
 ### Log Insight webhook to 3rd party
@@ -17,9 +17,9 @@ Log Insight sends a webhook in its own proprietary format and third-party soluti
 
 The output of a LI webhook depends on the type of webhook (i.e. user or system) and type of query (user only). Let’s see an example for each:
 
-1. System
+**System**
 
-```
+```json
 {
    "AlertName":" Admin Alert: Worker node has returned to service  (Host = 127.0.0.2)",
    "messages":[
@@ -31,9 +31,9 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 }
 ```
 
-2. User: Message Query
+**User: Message Query**
 
-```
+```json
 {  
    "AlertType":1,
    "AlertName":"Hello World Alert",
@@ -78,9 +78,9 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 }
 ```
 
-3. User: Aggregation Query
+**User: Aggregation Query**
 
-```
+```json
 { 
    "AlertType":2,
    "AlertName":"field_1 aggregated alert",
