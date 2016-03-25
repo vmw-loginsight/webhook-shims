@@ -1,13 +1,21 @@
-# loginsightwebhooks
-Shim information for Log Insight 3.3 and newer
+# Translation Shims for Log Insight Webhooks
+Translate webhooks from Log Insight 3.3 to other services.
 
 ## Getting Started
 
-1. Download the shim
-2. Edit the shim and specify the variables desired
-3. Run the shim
-4. Connect to http://IP:PORT/ and read the information
-5. Configure Log Insight to send a webhook to one of the supported destinations
+Get the source:
+
+1. Clone the git repository
+2. Create a python virtualenv: `virtualenv venv-webhookshims`
+3. Activate it: `source venv-webhookshims/bin/activate`
+4. Install Flask and Requests dependencies: `pip install requirements.txt`
+
+Modify and run the shim:
+
+5. Edit `li_webhook_payload.py` to modify service-centric constants as desired.
+6. Run it: `python li_webhook_payload.py` - the flask webserver starts and reports listening on a particular ip:port.
+7. Open your browser pointed to http://IP:PORT/ for a list of URL routes.
+8. Configure Log Insight to send a webhook to one of the supported destination URLs
 
 ### Log Insight webhook to 3rd party
 
@@ -124,4 +132,4 @@ Finally, you need to decide which destinations you wish to support. For this exa
 - Slack
 - PagerDuty
 
-Of course you are welcome to add shims in different languages and/or more destinations, both of which should be easy given the test URL, existing logging, and example destinations above. If you do add destinations, please be sure to share!
+Of course you are welcome to add shims in different languages and/or more destinations, both of which should be easy given the test URL, existing logging, and example destinations above. If you do add destinations, send a pull request!
