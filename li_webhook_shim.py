@@ -30,6 +30,11 @@ SOCIALCASTURL=''
 # Slack
 SLACKURL=''
 
+# Pushbullet
+PUSHBULLETURL='https://api.pushbullet.com/v2/pushes'
+# This is an access token that you can obtain from https://www.pushbullet.com/#settings/account
+# Please protect this access token since an unauthorized user who has access to this will be able to perform actions on your behalf
+PUSHBULLETTOKEN = ''
 #######################################
 # DO NOT CHANGE ANYTHHING BELOW HERE!!!
 #######################################
@@ -55,6 +60,7 @@ def parse(request):
     """ Parse JSON from alert webhook, return python dict or log exception """
     try:
         payload = request.get_json()
+        #logging.info("Request=%s" % payload)
         # Need to support user alers and system notifications
         # Given different formats, some keys need to be checked
         alert = {
@@ -110,6 +116,10 @@ This shim features translations for:
 <ul>
 <li>/endpoint/pagerduty/<SERVICEKEY> -- Requires passing a SERVICEKEY in the URL</li>
 </ul>
+<li><b>Pushbullet</b> (NOTE: PUSHBULLETTOKEN needs to be set on the shim)
+<ul>
+<li>/endpoint/pushbullet -- Sends a 'link' notification on all devices on pushbullet</li>
+</ul>
 <li><b>Test</b>
 <ul>
 <li>/endpoint/test -- Does not require anything and just dumps the body of the POST event</li>
@@ -130,6 +140,24 @@ Please send feedback to: <a href=mailto:%s>%s</a></p>
 def test():
     logging.info(request.get_data())
     return "OK"
+
+@app.route("/endpoint/pushbullet", methods=['POST'])
+def pushbullet():
+    if not PUSHBULLETURL: return ("PUSHBULLET parameter must be set, please edit the shim!", 500, None)
+    if not PUSHBULLETTOKEN: return ("PUSHBULLETTOKEN parameter must be set, please edit the shim!", 500, None)
+    
+    a = parse(request)
+    
+    payload = {
+        "body" : a['info'],
+        "title" : a['AlertName'],
+        "type" : "link",
+        "url" : a['url']
+    }
+
+    headers = {'Content-type': 'application/json', 'Access-Token' : PUSHBULLETTOKEN}
+    
+    return sendevent(PUSHBULLETURL, json.dumps(payload), headers)    
 
 @app.route("/endpoint/socialcast", methods=['POST'])
 @app.route("/endpoint/socialcast/<int:NUMRESULTS>", methods=['POST'])
