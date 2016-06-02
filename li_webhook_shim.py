@@ -60,7 +60,6 @@ def parse(request):
     """ Parse JSON from alert webhook, return python dict or log exception """
     try:
         payload = request.get_json()
-        #logging.info("Request=%s" % payload)
         # Need to support user alers and system notifications
         # Given different formats, some keys need to be checked
         alert = {
