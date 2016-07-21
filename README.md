@@ -8,7 +8,7 @@ Get the source:
 1. Clone the git repository
 2. Create a python virtualenv: `virtualenv venv-webhookshims`
 3. Activate it: `source venv-webhookshims/bin/activate`
-4. Install Flask and Requests dependencies: `pip install requirements.txt`
+4. Install Flask and Requests dependencies: `pip install -r requirements.txt`
 
 Modify and run the shim:
 
