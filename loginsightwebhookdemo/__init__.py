@@ -111,7 +111,7 @@ def introduction():
                     ret += Markup(" <dd><code>%s</code></dd>\n") % str(r)
             ret += Markup(" <dd>%s</dd>\n") % _minimal_markdown(Markup.escape(str(app.view_functions[f].__doc__)))
     ret += Markup("</dl>")
-
+    return ret
 
 @app.route("/endpoint/test", methods=['POST'])
 def test():
