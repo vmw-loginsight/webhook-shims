@@ -113,17 +113,15 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 }
 ```
 
-### Log Insight webhook configuration
+## Log Insight webhook configuration
 
 There are two places in LI where webhooks can be configured:
 
 1. [System notification: under the General page in the Administration section](http://pubs.vmware.com/log-insight-33/topic/com.vmware.log-insight.administration.doc/GUID-506AE354-3F68-43A6-8C28-70F6FA1D3D9F.html)
 2. [User alerts: while creating a new user alert or by editing an existing user alert](http://pubs.vmware.com/log-insight-33/topic/com.vmware.log-insight.user.doc/GUID-95177CE4-C79C-42E3-A095-450B0F93A5DA.html)
 
-### Creating a shim
+## Creating a shim
 
-To start, you will need a webserver that you can configure Log Insight to point to. You can either leverage an existing one, stand a new one up and write some glue to point to your shim or you can just build it into your shim. The example shim uses the [Flask webserver](http://flask.pocoo.org) to make it really easy to deploy and configure.
+A webhook payload translation shim should provide format conversation, logging and error handling. If the destination system expects one POST per log event, the shim should iterate over the alert's `messages` key. If posting to the destination fails, the shim should return a non-200 HTTP status back to Log Insight.
 
-In order to understand the Log Insight format and perform ingestion testing with your shim, it is helpful to have a test URL that will just dump the payload it receives. In the case of Log Insight webhooks, the body is the only part of the payload we really care about. In addition to handling the incoming payload from Log Insight, you will also need to see the transformation of the data as it works its way through the shim.  which represents the payload that will be sent to the destination. All this means is that proper logging should be added to the shim.
-
-Of course you are welcome to add shims in different languages and/or more destinations, both of which should be easy given the test URL, existing logging, and example destinations above. If you do add destinations, send a pull request!
+If you do add additional translation shims, please send a pull request.
