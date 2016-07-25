@@ -4,7 +4,7 @@
 #Demo
 
 This is a demo shim that accepts alert webhooks from VMware vRealize Log Insight 3.3 or newer, implemented using Flask.
-You can invoke `runserver.py` directly on your development machine or under any WSGI webserver.
+You can invoke `runserver.py` directly on your development machine or run the Flask app under any WSGI webserver.
 Don't run it within the Log Insight virtual appliance, though.
 
 As a demonstration, these shims are optimized for readabiility.
