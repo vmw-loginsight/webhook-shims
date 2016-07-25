@@ -4,7 +4,7 @@ from loginsightwebhookdemo import app, parse, sendevent
 import logging
 
 
-__author__ = "Steve Flanders"
+__author__ = "Adith Sudhakar"
 __license__ = "Apache v2"
 
 
@@ -17,6 +17,10 @@ PUSHBULLETTOKEN = ''
 
 @app.route("/endpoint/pushbullet", methods=['POST'])
 def pushbullet():
+    """
+    Send a `link` notification to all devices on pushbullet with a link back to the alert's query.
+    Requires `PUSHBULLETTOKEN` defined, see https://www.pushbullet.com/#settings/account
+    """
     if not PUSHBULLETURL:
         return ("PUSHBULLET parameter must be set, please edit the shim!", 500, None)
     if not PUSHBULLETTOKEN:
