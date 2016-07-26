@@ -35,6 +35,12 @@ PUSHBULLETURL='https://api.pushbullet.com/v2/pushes'
 # This is an access token that you can obtain from https://www.pushbullet.com/#settings/account
 # Please protect this access token since an unauthorized user who has access to this will be able to perform actions on your behalf
 PUSHBULLETTOKEN = ''
+
+# vRO
+VROURL='https://vra-01a.corp.local:443/vco/api/workflows'
+
+
+
 #######################################
 # DO NOT CHANGE ANYTHHING BELOW HERE!!!
 #######################################
@@ -226,6 +232,35 @@ def pagerduty(SERVICEKEY=None):
         ]
     }
     return sendevent(PAGERDUTYURL, json.dumps(payload))
+	
+@app.route("/endpoint/vro/<WORKFLOWID>", methods=['POST'])
+def vro(WORKFLOWID=None):
+    """
+    Starts the vRO Workflow specified by WORKFLOWID, input parameters below are an example for 
+	the request payload.
+    """
+    if not WORKFLOWID:
+        return ("WORKFLOWID must be set in the URL (e.g. /endpoint/vro/<WORKFLOWID>", 500, None)
+    if not VROURL:
+        return ("VROURL parameter must be set, please edit the shim!", 500, None)
+
+    a = parse(request)
+
+    payload = {
+        "parameters": [
+            {
+                "value": {
+                    "string": {
+                        "value": a['AlertName']
+                    }
+                },
+                "type": "string",
+                "name": "alertName",
+                "scope": "local"
+            }
+		]
+    }
+    return sendevent(VROURL + "/" + WORKFLOWID + "/executions", json.dumps(payload))
 
 if __name__ == "__main__":
     logging.info("Please navigate to the below URL for the available options in this shim")
