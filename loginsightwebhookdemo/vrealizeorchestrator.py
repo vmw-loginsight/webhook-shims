@@ -2,6 +2,8 @@
 
 from loginsightwebhookdemo import app, parse, sendevent
 import base64
+import re
+from flask import request, json
 
 __author__ = "John Dias"
 __license__ = "Apache v2"
@@ -9,6 +11,7 @@ __license__ = "Apache v2"
 
 # vRealize Orchestrator server workflow hostname (or hostname:port)
 VROHOSTNAME = ''
+
 
 
 @app.route("/endpoint/vro/<WORKFLOWID>", methods=['POST'])
@@ -22,8 +25,8 @@ def vro(WORKFLOWID=None):
         return ("WORKFLOWID must be set in the URL (e.g. /endpoint/vro/<WORKFLOWID>", 500, None)
     if not re.match('[a-z0-9-]+', WORKFLOWID, flags=re.IGNORECASE):
         return ("WORKFLOWID must consist of alphanumeric and dash characters only", 500, None)
-    if not VROURL:
-        return ("VROURL parameter must be set, please edit the shim!", 500, None)
+    if not VROHOSTNAME:
+        return ("VROHOSTNAME parameter must be set, please edit the shim!", 500, None)
 
     a = parse(request)
 
@@ -36,7 +39,7 @@ def vro(WORKFLOWID=None):
                     }
                 },
                 "type": "string",
-                "name": "event",
+                "name": "messages",
                 "scope": "local"
             },
             {
@@ -46,9 +49,19 @@ def vro(WORKFLOWID=None):
                     }
                 },
                 "type": "string",
-                "name": "AlertName",
+                "name": "alertName",
                 "scope": "local"
-            }
+            },
+            {
+                "value": {
+                    "number": {
+                        "value": a['NumHits']
+                    }
+                },
+                "type": "number",
+                "name": "hitCount",
+                "scope": "local"
+            }            
         ]
     }
     return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload))
