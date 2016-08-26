@@ -2,7 +2,7 @@
 
 Translate webhooks from Log Insight 3.3+ to other services. Get alerts in your team chatroom, open an incident ticket or kick off a remediation workflow.
 
-Log Insight sends alert notifications as HTTP POST with a JSON body. However, most third-party solutions expect incoming webhooks to be in a proprietary format. If the receiving system lacks native support for the Log Insight webhook format, a shim between them can translate the webhook format as needed. This repository provides several example shims.
+Log Insight sends alert notifications as HTTP POST with a JSON body. However, most third-party solutions expect incoming webhooks to be in a proprietary format. If the receiving system lacks native support for the Log Insight webhook format, a shim between them can translate the webhook format as needed. This repository provides several example shims design to work with Python 2.7+.
 
 ## Getting Started
 
