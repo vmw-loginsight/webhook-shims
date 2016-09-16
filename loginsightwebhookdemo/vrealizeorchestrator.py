@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
 from loginsightwebhookdemo import app, parse, sendevent
-from flask import request
+from flask import request, json
 import base64
 import re
-from flask import request, json
 
 __author__ = "John Dias"
 __license__ = "Apache v2"
