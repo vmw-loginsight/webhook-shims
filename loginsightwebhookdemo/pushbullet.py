@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from loginsightwebhookdemo import app, parse, sendevent
+from flask import request
 import logging
 
 
