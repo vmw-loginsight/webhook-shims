@@ -60,10 +60,10 @@ def parse(request):
         # Given different formats, some keys need to be checked
         alert = {
             "AlertName": payload['AlertName'],
-            "info": payload['Info'] if 'Info' in payload else "",
+            "info": payload['Info'] if ('Info' in payload and payload['Info'] is not None) else "",
             "Messages": payload['messages'],
-            "url": payload['Url'] if 'Url' in payload else "",
-            "editurl": payload['EditUrl'] if 'EditUrl' in payload else "",
+            "url": payload['Url'] if ('Url' in payload and payload['Url'] is not None) else "",
+            "editurl": payload['EditUrl'] if ('EditUrl' in payload and payload['EditUrl'] is not None) else "",
             "HasMoreResults": payload['HasMoreResults'] if 'HasMoreResults' in payload else False,
             # may be less than length of messages, if there's more events
             "NumHits": payload['NumHits'] if 'NumHits' in payload else 0
