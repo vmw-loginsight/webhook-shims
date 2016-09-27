@@ -5,9 +5,10 @@ from flask import request, json
 import logging
 
 
-__author__ = "Alan Castonguay"
+__author__ = "Alan Castonguay and Steve Flanders"
 __license__ = "Apache v2"
 __email__ = "li-cord@vmware.com"
+__version__ = "2.0"
 
 
 # Slack incoming webhook URL. For more information see https://api.slack.com/incoming-webhooks
@@ -16,43 +17,99 @@ SLACKURL = ''
 
 @app.route("/endpoint/slack", methods=['POST'])
 @app.route("/endpoint/slack/<int:NUMRESULTS>", methods=['POST'])
-def slack(NUMRESULTS=10):
+@app.route("/endpoint/slack/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>", methods=['POST'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>", methods=['POST'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     """
     Consume messages, and send them to Slack as an Attachment object.
     Sends up to `NUMRESULTS` (default 10) events onward.
-    Requires `SLACKURL` defined in the form `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`
+    If `T/B/X` is not passed, requires `SLACKURL` defined in the form `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`
     For more information, see https://api.slack.com/incoming-webhooks
     """
+    if (X is not None):
+        SLACKURL = 'https://hooks.slack.com/services/' + T + '/' + B + '/' + X
     if not SLACKURL:
         return ("SLACKURL parameter must be set, please edit the shim!", 500, None)
 
     a = parse(request)
 
     slack_attachments = []
+    if (a['color'] == 'red'):
+        color = 'danger'
+    elif (a['color'] == 'yellow'):
+        color = 'warning'
+    else:
+        color = 'info'
     try:
-        for message in a['Messages'][:NUMRESULTS]:
-            slack_attachments.append({
-                "title": a['AlertName'],
-                "title_link": a['url'],
-                "color": "warning",
-                "fallback": a['info'],
-                "text": message.get('text', 'empty'),
-                "fields": [
-                    {  # start of dict comprehension
-                        "title": f['name'],
-                        "value": f['content'],
-                        "short": True if len(f['content']) < 20 else False
-                    } for f in message['fields'] if not f['name'].startswith('__')
-                ],
-                "pretext": a['info'] + ("\n\nYou can edit this alert by clicking: %s" % a['editurl'] if a['editurl'] else "")
-            })
+        payload = {
+            "icon_url": a['icon'],
+        }
+        if ('AlertName' in a):
+            attachment = { "pretext": a['moreinfo'], }
+            if ('Messages' in a):
+                for message in a['Messages'][:NUMRESULTS]:
+                    attachment.update({
+                        "color": color,
+                        "fallback": message.get('text', ''),
+                        "text": message.get('text', ''),
+                        "fields": [
+                            {  # start of dict comprehension
+                                "title": f['name'],
+                                "value": f['content'],
+                                "short": True if len(f['content']) < 20 else False
+                            } for f in message['fields'] if not f['name'].startswith('__')
+                        ],
+                    })
+                    slack_attachments.append(attachment)
+                    attachment = {}
+            if a['fields']:
+                attachment.update({
+                    "color": color,
+                    "fallback": 'Alert details',
+                    "text": 'Alert details',
+                    "fields": [
+                        {  # start of dict comprehension
+                            "title": f['name'],
+                            "value": f['content']
+                        } for f in a['fields']
+                    ],
+                })
+        else:
+            if a['fields']:
+                slack_attachments.append({
+                    "color": color,
+                    "fallback": 'Alert details',
+                    "text": 'Alert details',
+                    "fields": [
+                        {  # start of dict comprehension
+                            "title": f['name'],
+                            "value": f['content']
+                        } for f in a['fields']
+                    ],
+                })
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise
-    payload = {
-        "username": a['AlertName'],
-        "icon_url": "http://blogs.vmware.com/management/files/2015/04/li-logo.png",
-        "pretext": a['info'],
-        "attachments": slack_attachments,
-    }
+    if not slack_attachments: # If a test alert
+        slack_attachments.append({
+            "text": "This is a test webhook alert",
+            "color": "info",
+            "fallback": "This is a test webhook alert",
+            "fields": [
+                {
+                    "title": "Test",
+                    "value": "It works!"
+                }
+            ],
+            "pretext": "Hello from Log Insight!"
+        })
+
+    payload.update({
+        "username": a['hookName'],
+        "attachments": slack_attachments
+    })
     return sendevent(SLACKURL, json.dumps(payload))
