@@ -7,6 +7,7 @@ import logging
 
 __author__ = "Steve Flanders"
 __license__ = "Apache v2"
+__version__ = "1.1"
 
 
 # PagerDuty post url defined by https://v2.developer.pagerduty.com/v2/docs/trigger-events - don't change
@@ -14,7 +15,8 @@ PAGERDUTYURL = 'https://events.pagerduty.com/generic/2010-04-15/create_event.jso
 
 
 @app.route("/endpoint/pagerduty/<SERVICEKEY>", methods=['POST'])
-def pagerduty(SERVICEKEY=None):
+@app.route("/endpoint/pagerduty/<SERVICEKEY>/<ALERTID>", methods=['PUT'])
+def pagerduty(SERVICEKEY=None, ALERTID=None):
     """
     Create a new incident for the Pagerduty service identified by `SERVICEKEY` in the URL.
     Uses the https://v2.developer.pagerduty.com/v2/docs/trigger-events API directly.

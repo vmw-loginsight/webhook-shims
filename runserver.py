@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 """
-This is a demo shim that accepts alert webhooks from VMware vRealize Log Insight 3.3 or newer, implemented using Flask.
+This is a demo shim that accepts incoming webhooks, implemented using Flask.
 
-Run this directly on your development machine or under any WSGI webserver, within the Log Insight virtual appliance.
-The following functions parse the Alert webhook payload from Log Insight, translate and send it to other services.
+Run this directly on your development machine or under any WSGI webserver.
+The following functions parse the webhook payload, translate and send it to other services.
 """
 
 from loginsightwebhookdemo import app
@@ -12,10 +12,12 @@ import logging
 import sys
 
 
-if __name__ == "__main__":
-    # Configure logging
+# Define if you want to leverage SSL
+SSLCERT = ''
+SSLKEY = ''
 
-    # file - overwrite on every start
+def main(PORT):
+    # Configure logging - overwrite on every start
     logging.basicConfig(filename='li_webhook_shim.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
     # stdout
@@ -28,4 +30,14 @@ if __name__ == "__main__":
 
     logging.info("Please navigate to the below URL for the available routes")
 
-    app.run(host='0.0.0.0', port=5001)
+    if (SSLCERT and SSLKEY):
+        context = (SSLCERT, SSLKEY)
+        app.run(host='0.0.0.0', port=PORT, ssl_context=context, threaded=True, debug=True)
+    else:
+        app.run(host='0.0.0.0', port=PORT)
+
+if __name__ == "__main__":
+    PORT = 5001
+    if (len(sys.argv) == 2):
+        PORT = sys.argv[1]
+    main(PORT)
