@@ -52,6 +52,10 @@ def template(ALERTID=None, TOKEN=None):
     # Defaults to Content-type: application/json
     # If changed you must specify the content-type manually
     #headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+    headers = ''
 
-    return sendevent(TEMPLATEURL, json.dumps(payload), headers
+    if headers:
+        return sendevent(TEMPLATEURL, json.dumps(payload), headers)
+    else:
+        return sendevent(TEMPLATEURL, json.dumps(payload))
     #return sendevent(TEMPLATEURL, json.dumps(payload), headers, (TEMPLATEUSER, TEMPLATEPASS))
