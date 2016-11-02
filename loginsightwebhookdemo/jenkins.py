@@ -11,7 +11,7 @@ __verion__ = "1.0"
 
 
 # Parameters
-JENKINSURL = "https://blah.blah.blah"
+JENKINSURL = ''
 # Only required if not passed
 JOBNAME = ''
 TOKEN = ''
