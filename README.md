@@ -1,8 +1,8 @@
-# Translation Shims for Log Insight Webhooks
+# Translation Shims for Log Insight and/or vRealize Operations Manager Webhooks
 
-Translate webhooks from Log Insight 3.3+ to other services. Get alerts in your team chatroom, open an incident ticket or kick off a remediation workflow.
+Translate webhooks from Log Insight 3.3+ and vRealize Operations Manager 6.0+ to other services. Get alerts in your team chatroom, open an incident ticket or kick off a remediation workflow.
 
-Log Insight sends alert notifications as HTTP POST with a JSON body. However, most third-party solutions expect incoming webhooks to be in a proprietary format. If the receiving system lacks native support for the Log Insight webhook format, a shim between them can translate the webhook format as needed. This repository provides several example shims design to work with Python 2.7+.
+Log Insight and vRealize Operations Manager send alert notifications as HTTP POST with a JSON body. However, most third-party solutions expect incoming webhooks to be in a proprietary format. If the receiving system lacks native support for the webhook format, a shim between them can translate the webhook format as needed. This repository provides several example shims design to work with Python 2.7+.
 
 ## Getting Started
 
@@ -16,9 +16,8 @@ Get the source:
 Modify and run the shim:
 
 5. Some services require credentials or URLs. Edit individual services under `loginsightwebhookdemo/` to modify constants as needed.
-6. Run `python runserver.py` - the Flask webserver starts and reports listening - default http://0.0.0.0:5001/
+6. Run `python runserver.py [port]` - the Flask webserver starts and reports listening - default http://0.0.0.0:5001/
 7. Open your browser pointed to the Flask webserver for a list of available URLs.
-8. [In Log Insight, create an alert specifying the full URL](http://pubs.vmware.com/log-insight-33/topic/com.vmware.log-insight.user.doc/GUID-95177CE4-C79C-42E3-A095-450B0F93A5DA.html) for one of the shims.
 
 
 ## Log Insight webhook formats
@@ -42,36 +41,36 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 ### User Message Query
 
 ```json
-{  
+{
    "AlertType":1,
    "AlertName":"Hello World Alert",
    "SearchPeriod":300000,
    "HitCount":0.0,
    "HitOperator":2,
-   "messages":[  
-      {  
+   "messages":[
+      {
          "text":"hello world 1",
          "timestamp":1451940578545,
-         "fields":[  
-            { 
+         "fields":[
+            {
                "name":"Field_1",
                "content":"Content 1"
             },
-            { 
+            {
                "name":"Field_2",
                "content":"Content 2"
             }
          ]
       },
-      {  
+      {
          "text":"hello world 2",
          "timestamp":1451940561008,
-         "fields":[  
-            { 
+         "fields":[
+            {
                "name":"Field_1",
                "content":"Content 1_2"
             },
-            { 
+            {
                "name":"Field_2",
                "content":"Content 2_2"
             }
@@ -89,16 +88,16 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 ### User Aggregation Query
 
 ```json
-{ 
+{
    "AlertType":2,
    "AlertName":"field_1 aggregated alert",
    "SearchPeriod":300000,
    "HitCount":2.0,
    "HitOperator":2,
-   "messages":[ 
-      { 
-         "fields":[ 
-            { 
+   "messages":[
+      {
+         "fields":[
+            {
                "name":"Field_1",
                "content":"Content 1"
             }
@@ -117,8 +116,36 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 
 There are two places in LI where webhooks can be configured:
 
-1. [System notification: under the General page in the Administration section](http://pubs.vmware.com/log-insight-33/topic/com.vmware.log-insight.administration.doc/GUID-506AE354-3F68-43A6-8C28-70F6FA1D3D9F.html)
-2. [User alerts: while creating a new user alert or by editing an existing user alert](http://pubs.vmware.com/log-insight-33/topic/com.vmware.log-insight.user.doc/GUID-95177CE4-C79C-42E3-A095-450B0F93A5DA.html)
+1. [System notification: under the General page in the Administration section](http://pubs.vmware.com/log-insight-40/topic/com.vmware.log-insight.administration.doc/GUID-506AE354-3F68-43A6-8C28-70F6FA1D3D9F.html)
+2. [User alerts: while creating a new user alert or by editing an existing user alert](http://pubs.vmware.com/log-insight-40/topic/com.vmware.log-insight.user.doc/GUID-95177CE4-C79C-42E3-A095-450B0F93A5DA.html)
+
+## vRealize Operations Manager webhook formats
+
+```json
+{
+   "startDate":1369757346267,
+   "criticality":"ALERT_CRITICALITY_LEVEL_WARNING",
+   "Risk":4.0,
+   "resourceId":"sample-object-uuid",
+   "alertId":"sample-alert-uuid",
+   "status":"ACTIVE",
+   "subType":"ALERT_SUBTYPE_AVAILABILITY_PROBLEM",
+   "cancelDate":1369757346267,
+   "resourceKind":"sample-object-type",
+   "alertName":"Invalid IP Address for connected Leaf Switch",
+   "attributeKeyID":5325,
+   "Efficiency":1.0,
+   "adapterKind":"sample-adapter-type",
+   "Health":1.0,
+   "type":"ALERT_TYPE_APPLICATION_PROBLEM",
+   "resourceName":"sample-object-name",
+   "updateDate":1369757346267,
+   "info":"sample-info"
+}
+```
+## vRealize Operations Manager webhook configuration
+
+[REST plugin: under Administration > Outbound Settings](http://pubs.vmware.com/vrealizeoperationsmanager-64/topic/com.vmware.vcom.core.doc/GUID-2A26A734-CD91-43E0-BF42-B079D5B0F5D4.html)
 
 ## Creating a shim
 
