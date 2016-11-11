@@ -220,6 +220,7 @@ def test(ALERTID=None):
 
 # Import individual shims
 import loginsightwebhookdemo.hipchat
+import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
 #import loginsightwebhookdemo.servicenow
