@@ -182,9 +182,9 @@ def sendevent(url, payload, headers=None, auth=None):
         logging.info("Headers=%s" % headers)
         logging.info("Body=%s" % payload)
         if (auth is not None):
-            r = requests.post(url, auth=auth, headers=headers, data=payload)
+            r = requests.post(url, auth=auth, headers=headers, data=payload, verify=False)
         else:
-            r = requests.post(url, headers=headers, data=payload)
+            r = requests.post(url, headers=headers, data=payload, verify=False)
         if r.status_code >= 200 and r.status_code < 300:
             return ("OK", r.status_code, None)
     except:
@@ -220,7 +220,6 @@ def test(ALERTID=None):
 
 # Import individual shims
 import loginsightwebhookdemo.hipchat
-import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
 #import loginsightwebhookdemo.servicenow
