@@ -10,9 +10,11 @@ __license__ = "Apache v2"
 __version__ = "1.2"
 
 
-# vRealize Orchestrator server workflow hostname:port
+# vRealize Orchestrator server workflow hostname:port (default port is 8281)
 VROHOSTNAME = ''
-
+# For some labs, using self-signed will result in error during request due to cert check
+# flip this flag to False to bypass certificate checking in those cases
+VERIFY = True
 
 
 @app.route("/endpoint/vro/<WORKFLOWID>", methods=['POST'])
@@ -66,7 +68,7 @@ def vroli(WORKFLOWID=None, ALERTID=None):
             }
         ]
     }
-    return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload))
+    return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload), check = VERIFY)
 
 @app.route("/endpoint/vro/<WORKFLOWID>/<ALERTID>", methods=['PUT', 'POST'])
 
@@ -104,5 +106,5 @@ def vroops(WORKFLOWID=None, ALERTID=None):
             }
         ]
     }
-    return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload))
+    return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload), check = VERIFY)
 

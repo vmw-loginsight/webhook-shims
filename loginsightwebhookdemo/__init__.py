@@ -169,7 +169,7 @@ def parsevROps(payload, alert):
     return alert
 
 
-def sendevent(url, payload, headers=None, auth=None):
+def sendevent(url, payload, headers=None, auth=None, check=None):
     """
     Simple wrapper around `requests.post`, with excessive logging.
     Returns a Flask-friendly tuple on success or failure.
@@ -181,10 +181,13 @@ def sendevent(url, payload, headers=None, auth=None):
         logging.info("URL=%s" % url)
         logging.info("Headers=%s" % headers)
         logging.info("Body=%s" % payload)
+	logging.info("Check=%s" % check)
+	if (check is None):
+	    check = 'True'
         if (auth is not None):
-            r = requests.post(url, auth=auth, headers=headers, data=payload, verify=False)
+            r = requests.post(url, auth=auth, headers=headers, data=payload, verify=check)
         else:
-            r = requests.post(url, headers=headers, data=payload, verify=False)
+            r = requests.post(url, headers=headers, data=payload, verify=check)
         if r.status_code >= 200 and r.status_code < 300:
             return ("OK", r.status_code, None)
     except:
@@ -220,6 +223,7 @@ def test(ALERTID=None):
 
 # Import individual shims
 import loginsightwebhookdemo.hipchat
+import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
 #import loginsightwebhookdemo.servicenow
