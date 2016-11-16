@@ -1,0 +1,30 @@
+README for the Orchestrator Shim
+
+Changes in version 1.2
+- Refactored for difference in handling vR Ops and LI workflows
+- Modified __init.py__ to allow for self-signed certs in vRO
+
+USAGE NOTES
+
+Be sure to update VROHOSTNAME with the IP/FQDN:PORT (default is :8281) of your
+vRO instance.
+
+An example vRO package for handling a vR Ops alert is included in the /sample 
+dir.  Be sure to read package description for more information.
+
+vRO requires a login.  Because request module will read the users' .netrc file, you will need to create this file.  From the requests documentation:
+
+"If no authentication method is given with the auth argument, Requests will attempt to get the authentication credentials for the URL's hostname from the user's netrc file. The netrc file overrides raw HTTP authentication headers set with headers=.
+
+If credentials for the hostname are found, the request is sent with HTTP Basic Auth."
+
+
+CONTACT
+
+*************************************
+Author: John Dias
+Contact: diasj@vmware.com
+*************************************
+
+
+Because Orchestrator requires a login, you should use
