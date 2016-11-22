@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -48,6 +48,6 @@ def jenkins(ALERTID=None, JOBNAME=None, TOKEN=None):
     headers = ''
 
     if headers:
-        return sendevent(URL, json.dumps(payload), headers)
+        return callapi(URL, 'post', json.dumps(payload), headers)
     else:
-        return sendevent(URL, json.dumps(payload))
+        return callapi(URL, 'post', json.dumps(payload))

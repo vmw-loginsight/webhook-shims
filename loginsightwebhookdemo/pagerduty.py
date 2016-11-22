@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -47,4 +47,4 @@ def pagerduty(SERVICEKEY=None, ALERTID=None):
             },
         ]
     }
-    return sendevent(PAGERDUTYURL, json.dumps(payload))
+    return callapi(PAGERDUTYURL, 'post', json.dumps(payload))

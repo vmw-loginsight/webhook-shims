@@ -6,7 +6,7 @@ Opted for a single message and leveraged the HTML driven activity option.
 This may need to be revisited in the future.
 """
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -36,9 +36,11 @@ def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None)
     For more information, see https://www.hipchat.com/docs/apiv2/method/send_room_notification
     """
     if (AUTHTOKEN is not None):
-        HIPCHATURL = 'https://' + TEAM + '.hipchat.com/v2/room/' + ROOMNUM + '/notification?auth_token=' + AUTHTOKEN
+        URL = 'https://' + TEAM + '.hipchat.com/v2/room/' + ROOMNUM + '/notification?auth_token=' + AUTHTOKEN
     if not HIPCHATURL:
         return ("HIPCHATURL parameter must be set, please edit the shim!", 500, None)
+    else:
+        URL = HIPCHATURL
 
     a = parse(request)
 
@@ -121,4 +123,4 @@ def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None)
         "notify": 'true',
         "card": hipchat_attachments.pop(0),
     }
-    return sendevent(HIPCHATURL, json.dumps(payload))
+    return callapi(URL, 'post', json.dumps(payload))
