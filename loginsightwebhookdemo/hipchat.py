@@ -6,7 +6,7 @@ Opted for a single message and leveraged the HTML driven activity option.
 This may need to be revisited in the future.
 """
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -121,4 +121,4 @@ def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None)
         "notify": 'true',
         "card": hipchat_attachments.pop(0),
     }
-    return sendevent(HIPCHATURL, json.dumps(payload))
+    return callapi(HIPCHATURL, 'post', json.dumps(payload))

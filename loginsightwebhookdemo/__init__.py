@@ -40,7 +40,7 @@ __license__ = "Apache v2"
 __maintainer__ = "Alan Castonguay and Steve Flanders"
 __email__ = "li-cord@vmware.com"
 __status__ = "Beta"
-__version__ = "2.0"
+__version__ = "2.1"
 
 
 def _minimal_markdown(markdown):
@@ -169,7 +169,7 @@ def parsevROps(payload, alert):
     return alert
 
 
-def sendevent(url, payload, headers=None, auth=None, check=None):
+def callapi(url, method='post', payload=None, headers=None, auth=None, check=None):
     """
     Simple wrapper around `requests.post`, with excessive logging.
     Returns a Flask-friendly tuple on success or failure.
@@ -181,19 +181,22 @@ def sendevent(url, payload, headers=None, auth=None, check=None):
         logging.info("URL=%s" % url)
         logging.info("Headers=%s" % headers)
         logging.info("Body=%s" % payload)
-	logging.info("Check=%s" % check)
-	if (check is None):
-	    check = 'True'
+        logging.info("Check=%s" % check)
+        if (check is None):
+            check = 'True'
         if (auth is not None):
-            r = requests.post(url, auth=auth, headers=headers, data=payload, verify=check)
+            r = requests.request(method, url, auth=auth, headers=headers)
         else:
-            r = requests.post(url, headers=headers, data=payload, verify=check)
+            r = requests.request(method, url, headers=headers)
         if r.status_code >= 200 and r.status_code < 300:
-            return ("OK", r.status_code, None)
+            if (payload is None):
+                return r.text
+            else:
+                return ("OK", r.status_code, None)
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise  # re-raise all exceptions
-    return ("Failed to POST event, error_code=%d" % r.status_code, r.status_code, None)
+    return ("Failed to make api call, error_code=%d" % r.status_code, r.status_code, None)
 
 
 @app.route("/")
@@ -226,7 +229,7 @@ import loginsightwebhookdemo.hipchat
 import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
-#import loginsightwebhookdemo.servicenow
+import loginsightwebhookdemo.servicenow
 import loginsightwebhookdemo.slack
 import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
