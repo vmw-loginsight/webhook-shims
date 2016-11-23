@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -112,4 +112,4 @@ def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
         "username": a['hookName'],
         "attachments": slack_attachments
     })
-    return sendevent(SLACKURL, json.dumps(payload))
+    return callapi(SLACKURL, 'post', json.dumps(payload))

@@ -11,7 +11,7 @@ import loginsightwebhookdemo.template
 """
 
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -55,7 +55,7 @@ def template(ALERTID=None, TOKEN=None):
     headers = ''
 
     if headers:
-        return sendevent(TEMPLATEURL, json.dumps(payload), headers)
+        return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers)
     else:
-        return sendevent(TEMPLATEURL, json.dumps(payload))
-    #return sendevent(TEMPLATEURL, json.dumps(payload), headers, (TEMPLATEUSER, TEMPLATEPASS))
+        return callapi(TEMPLATEURL, 'post', json.dumps(payload))
+    #return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers, (TEMPLATEUSER, TEMPLATEPASS))

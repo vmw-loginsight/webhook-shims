@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import base64
 import re
@@ -68,7 +68,7 @@ def vroli(WORKFLOWID=None, ALERTID=None):
             }
         ]
     }
-    return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload), check = VERIFY)
+    return callapi("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload), check = VERIFY)
 
 @app.route("/endpoint/vro/<WORKFLOWID>/<ALERTID>", methods=['PUT', 'POST'])
 
@@ -85,11 +85,11 @@ def vroops(WORKFLOWID=None, ALERTID=None):
     if not VROHOSTNAME:
         return ("VROHOSTNAME parameter must be set, please edit the shim!", 500, None)
 
-# If you would like, you can parse the payload from vROps.  However, it is 
-# probably easier to just pass the ALERTID as workflow input to a wrapper and 
+# If you would like, you can parse the payload from vROps.  However, it is
+# probably easier to just pass the ALERTID as workflow input to a wrapper and
 # look up the alert from vRO.  This gets around the problem of having to encode
 # the alert payload for vRO.
-# 
+#
 #    a = parse(request)
 
     payload = {
@@ -106,5 +106,4 @@ def vroops(WORKFLOWID=None, ALERTID=None):
             }
         ]
     }
-    return sendevent("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", json.dumps(payload), check = VERIFY)
-
+    return callapi("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", 'post', json.dumps(payload), check = VERIFY)
