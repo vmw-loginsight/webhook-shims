@@ -11,7 +11,7 @@ import loginsightwebhookdemo.template
 """
 
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -26,6 +26,8 @@ TEMPLATEURL = ''
 # Basic auth
 #TEMPLATEUSER = ''
 #TEMPLATEPASS = ''
+# Token auth
+#TEMPLATETOKEN = ''
 
 
 # Route without <ALERTID> are for LI, with are for vROps
@@ -33,12 +35,28 @@ TEMPLATEURL = ''
 @app.route("/endpoint/template/<ALERTID>", methods=['PUT'])
 @app.route("/endpoint/template/<TOKEN>", methods=['POST'])
 @app.route("/endpoint/template/<TOKEN>/<ALERTID>", methods=['PUT'])
-def template(ALERTID=None, TOKEN=None):
+@app.route("/endpoint/template/<EMAIL>/<TOKEN>", methods=['POST'])
+@app.route("/endpoint/template/<EMAIL>/<TOKEN>/<ALERTID>", methods=['PUT'])
+def template(ALERTID=None, TOKEN=None, EMAIL=None):
     """
     Information about this shim.
     """
-    if not TEMPLATEURL or not TEMPLATEUSER or not TEMPLATEPASS:
+    if (not TEMPLATEURL or (not TEMPLATEUSER and not EMAIL) or (not TEMPLATEPASS and not TEMPLATETOKEN and not TOKEN)):
         return ("TEMPLATE* parameters must be set, please edit the shim!", 500, None)
+    if not TEMPLATEUSER:
+        USER = EMAIL
+    else:
+        USER = TEMPLATEUSER
+    # Prefer tokens over passwords
+    if TEMPLATETOKEN or TOKEN:
+        if TEMPLATETOKEN:
+            USER = USER + '/token'
+            PASS = TEMPLATETOKEN
+        else:
+            USER = USER + '/token'
+            PASS = TOKEN
+    else:
+        PASS = TEMPLATEPASS
 
     a = parse(request)
 
@@ -51,11 +69,43 @@ def template(ALERTID=None, TOKEN=None):
 
     # Defaults to Content-type: application/json
     # If changed you must specify the content-type manually
-    #headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-    headers = ''
+    headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+
+    ########################
+    #Fire and Forgot Systems
+    ########################
 
     if headers:
-        return sendevent(TEMPLATEURL, json.dumps(payload), headers)
+        return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers)
     else:
-        return sendevent(TEMPLATEURL, json.dumps(payload))
-    #return sendevent(TEMPLATEURL, json.dumps(payload), headers, (TEMPLATEUSER, TEMPLATEPASS))
+        return callapi(TEMPLATEURL, 'post', json.dumps(payload))
+    #return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers, (TEMPLATEUSER, TEMPLATEPASS))
+
+    #####################################
+    #Incident / Ticket Management Systems
+    #####################################
+
+    ## Get the list of open incidents that contain the AlertName from the incoming webhook
+    #incident = callapi(TEMPLATEURL + '/api/v2/search.json?query=type:ticket status:open subject:"' + a['AlertName'] + '"', 'get', None, headers, (USER, PASS))
+    #i = json.loads(incident)
+
+    #try: # Determine if there is an open incident already
+    #    if i['results'][0]['id'] is not None:
+    #        # Option 1: Do nothing
+    #        #logging.info('Nothing to do, exiting.')
+    #        #return ("OK", 200, None)
+
+    #        # Option 2: Add a new comment
+    #        payload = { 'ticket': { 'comment': { 'body': a['moreinfo'] } } }
+    #        return callapi(TEMPLATEURL + '/api/v2/tickets/' + str(i['results'][0]['id']) + '.json', 'put', json.dumps(payload), headers, (USER, PASS))
+    #except: # If no open incident then open one
+    #    payload = {
+    #        "ticket": {
+    #            "subject": a['AlertName'],
+    #            "comment": {
+    #                "body": a['moreinfo'],
+    #            },
+    #            "type": 'incident',
+    #        }
+    #    }
+    #    return callapi(TEMPLATEURL + '/api/v2/tickets.json', 'post', json.dumps(payload), headers, (USER, PASS))

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -35,4 +35,4 @@ def socialcast(ALERTID=None, NUMRESULTS=10, TEAM=None, I=None, X=None):
         return ("SOCIALCASTURL parameter must be set, please edit the shim!\n", 500, None)
     # Socialcast cares about the order of the information in the body
     # json.dumps() does not preserve the order so just use raw get_data()
-    return sendevent(SOCIALCASTURL, request.get_data())
+    return callapi(SOCIALCASTURL, 'post', request.get_data())

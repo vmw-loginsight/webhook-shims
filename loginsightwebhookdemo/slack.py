@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -31,9 +31,11 @@ def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     For more information, see https://api.slack.com/incoming-webhooks
     """
     if (X is not None):
-        SLACKURL = 'https://hooks.slack.com/services/' + T + '/' + B + '/' + X
+        URL = 'https://hooks.slack.com/services/' + T + '/' + B + '/' + X
     if not SLACKURL:
         return ("SLACKURL parameter must be set, please edit the shim!", 500, None)
+    else:
+        URL = SLACKURL
 
     a = parse(request)
 
@@ -112,4 +114,4 @@ def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
         "username": a['hookName'],
         "attachments": slack_attachments
     })
-    return sendevent(SLACKURL, json.dumps(payload))
+    return callapi(URL, 'post', json.dumps(payload))

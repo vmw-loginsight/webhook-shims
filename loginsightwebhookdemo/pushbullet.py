@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, sendevent
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -44,4 +44,4 @@ def pushbullet(ALERTID=None, TOKEN=None):
 
     headers = {'Content-type': 'application/json', 'Access-Token': PUSHBULLETTOKEN}
 
-    return sendevent(PUSHBULLETURL, json.dumps(payload), headers)
+    return callapi(PUSHBULLETURL, 'post', json.dumps(payload), headers)
