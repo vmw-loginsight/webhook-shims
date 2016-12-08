@@ -1,3 +1,13 @@
-venv
+__pycache__
 *.log
 *.pyc
+.cache
+.coverage
+.Python
+.tox
+bin
+include
+lib
+loginsightwebhookdemo.egg-info
+pip-selfcheck.json
+venv

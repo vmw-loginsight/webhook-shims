@@ -40,6 +40,7 @@ TEMPLATEURL = ''
 def template(ALERTID=None, TOKEN=None, EMAIL=None):
     """
     Information about this shim.
+    Requires TEMPLATE* parameters to be defined.
     """
     if (not TEMPLATEURL or (not TEMPLATEUSER and not EMAIL) or (not TEMPLATEPASS and not TEMPLATETOKEN and not TOKEN)):
         return ("TEMPLATE* parameters must be set, please edit the shim!", 500, None)
@@ -70,20 +71,19 @@ def template(ALERTID=None, TOKEN=None, EMAIL=None):
     # Defaults to Content-type: application/json
     # If changed you must specify the content-type manually
     headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+    if not headers:
+        headers = None
 
-    ########################
-    #Fire and Forgot Systems
-    ########################
+    #########################
+    # Fire and Forgot Systems
+    #########################
 
-    if headers:
-        return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers)
-    else:
-        return callapi(TEMPLATEURL, 'post', json.dumps(payload))
-    #return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers, (TEMPLATEUSER, TEMPLATEPASS))
+    return callapi(TEMPLATEURL, 'post', json.dumps(payload), headers)
 
-    #####################################
-    #Incident / Ticket Management Systems
-    #####################################
+    ######################################
+    # Check, Fire, and Forget Systems
+    # Incident / Ticket Management Systems
+    ######################################
 
     ## Get the list of open incidents that contain the AlertName from the incoming webhook
     #incident = callapi(TEMPLATEURL + '/api/v2/search.json?query=type:ticket status:open subject:"' + a['AlertName'] + '"', 'get', None, headers, (USER, PASS))
