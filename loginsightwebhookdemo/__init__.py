@@ -7,7 +7,7 @@ This is a demo shim, implemented using Flask, that accepts alert webhooks from:
 
 1) VMware vRealize Log Insight 3.3 or newer
 
-2) VMware vRealize Operations Manager 6.0 or newer
+2) VMware vRealize Operations Manager 6.0 or newer (6.2 or newer recommended)
 
 You can invoke `runserver.py [<port>]` directly on your development machine or run the Flask app under any WSGI webserver.
 Don't run it on the Log Insight or vRealize Operations Manager virtual appliance, though.
@@ -24,6 +24,7 @@ The following functions parse the webhook payload from the above products, trans
 Note that `<ALERTID>` is sent as part of vRealize Operations Manager webhooks and should not be specified when configuring incoming webhooks.
 """
 
+from distutils.util import strtobool
 from flask import Flask, Markup, request, json
 import requests
 import logging
@@ -97,6 +98,12 @@ def parseLI(payload, alert):
         "NumHits": str(payload['NumHits'])                  if 'NumHits' in payload else False,
         "icon": "http://blogs.vmware.com/management/files/2015/04/li-logo.png",
     })
+    if ('Info' in payload and payload['Info'] is not None):
+        alert.update({"info": payload['Info']})
+    elif ('messages' in payload and payload['messages'] is not None):
+        alert.update({"info": payload['messages'][0]['text']})
+    else:
+        alert.update({"info": ""})
     alert.update({
         "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'] + \
             ("\n\nYou can view this alert by clicking: %s" % alert['url'] if alert['url'] else "") + \
@@ -119,7 +126,7 @@ def parsevROps(payload, alert):
     Parse vROps JSON from alert webhook.
     Returns a dict.
     """
-    if (not 'alertName' in payload):
+    if (not 'alertId' in payload):
         return alert
     alert.update({
         "hookName": "vRealize Operations Manager",
@@ -169,7 +176,7 @@ def parsevROps(payload, alert):
     return alert
 
 
-def callapi(url, method='post', payload=None, headers=None, auth=None, check=None):
+def callapi(url, method='post', payload=None, headers=None, auth=None, check=True):
     """
     Simple wrapper around `requests.post`, with excessive logging.
     Returns a Flask-friendly tuple on success or failure.
@@ -182,10 +189,8 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Non
         logging.info("Headers=%s" % headers)
         logging.info("Body=%s" % payload)
         logging.info("Check=%s" % check)
-        if (check is None):
-            check = 'True'
         if (auth is not None):
-            r = requests.request(method, url, auth=auth, headers=headers, data=payload, verify=check)
+            r = requests.request(method, url, auth=auth, headers=headers, data=payload, verify=bool(strtobool(str(check))))
         else:
             r = requests.request(method, url, headers=headers, data=payload, verify=check)
         if r.status_code >= 200 and r.status_code < 300:
@@ -195,8 +200,8 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Non
                 return ("OK", r.status_code, None)
     except:
         logging.exception("Can't create new payload. Check code and try again.")
-        raise  # re-raise all exceptions
-    return ("Failed to make api call, error_code=%d" % r.status_code, r.status_code, None)
+        raise
+    return ("%s" % r.text, r.status_code, None)
 
 
 @app.route("/")
