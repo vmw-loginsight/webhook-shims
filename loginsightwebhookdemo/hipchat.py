@@ -21,24 +21,25 @@ __version__ = "1.0"
 HIPCHATURL = ''
 
 
-#@app.route("/endpoint/hipchat/<int:NUMRESULTS>", methods=['POST'])
-#@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<int:NUMRESULTS>", methods=['POST'])
-#@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
 @app.route("/endpoint/hipchat", methods=['POST'])
 @app.route("/endpoint/hipchat/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/hipchat/<int:NUMRESULTS>", methods=['POST'])
 @app.route("/endpoint/hipchat/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
 @app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>", methods=['POST'])
 @app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<int:NUMRESULTS>", methods=['POST'])
+@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
 def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None):
     """
     Consume messages, and send them to HipChat as an Attachment object.
     If `TEAM/ROOMNUM/AUTHOKEN` is not passed, requires `HIPCHATURL` defined in the form `https://TEAM.hipchat.com/v2/room/0000000/notification?auth_token=XXXXXXXXXXXXXXXXXXXXXXXXXXX`
     For more information, see https://www.hipchat.com/docs/apiv2/method/send_room_notification
     """
-    if (AUTHTOKEN is not None):
+    # Prefer URL parameters to HIPCHATURL
+    if AUTHTOKEN is not None:
         URL = 'https://' + TEAM + '.hipchat.com/v2/room/' + ROOMNUM + '/notification?auth_token=' + AUTHTOKEN
-    if not HIPCHATURL:
-        return ("HIPCHATURL parameter must be set, please edit the shim!", 500, None)
+    elif not HIPCHATURL or not 'hipchat.com/v2/room' in HIPCHATURL:
+        return ("HIPCHATURL parameter must be set properly, please edit the shim!", 500, None)
     else:
         URL = HIPCHATURL
 
@@ -50,10 +51,10 @@ def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None)
         "format": "medium",
         "id": "1",
     }
+    attachment = {
+        "icon": { "url": a['icon'] },
+    }
     try:
-        attachment = {
-            "icon": { "url": a['icon'] },
-        }
         # Log Insight
         if ('Messages' in a):
             for message in a['Messages'][:NUMRESULTS]:
@@ -101,7 +102,7 @@ def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None)
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise
-    if not hipchat_attachments: # If a test alert
+    if 'Messages' in a and not a['Messages']: # If a test alert
         attachment.update(attachment_prefix)
         attachment.update({
             "title": "This is a test webhook alert",
@@ -111,7 +112,6 @@ def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None)
                     "value": { "label": "It works!" }
                 }
             ],
-            "icon": { "url": "http://blogs.vmware.com/management/files/2015/04/li-logo.png" },
         })
         hipchat_attachments.append(attachment)
 

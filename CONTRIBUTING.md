@@ -62,7 +62,7 @@ If an issue is discovered with a commit that was not uncovered by tests then the
 
 The output of a LI webhook depends on the type of webhook (i.e. user or system) and type of query (user only). Let's see an example for each:
 
-### System
+### System Notification
 
 ```json
 {
@@ -76,7 +76,7 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 }
 ```
 
-### User Message Query
+### User Alert: Message Query
 
 ```json
 {
@@ -123,7 +123,7 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 }
 ```
 
-### User Aggregation Query
+### User Alert: Aggregation Query
 
 ```json
 {
@@ -150,7 +150,7 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
 }
 ```
 
-### User Test Query
+### User Alert: Test Query
 
 ```json
 {
