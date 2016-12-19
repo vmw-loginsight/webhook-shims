@@ -37,6 +37,7 @@ Modify and run the shim:
 
 -  Some services require credentials or URLs. Edit individual services
    under ``loginsightwebhookdemo/`` to modify constants as needed.
+   (Note: For basic auth, ~/.netrc will take prescendence.)
 -  Run ``python runserver.py [port]`` - the Flask webserver starts and
    reports listening - default http://0.0.0.0:5001/
 -  Open your browser pointed to the Flask webserver for a list of
