@@ -1,5 +1,5 @@
-.. image:: https://api.travis-ci.org/vmware/loginsightwebhookdemo.svg?branch=master
-    :target: https://travis-ci.org/vmware/loginsightwebhookdemo
+.. image:: https://api.travis-ci.org/vmw-loginsight/loginsightwebhookdemo.svg?branch=master
+    :target: https://travis-ci.org/vmw-loginsight/loginsightwebhookdemo
     :alt: Build Status
 
 .. image:: https://coveralls.io/repos/github/vmw-loginsight/webhook-shims/badge.svg?branch=master

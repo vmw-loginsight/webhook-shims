@@ -136,11 +136,11 @@ def parsevROps(payload, alert):
         "status": payload['status']             if ('status' in payload) else "",
         "type": payload['type']                 if ('type' in payload) else "",
         "subType": payload['subType']           if ('subType' in payload) else "",
-        "Risk": payload['Risk']                 if ('Risk' in payload) else "",
-        "Efficiency": payload['Efficiency']     if ('Efficiency' in payload) else "",
-        "Health": payload['Health']             if ('Health' in payload) else "",
+        "Risk": payload['Risk']                 if ('Risk' in payload) else "<None>",
+        "Efficiency": payload['Efficiency']     if ('Efficiency' in payload) else "<None>",
+        "Health": payload['Health']             if ('Health' in payload) else "<None>",
         "resourceName": payload['resourceName'] if ('resourceName' in payload) else "",
-        "adapterKind": payload['adapterKind']   if ('adapterKind' in payload) else "",
+        "adapterKind": payload['adapterKind']   if ('adapterKind' in payload) else ">",
         "icon": "http://blogs.vmware.com/management/files/2016/09/vrops-256.png",
     })
     if (alert['status'] == "ACTIVE"):

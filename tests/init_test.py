@@ -1,142 +1,15 @@
+#!/usr/bin/env python
+
+import json
 import requests
 
 import loginsightwebhookdemo
 
+import conftest
+
 
 client = loginsightwebhookdemo.app.test_client()
 # client2 = loginsightwebhookdemo.app.test_client(5002)
-
-payloadLI_MQ = {
-    "AlertType": 1,
-    "AlertName": "Hello World",
-    "SearchPeriod": 300000,
-    "HitCount": 0.0,
-    "HitOperator": 2,
-    "messages": [
-        {
-            "text": "hello world 1",
-            "timestamp": 1451940578545,
-            "fields": [{
-                "name": "Field_1",
-                "content": "Content 1"
-            }, {
-                "name": "Field_2",
-                "content": "Content 2"
-            }]
-        }, {
-            "text": "hello world 2",
-            "timestamp": 1451940561008,
-            "fields": [{
-                "name": "Field_1",
-                "content": "Content 1_2"
-            }, {
-                "name": "Field_2",
-                "content": "Content 2_2"
-            }]
-        }
-    ],
-    "HasMoreResults": False,
-    "Url": "https://10.11.12.13/s/8pgzq6",
-    "EditUrl": "https://10.11.12.13/s/56monr",
-    "Info": "This is an alert for all the Hello World messages",
-    "NumHits": 2
-}
-
-payloadLI_AQ = {
-    "AlertType": 2,
-    "AlertName": "Hello World",
-    "SearchPeriod": 300000,
-    "HitCount": 2.0,
-    "HitOperator": 2,
-    "messages": [
-        {
-            "fields": [{
-                "name": "Field_1",
-                "content": "Content 1"
-            }, {
-                "name": "Field_2",
-                "content": "Content 2"
-            }]
-        }, {
-            "fields": [{
-                "name": "Field_1",
-                "content": "Content 1_2"
-            }, {
-                "name": "Field_2",
-                "content": "Content 2_2"
-            }]
-        }
-    ],
-    "HasMoreResults": False,
-    "Url": "https://10.11.12.13/s/8pgzq6",
-    "EditUrl": "https://10.11.12.13/s/56monr",
-    "Info": "This is an alert for all the Hello World messages",
-    "NumHits": 2
-}
-
-payloadLI_test = {
-    "AlertType": 1,
-    "AlertName": "Hello World",
-    "SearchPeriod": 300000,
-    "HitCount": 0.0,
-    "HitOperator": 2,
-    "messages": [],
-    "HasMoreResults": False,
-    "Url": None,
-    "EditUrl": None,
-    "Info": "hello world 1",
-    "Recommendation": None,
-    "NumHits": 0
-}
-
-payloadLI_sys = {
-    "AlertName": "Hello World",
-    "messages": [
-        {
-            "text": "hello world 1",
-            "timestamp": 1451940578545,
-            "fields": []
-        }
-    ],
-}
-
-payloadvROps60 = {
-    "startDate": 1369757346267,
-    "criticality": "ALERT_CRITICALITY_LEVEL_WARNING",
-    "resourceId": "sample-object-uuid",
-    "alertId": "sample-alert-uuid",
-    "status": "INACTIVE",
-    "subType": "ALERT_SUBTYPE_AVAILABILITY_PROBLEM",
-    "cancelDate": 1369757346267,
-    "resourceKind": "sample-object-type",
-    "attributeKeyID": 5325,
-    "adapterKind": "sample-adapter-type",
-    "type": "ALERT_TYPE_APPLICATION_PROBLEM",
-    "resourceName": "sample-object-name",
-    "updateDate": 1369757346267,
-    "info": "sample-info"
-}
-
-payloadvROps62 = {
-    "startDate": 1369757346267,
-    "criticality": "ALERT_CRITICALITY_LEVEL_WARNING",
-    "Risk": 4.0,
-    "resourceId": "sample-object-uuid",
-    "alertId": "sample-alert-uuid",
-    "status": "ACTIVE",
-    "subType": "ALERT_SUBTYPE_AVAILABILITY_PROBLEM",
-    "cancelDate": 1369757346267,
-    "resourceKind": "sample-object-type",
-    "alertName": "Invalid IP Address for connected Leaf Switch",
-    "attributeKeyID": 5325,
-    "Efficiency": 1.0,
-    "adapterKind": "sample-adapter-type",
-    "Health": 1.0,
-    "type": "ALERT_TYPE_APPLICATION_PROBLEM",
-    "resourceName": "sample-object-name",
-    "updateDate": 1369757346267,
-    "info": "sample-info"
-}
 
 
 def test_parse():
@@ -149,7 +22,7 @@ def test_parse():
 
 
 def test_parse_LI_MQ():
-    alert = loginsightwebhookdemo.parseLI(payloadLI_MQ, {})
+    alert = loginsightwebhookdemo.parseLI(json.loads(conftest.payloadLI_MQ), {})
     assert alert['hookName'] == 'Log Insight'
     assert alert['color'] == 'red'
     assert alert['AlertName'] == 'Hello World'
@@ -166,7 +39,7 @@ You can edit this alert by clicking: https://10.11.12.13/s/56monr'
 
 
 def test_parse_vROps60_test():
-    alert = loginsightwebhookdemo.parsevROps(payloadvROps60, {})
+    alert = loginsightwebhookdemo.parsevROps(json.loads(conftest.payloadvROps60), {})
     assert alert['hookName'] == 'vRealize Operations Manager'
     assert alert['color'] == 'green'
     assert alert['AlertName'] == '<None>'
@@ -175,9 +48,9 @@ def test_parse_vROps60_test():
     assert alert['status'] == 'INACTIVE'
     assert alert['type'] == 'ALERT_TYPE_APPLICATION_PROBLEM'
     assert alert['subType'] == 'ALERT_SUBTYPE_AVAILABILITY_PROBLEM'
-    assert alert['Risk'] == ''
-    assert alert['Efficiency'] == ''
-    assert alert['Health'] == ''
+    assert alert['Risk'] == '<None>'
+    assert alert['Efficiency'] == '<None>'
+    assert alert['Health'] == '<None>'
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
@@ -185,7 +58,7 @@ def test_parse_vROps60_test():
 
 
 def test_parseLI_MQ():
-    alert = loginsightwebhookdemo.parseLI(payloadLI_MQ, {})
+    alert = loginsightwebhookdemo.parseLI(json.loads(conftest.payloadLI_MQ), {})
     assert alert['hookName'] == 'Log Insight'
     assert alert['color'] == 'red'
     assert alert['AlertName'] == 'Hello World'
@@ -202,7 +75,7 @@ You can edit this alert by clicking: https://10.11.12.13/s/56monr'
 
 
 def test_parseLI_AQ():
-    alert = loginsightwebhookdemo.parseLI(payloadLI_AQ, {})
+    alert = loginsightwebhookdemo.parseLI(json.loads(conftest.payloadLI_AQ), {})
     assert alert['hookName'] == 'Log Insight'
     assert alert['color'] == 'red'
     assert alert['AlertName'] == 'Hello World'
@@ -210,7 +83,7 @@ def test_parseLI_AQ():
     # assert alert['Messages'] == '[{"text": "hello world 1","timestamp": 1451940578545,"fields": [{"name": "Field_1","content": "Content 1"}, { "name": "Field_2","content": "Content 2"}]'
     assert alert['url'] == 'https://10.11.12.13/s/8pgzq6'
     assert alert['editurl'] == 'https://10.11.12.13/s/56monr'
-    assert alert['HasMoreResults'] == 'False'
+    assert alert['HasMoreResults'] == 'True'
     assert alert['NumHits'] == '2'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
     assert alert['moreinfo'] == 'Hello World\n\nThis is an alert for all the Hello World messages\n\n\
@@ -219,7 +92,7 @@ You can edit this alert by clicking: https://10.11.12.13/s/56monr'
 
 
 def test_parseLI_sys():
-    alert = loginsightwebhookdemo.parseLI(payloadLI_sys, {})
+    alert = loginsightwebhookdemo.parseLI(json.loads(conftest.payloadLI_sys), {})
     assert alert['hookName'] == 'Log Insight'
     assert alert['color'] == 'red'
     assert alert['AlertName'] == 'Hello World'
@@ -234,7 +107,7 @@ def test_parseLI_sys():
 
 
 def test_parseLI_test():
-    alert = loginsightwebhookdemo.parseLI(payloadLI_test, {})
+    alert = loginsightwebhookdemo.parseLI(json.loads(conftest.payloadLI_test), {})
     assert alert['hookName'] == 'Log Insight'
     assert alert['color'] == 'red'
     assert alert['AlertName'] == 'Hello World'
@@ -251,12 +124,12 @@ def test_parseLI_test():
 
 
 def test_parsevROps_LI():
-    alert = loginsightwebhookdemo.parsevROps(payloadLI_sys, {})
+    alert = loginsightwebhookdemo.parsevROps(json.loads(conftest.payloadLI_sys), {})
     assert alert == {}
 
 
 def test_parsevROps60_test():
-    alert = loginsightwebhookdemo.parsevROps(payloadvROps60, {})
+    alert = loginsightwebhookdemo.parsevROps(json.loads(conftest.payloadvROps60), {})
     assert alert['hookName'] == 'vRealize Operations Manager'
     assert alert['color'] == 'green'
     assert alert['AlertName'] == '<None>'
@@ -265,9 +138,9 @@ def test_parsevROps60_test():
     assert alert['status'] == 'INACTIVE'
     assert alert['type'] == 'ALERT_TYPE_APPLICATION_PROBLEM'
     assert alert['subType'] == 'ALERT_SUBTYPE_AVAILABILITY_PROBLEM'
-    assert alert['Risk'] == ''
-    assert alert['Efficiency'] == ''
-    assert alert['Health'] == ''
+    assert alert['Risk'] == '<None>'
+    assert alert['Efficiency'] == '<None>'
+    assert alert['Health'] == '<None>'
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
@@ -275,7 +148,7 @@ def test_parsevROps60_test():
 
 
 def test_parsevROps62_test():
-    alert = loginsightwebhookdemo.parsevROps(payloadvROps62, {})
+    alert = loginsightwebhookdemo.parsevROps(json.loads(conftest.payloadvROps62), {})
     assert alert['hookName'] == 'vRealize Operations Manager'
     assert alert['color'] == 'yellow'
     assert alert['AlertName'] == 'Invalid IP Address for connected Leaf Switch'

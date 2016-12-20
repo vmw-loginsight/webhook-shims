@@ -32,12 +32,12 @@ def slack_fields(color, message):
 
 
 @app.route("/endpoint/slack", methods=['POST'])
-@app.route("/endpoint/slack/<int:NUMRESULTS>", methods=['POST'])
 @app.route("/endpoint/slack/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<int:NUMRESULTS>", methods=['POST'])
 @app.route("/endpoint/slack/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
 @app.route("/endpoint/slack/<T>/<B>/<X>", methods=['POST'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>", methods=['POST'])
 @app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>", methods=['POST'])
 @app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
 def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     """
@@ -46,10 +46,11 @@ def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     If `T/B/X` is not passed, requires `SLACKURL` defined in the form `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`
     For more information, see https://api.slack.com/incoming-webhooks
     """
-    if (X is not None):
+    # Prefer URL parameters to SLACKURL
+    if X is not None:
         URL = 'https://hooks.slack.com/services/' + T + '/' + B + '/' + X
     elif not SLACKURL or not 'https://hooks.slack.com/services' in SLACKURL:
-        return ("SLACKURL parameter must be set, please edit the shim!", 500, None)
+        return ("SLACKURL parameter must be set properly, please edit the shim!", 500, None)
     else:
         URL = SLACKURL
 
