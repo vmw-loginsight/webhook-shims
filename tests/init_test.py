@@ -8,10 +8,6 @@ import loginsightwebhookdemo
 import conftest
 
 
-client = loginsightwebhookdemo.app.test_client()
-# client2 = loginsightwebhookdemo.app.test_client(5002)
-
-
 def test_parse():
     try:
         loginsightwebhookdemo.parse({"abc": "123"})
@@ -203,7 +199,7 @@ def test_callapi():
 
 
 def test_homepage():
-    rsp = client.get('/')
+    rsp = conftest.client.get('/')
     assert rsp.status == '200 OK'
     html = rsp.get_data(as_text=True)
     # assert '<title>Todo</title>' in html
@@ -211,17 +207,17 @@ def test_homepage():
 
 
 def test_unknown_url():
-    rsp = client.get('/test')
+    rsp = conftest.client.get('/test')
     assert rsp.status == '404 NOT FOUND'
 
 
 def test_wrong_method():
-    rsp = client.get('/endpoint/test')
+    rsp = conftest.client.get('/endpoint/test')
     assert rsp.status == '405 METHOD NOT ALLOWED'
 
 
 def test_test():
-    rsp = client.post('/endpoint/test')
+    rsp = conftest.client.post('/endpoint/test')
     assert rsp.status == '200 OK'
-    rsp = client.put('/endpoint/test/alertid')
+    rsp = conftest.client.put('/endpoint/test/alertid')
     assert rsp.status == '200 OK'

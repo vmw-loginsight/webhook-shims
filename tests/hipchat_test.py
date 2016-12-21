@@ -3,13 +3,10 @@
 
 import pytest
 
-import loginsightwebhookdemo
 import loginsightwebhookdemo.hipchat
 
 import conftest
 
-
-client = loginsightwebhookdemo.app.test_client()
 
 NUMRESULTS = '1'
 TEAM = 'vmw-loginsight'
@@ -82,5 +79,5 @@ WRONGAUTHTOKEN = 'wrongtoken'
 def test_hipchat(url, post, data, expected):
     if url is not None:
         loginsightwebhookdemo.hipchat.HIPCHATURL = url
-    rsp = client.post(post, data=data, content_type="application/json")
+    rsp = conftest.client.post(post, data=data, content_type="application/json")
     assert rsp.status == expected

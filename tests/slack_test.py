@@ -3,13 +3,10 @@
 
 import pytest
 
-import loginsightwebhookdemo
 import loginsightwebhookdemo.slack
 
 import conftest
 
-
-client = loginsightwebhookdemo.app.test_client()
 
 NUMRESULTS = '1'
 T = 'T3BCFGGDU'
@@ -77,5 +74,5 @@ X = 'Q8BojtVn1Pvjg510aCEOKNrd'
 def test_slack(url, post, data, expected):
     if url is not None:
         loginsightwebhookdemo.slack.SLACKURL = url
-    rsp = client.post(post, data=data, content_type="application/json")
+    rsp = conftest.client.post(post, data=data, content_type="application/json")
     assert rsp.status == expected
