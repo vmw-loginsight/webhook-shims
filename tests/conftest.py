@@ -3,6 +3,10 @@
 
 import json
 
+import loginsightwebhookdemo
+
+
+client = loginsightwebhookdemo.app.test_client()
 
 payloadLI_MQ = json.dumps({
     "AlertType": 1,

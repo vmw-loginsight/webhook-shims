@@ -87,7 +87,10 @@ def template(ALERTID=None, TOKEN=None, EMAIL=None):
 
     ## Get the list of open incidents that contain the AlertName from the incoming webhook
     #incident = callapi(TEMPLATEURL + '/api/v2/search.json?query=type:ticket status:open subject:"' + a['AlertName'] + '"', 'get', None, headers, (USER, PASS))
-    #i = json.loads(incident)
+    #try:
+    #    i = json.loads(incident)
+    #except:
+    #    return incident
 
     #try: # Determine if there is an open incident already
     #    if i['results'][0]['id'] is not None:
