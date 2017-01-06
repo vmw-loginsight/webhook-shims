@@ -7,7 +7,7 @@ import logging
 
 __author__ = "Steve Flanders"
 __license__ = "Apache v2"
-__verion__ = "1.0"
+__verion__ = "1.1"
 
 
 # jira parameters
@@ -18,10 +18,13 @@ JIRAPASS = ''
 
 @app.route("/endpoint/jira/<PROJECT>", methods=['POST'])
 @app.route("/endpoint/jira/<PROJECT>/<ALERTID>", methods=['PUT'])
-def jira(ALERTID=None, PROJECT=None):
+@app.route("/endpoint/jira/<PROJECT>/<ISSUETYPE>", methods=['POST'])
+@app.route("/endpoint/jira/<PROJECT>/<ISSUETYPE>/<ALERTID>", methods=['PUT'])
+def jira(ALERTID=None, PROJECT=None, ISSUETYPE='Bug'):
     """
-    Create a new incident for every incoming webhook that does not already have an unresolved incident.
-    If an incident is currently unresolved, add a new comment to the unresolved alert.
+    Create a new bug for every incoming webhook that does not already have an unresolved bug.
+    If an bug is currently unresolved, add a new comment to the unresolved bug.
+    If `ISSUETYPE` is passed, blindly attempt to open/check the specified `ISSUETYPE`.
     Requires JIRA* parameters to be defined.
     """
 
@@ -34,7 +37,11 @@ def jira(ALERTID=None, PROJECT=None):
     # Get the list of unresolved incidents that contain the AlertName from the incoming webhook
     incident = callapi(JIRAURL + '/rest/api/2/search?jql=project=' + PROJECT + '+AND+resolution=unresolved+AND+summary~"' + a['AlertName'] + '"', 'get', None, headers, (JIRAUSER, JIRAPASS))
 
-    i = json.loads(incident)
+    try:
+        i = json.loads(incident)
+    except:
+        return incident
+
     try: # Determine if there is an unresolved incident already
         if i['issues'][0]['key'] is not None:
             # Option 1: Do nothing
@@ -53,7 +60,7 @@ def jira(ALERTID=None, PROJECT=None):
                 "summary": a['AlertName'],
                 "description": a['moreinfo'],
                 "issuetype": {
-                    "name": "Bug"
+                    "name": ISSUETYPE
                 }
             }
         }
