@@ -23,6 +23,8 @@ def opsgenie(APIKEY=None, TEAM=None, ALERTID=None):
     Create a new incident for the opsgenie service identified by `APIKEY` in the URL.
     Uses https://www.opsgenie.com/docs/web-api/alert-api#createAlertRequest.
     """
+    if not OPSGENIEURL:
+        return ("OPSGENIEURL parameter must be set properly, please edit the shim!", 500, None)
     if not APIKEY:
         return ("APIKEY must be set in the URL (e.g. /endpoint/opsgenie/<APIKEY>", 500, None)
 

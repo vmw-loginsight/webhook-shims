@@ -13,8 +13,8 @@ __verion__ = "1.0"
 # Parameters
 JENKINSURL = ''
 # Only required if not passed
-JOBNAME = ''
-TOKEN = ''
+JENKINSJOBNAME = ''
+JENKINSTOKEN = ''
 
 
 # Route without <ALERTID> are for LI, with are for vROps
@@ -29,11 +29,14 @@ def jenkins(ALERTID=None, JOBNAME=None, TOKEN=None):
     If `JOBNAME` and `TOKEN` are not passed then the must be defined
     For more information, see https://wiki.jenkins-ci.org/display/JENKINS/Remote+access+API
     """
-    if not JENKINSURL or not JOBNAME or not TOKEN:
+    if not JENKINSURL or (not JENKINSJOBNAME and not JOBNAME) or (not JENKINSTOKEN and not TOKEN):
         return ("Parameters must be set, please edit the shim!", 500, None)
 
     # We need to make the Jenkins URL
-    URL = JENKINSURL + "/job/" + JOBNAME + "/build?token=" + TOKEN
+    if TOKEN:
+        URL = JENKINSURL + "/job/" + JOBNAME + "/build?token=" + TOKEN
+    else:
+        URL = JENKINSURL + "/job/" + JENKINSJOBNAME + "/build?token=" + JENKINSTOKEN
 
     # No need to parse the request as we just want to run a job
     #a = parse(request)
