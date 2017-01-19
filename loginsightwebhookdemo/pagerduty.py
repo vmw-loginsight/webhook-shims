@@ -21,6 +21,8 @@ def pagerduty(SERVICEKEY=None, ALERTID=None):
     Create a new incident for the Pagerduty service identified by `SERVICEKEY` in the URL.
     Uses the https://v2.developer.pagerduty.com/v2/docs/trigger-events API directly.
     """
+    if not PAGERDUTYURL:
+        return ("PAGERDUTYURL parameter must be set properly, please edit the shim!", 500, None)
     if not SERVICEKEY:
         return ("SERVICEKEY must be set in the URL (e.g. /endpoint/pagerduty/<SERVICEKEY>", 500, None)
 

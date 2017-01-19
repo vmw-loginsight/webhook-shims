@@ -29,10 +29,12 @@ def socialcast(ALERTID=None, NUMRESULTS=10, TEAM=None, I=None, X=None):
     If `TEAM/I/X` is not passed, requires `SOCIALCASTURL` defined in the form `https://TEAM.socialcast.com/api/webhooks/IIIIIIIIII/XXXXXXXXXXX`
     For more information see https://socialcast.github.io/socialcast/apidoc/incoming_webhook.html
     """
-    if (X is not None):
-        SOCIALCASTURL = 'https://' + TEAM + '.socialcast.com/api/webhooks/' + I + '/' + X
-    if not SOCIALCASTURL:
-        return ("SOCIALCASTURL parameter must be set, please edit the shim!\n", 500, None)
+    if X is not None:
+       URL = 'https://' + TEAM + '.socialcast.com/api/webhooks/' + I + '/' + X
+    if not SOCIALCASTURL or not 'socialcast.com/api/webhooks' in SOCIALCASTURL:
+        return ("SOCIALCASTURL parameter must be set properly, please edit the shim!\n", 500, None)
+    else:
+        URL = SOCIALCASTURL
     # Socialcast cares about the order of the information in the body
     # json.dumps() does not preserve the order so just use raw get_data()
-    return callapi(SOCIALCASTURL, 'post', request.get_data())
+    return callapi(URL, 'post', request.get_data())
