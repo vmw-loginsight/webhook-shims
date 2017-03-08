@@ -11,6 +11,7 @@ This is a demo shim, implemented using Flask, that accepts alert webhooks from:
 
 You can invoke `runserver.py [<port>]` directly on your development machine or run the Flask app under any WSGI webserver.
 Don't run it on the Log Insight or vRealize Operations Manager virtual appliance, though.
+Some shims require manually setting variables within the shim, while others work via URLs. Only modify variables BEFORE the app.route section in each shim.
 
 As a demonstration, these shims are optimized for readability.
 There is minimal error handling and no attempt to retransmit.
@@ -142,6 +143,9 @@ def parsevROps(payload, alert):
         "resourceName": payload['resourceName'] if ('resourceName' in payload) else "",
         "adapterKind": payload['adapterKind']   if ('adapterKind' in payload) else ">",
         "icon": "http://blogs.vmware.com/management/files/2016/09/vrops-256.png",
+        "Messages":"",
+        "url":"",
+        "editurl":"",
     })
     if (alert['status'] == "ACTIVE"):
         if (alert['criticality'] == "ALERT_CRITICALITY_LEVEL_CRITICAL" or
