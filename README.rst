@@ -22,10 +22,26 @@ example shims design to work with Python 2.7+.
 Installation
 ------------
 
-To get started:
+To get started (if you know what virtualenv and pip are):
 
 ::
 
+    virtualenv loginsightwebhookdemo
+    cd loginsightwebhookdemo
+    source bin/activate
+    git clone https://github.com/vmw-loginsight/webhook-shims.git
+    cd webhook-shims/
+    pip install -r requirements.txt
+
+Otherwise, deploy `Photon OS`_, SSH and run the following commands:
+
+::
+
+    tdnf install wget -y
+    wget https://bootstrap.pypa.io/get-pip.py
+    python get-pip.py
+    pip install virtualenv
+    tdnf install git -y
     virtualenv loginsightwebhookdemo
     cd loginsightwebhookdemo
     source bin/activate
@@ -84,9 +100,10 @@ Support
 
 Please open issues `HERE`_.
 
+.. _`Photon OS`: https://vmware.github.io/photon/
 .. _`System notification: under the General page in the Administration section`: http://pubs.vmware.com/log-insight-40/topic/com.vmware.log-insight.administration.doc/GUID-506AE354-3F68-43A6-8C28-70F6FA1D3D9F.html
 .. _`User alerts: while creating a new user alert or by editing an existing user alert`: http://pubs.vmware.com/log-insight-40/topic/com.vmware.log-insight.user.doc/GUID-95177CE4-C79C-42E3-A095-450B0F93A5DA.html
 .. _`REST plugin: under Administration > Outbound Settings`: http://pubs.vmware.com/vrealizeoperationsmanager-64/topic/com.vmware.vcom.core.doc/GUID-2A26A734-CD91-43E0-BF42-B079D5B0F5D4.html
 .. _Contribution Document: https://github.com/vmw-loginsight/webhook-shims/blob/master/CONTRIBUTING.md
-.. _LICENSE: https://github.com/vmw-loginsight/webhook-shims/blob/master/README.m://github.com/vmw-loginsight/webhook-shims/blob/master/LICENSE
+.. _LICENSE: https://github.com/vmw-loginsight/webhook-shims/blob/master/LICENSE
 .. _HERE: https://github.com/vmw-loginsight/webhook-shims/issues
