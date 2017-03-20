@@ -12,8 +12,20 @@ __version__ = "1.3"
 
 # vRealize Orchestrator server workflow hostname:port (default port is 8281)
 VROHOSTNAME = ''
-# Either basic auth or OAuth token or SSO HoK is required
-# OAuth token and SSO HoK can be specified in the URL
+
+##########################################################################################
+# You can use the following methods for authentication
+# *  Add a .netrc to the home director of the user running the shim with the vro fqdn, username
+#    and password.  Leave USENETRC = True
+# *  Basic auth by completing VROUSER and VROPASS below
+# *  OAuth token by completing the VROTOKEN below (warning, the token will expire if unused)
+# *  SSO HoK by completing the VROHOK below (warning, the HoK will expire if unused)
+#
+# You may also pass the OAuth or HoK values via the query as shown below.
+# If you intend to use an auth method other than .netrc, flip USENETRC to False
+##########################################################################################
+
+USENETRC = True
 VROUSER = ''
 VROPASS = ''
 VROTOKEN = ''
@@ -39,8 +51,10 @@ def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):
         return ("WORKFLOWID must be set in the URL (e.g. /endpoint/vro/<WORKFLOWID>", 500, None)
     if not re.match('[a-z0-9-]+', WORKFLOWID, flags=re.IGNORECASE):
         return ("WORKFLOWID must consist of alphanumeric and dash characters only", 500, None)
-    if not VROHOSTNAME or (not VROUSER and not VROPASS and not VROTOKEN and not TOKEN and not VROHOK and not HOK):
-        return ("VRO* parameters must be set, please edit the shim!", 500, None)
+    if not VROHOSTNAME:
+	return("VROHOSTNAME parameter is not net, please edit the shim!", 500, None)
+    if not USENETRC and (not VROUSER and not VROPASS and not VROTOKEN and not TOKEN and not VROHOK and not HOK):
+        return ("VRO* authentication parameters must be set, please edit the shim!", 500, None)
 
     if TOKEN is None and VROTOKEN:
         TOKEN = VROTOKEN
@@ -53,7 +67,7 @@ def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):
         HEADERS = {"Authorization": TOKEN}
     elif HOK is not None:
         HEADERS = {"Authorization": "Bearer " + HOK}
-    else:
+    elif not USENETRC:
         AUTH = (VROUSER, VROPASS)
 
     if ALERTID is None: # LI payload
