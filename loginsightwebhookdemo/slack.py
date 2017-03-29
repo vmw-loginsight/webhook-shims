@@ -77,19 +77,6 @@ def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise
-    if 'Messages' in a and not a['Messages']: # If a test alert
-        slack_attachments.append({
-            "text": "This is a test webhook alert",
-            "color": "info",
-            "fallback": "This is a test webhook alert",
-            "fields": [
-                {
-                    "title": "Test",
-                    "value": "It works!"
-                }
-            ],
-            "pretext": "Hello from the webhook shim!"
-        })
 
     payload.update({
         "username": a['hookName'],
