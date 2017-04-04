@@ -22,13 +22,11 @@ HIPCHATURL = ''
 
 
 @app.route("/endpoint/hipchat", methods=['POST'])
-@app.route("/endpoint/hipchat/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/hipchat/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/hipchat/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/hipchat/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/hipchat/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 @app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>", methods=['POST'])
-@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/hipchat/<TEAM>/<ROOMNUM>/<AUTHTOKEN>/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None):
     """
     Consume messages, and send them to HipChat as an Attachment object.

@@ -15,7 +15,7 @@ PAGERDUTYURL = 'https://events.pagerduty.com/generic/2010-04-15/create_event.jso
 
 # DO NOT MODIFY ANYTHING BELOW HERE!!!
 @app.route("/endpoint/pagerduty/<SERVICEKEY>", methods=['POST'])
-@app.route("/endpoint/pagerduty/<SERVICEKEY>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/pagerduty/<SERVICEKEY>/<ALERTID>", methods=['POST','PUT'])
 def pagerduty(SERVICEKEY=None, ALERTID=None):
     """
     Create a new incident for the Pagerduty service identified by `SERVICEKEY` in the URL.

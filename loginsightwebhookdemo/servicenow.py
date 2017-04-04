@@ -17,7 +17,7 @@ SERVICENOWPASS = ''
 
 
 @app.route("/endpoint/servicenow", methods=['POST'])
-@app.route("/endpoint/servicenow/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/servicenow/<ALERTID>", methods=['POST','PUT'])
 def servicenow(ALERTID=None):
     """
     Create a new incident for every incoming webhook that does not already have an active incident.
