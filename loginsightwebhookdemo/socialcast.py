@@ -15,13 +15,11 @@ SOCIALCASTURL = ''
 
 
 @app.route("/endpoint/socialcast", methods=['POST'])
-@app.route("/endpoint/socialcast/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/socialcast/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/socialcast/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/socialcast/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/socialcast/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 @app.route("/endpoint/socialcast/<TEAM>/<I>/<X>", methods=['POST'])
-@app.route("/endpoint/socialcast/<TEAM>/<I>/<X>/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/socialcast/<TEAM>/<I>/<X>/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/socialcast/<TEAM>/<I>/<X>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/socialcast/<TEAM>/<I>/<X>/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/socialcast/<TEAM>/<I>/<X>/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 def socialcast(ALERTID=None, NUMRESULTS=10, TEAM=None, I=None, X=None):
     """
     Create a post on Socialcast containing log events.

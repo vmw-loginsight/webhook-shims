@@ -27,29 +27,27 @@ VERIFY = True
 
 # Route without <ALERTID> are for LI, with are for vROps
 @app.route("/endpoint/bugzilla", methods=['POST'])
-@app.route("/endpoint/bugzilla/<ALERTID>", methods=['PUT'])
 @app.route("/endpoint/bugzilla/<TOKEN>", methods=['POST'])
-@app.route("/endpoint/bugzilla/<TOKEN>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/bugzilla/<TOKEN>/<ALERTID>", methods=['POST','PUT'])
 @app.route("/endpoint/bugzilla/<TOKEN>/<PRODUCT>/<COMPONENT>/<VERSION>", methods=['POST'])
-@app.route("/endpoint/bugzilla/<TOKEN>/<PRODUCT>/<COMPONENT>/<VERSION>/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/bugzilla/<PRODUCT>/<COMPONENT>/<VERSION>", methods=['POST'])
-@app.route("/endpoint/bugzilla/<PRODUCT>/<COMPONENT>/<VERSION>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/bugzilla/<TOKEN>/<PRODUCT>/<COMPONENT>/<VERSION>/<ALERTID>", methods=['POST','PUT'])
 def bugzilla(ALERTID=None, TOKEN=None, PRODUCT=None, COMPONENT=None, VERSION=None):
     """
     Create a new bug for every incoming webhook that does not already have an open bug.
     If an bug is already open, add a new comment to the open bug.
     Uniqueness is determined by the incoming webhook alert name combined with bugzilla product and component.
     Requires BUGZILLA* parameters to be defined.
+    You can pass an authentication token in the URL. For basic auth, pass `-` as the token.
     """
     if (not BUGZILLAURL or
-        ((not BUGZILLAUSER or not BUGZILLAPASS) and not TOKEN) or
+        ((not BUGZILLAUSER or not BUGZILLAPASS) and (not TOKEN or TOKEN == '-')) or
         ((not BUGZILLAPRODUCT or not BUGZILLACOMPONENT or not BUGZILLAVERSION) and not VERSION)):
             logging.debug("URL: %s\nUSER: %s\nPASS: %s\nTOKEN: %s\nPRODUCT: %s / %s\nCOMPONENT: %s / %s\nVERSION: %s / %s" % (BUGZILLAURL, BUGZILLAUSER, BUGZILLAPASS, TOKEN, BUGZILLAPRODUCT, PRODUCT, BUGZILLACOMPONENT, COMPONENT, BUGZILLAVERSION, VERSION))
             return ("BUGZILLA* parameters must be set, please edit the shim!", 500, None)
 
     a = parse(request)
 
-    if TOKEN:
+    if TOKEN and TOKEN != '-':
         auth = 'api_key=' + TOKEN
     else:
         auth = 'login=' + BUGZILLAUSER + '&password=' + BUGZILLAPASS

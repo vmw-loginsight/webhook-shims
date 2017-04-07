@@ -32,13 +32,11 @@ def slack_fields(color, message):
 
 
 @app.route("/endpoint/slack", methods=['POST'])
-@app.route("/endpoint/slack/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/slack/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/slack/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/slack/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 @app.route("/endpoint/slack/<T>/<B>/<X>", methods=['POST'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     """
     Consume messages, and send them to Slack as an Attachment object.

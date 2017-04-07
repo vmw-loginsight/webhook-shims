@@ -53,16 +53,10 @@ def test_bugzilla_noparams():
     rsp = client.post('/endpoint/bugzilla/' + TOKEN, data=payload, content_type="application/json")
     assert rsp.status == '500 INTERNAL SERVER ERROR'
     rsp = client.post('/endpoint/bugzilla/' + TOKEN + '/' + PRODUCT, data=payload, content_type="application/json")
-    assert rsp.status == '405 METHOD NOT ALLOWED'
+    assert rsp.status == '500 INTERNAL SERVER ERROR'
     rsp = client.post('/endpoint/bugzilla/' + TOKEN + '/' + PRODUCT + '/' + COMPONENT, data=payload, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
+    assert rsp.status == '404 NOT FOUND'
     rsp = client.post('/endpoint/bugzilla/' + TOKEN + '/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT, data=payload, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT, data=payload, content_type="application/json")
-    assert rsp.status == '405 METHOD NOT ALLOWED'
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
     assert rsp.status == '500 INTERNAL SERVER ERROR'
 
 
@@ -86,7 +80,7 @@ def test_bugzilla_wrongpass():
 
     payload = generate_alertname()
 
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
+    rsp = client.post('/endpoint/bugzilla/-/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
     assert rsp.status == '401 UNAUTHORIZED'
 
 
@@ -98,7 +92,7 @@ def test_bugzilla_nopass():
     assert rsp.status == '200 OK'
     rsp = client.post('/endpoint/bugzilla', data=payload, content_type="application/json")
     assert rsp.status == '500 INTERNAL SERVER ERROR'
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
+    rsp = client.post('/endpoint/bugzilla/-/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
     assert rsp.status == '500 INTERNAL SERVER ERROR'
 
 
@@ -115,7 +109,7 @@ def test_bugzilla_wrongtoken():
 def test_bugzilla_allparams_allurl():
     payload = generate_alertname()
 
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
+    rsp = client.post('/endpoint/bugzilla/-/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
     # This does not confirm that VERSION is used instead of loginsightwebhookdemo.bugzilla.VERSION
     # Handled in test_bugzilla_e2e
     assert rsp.status == '200 OK'
@@ -127,14 +121,6 @@ def test_bugzilla_notoken():
     rsp = client.post('/endpoint/bugzilla', data=payload, content_type="application/json")
     assert rsp.status == '200 OK'
 
-    payload = generate_alertname()
-
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT, data=payload, content_type="application/json")
-    assert rsp.status == '400 BAD REQUEST'
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT, data=payload, content_type="application/json")
-    assert rsp.status == '405 METHOD NOT ALLOWED'
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
-    assert rsp.status == '200 OK'
 
 # Generate a payload that can be re-used for the rest of the tests
 payload = generate_alertname()
@@ -149,7 +135,7 @@ def test_bugzilla_noverify():
 
 # Try to post with the same AlertName to ensure that update works as well
 def test_bugzilla_update():
-    rsp = client.post('/endpoint/bugzilla/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
+    rsp = client.post('/endpoint/bugzilla/' + TOKEN + '/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
     assert rsp.status == '200 OK'
 
 
