@@ -82,7 +82,7 @@ and vRealize Operations Manager are listed below.
 Log Insight webhook configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are two places in LI where webhooks can be configured:
+There are two places in Log Insight where webhooks can be configured:
 
 1. `System notification: under the General page in the Administration
    section`_
@@ -100,6 +100,15 @@ Developing and Contributing
 We’d love to get contributions from you! Once you are up and running,
 take a look at the `Contribution Document`_ to see how to get your
 changes merged in.
+
+Log Insight and vROps make outbound HTTP connections to your shim, with a JSON body containing alerts details.
+The shim is responsible for parsing the body and identifying key information relevant to its operation.
+The shim makes one or more upstream connections to some other service using a native library or raw HTTP, performing a needed task.
+
+At completion, the shim reports back an overall success or failure using the HTTP status code; :code:`200` is treated as success while all other results are treated as a failure.
+The response body, if any, is logged on failure to assist with diagnosis.
+Failure to establish a connection is treated the same as an :code:`HTTP/500`.
+Log Insight will retry a failing request several times, so each shim can simply let attempts fall on the floor without queueing or retry.
 
 Licensing
 ---------
