@@ -104,12 +104,13 @@ changes merged in.
 Licensing
 ---------
 
-See `LICENSE`_ file.
+Provided under Apache License 2.0.
+For more information, see the `LICENSE`_ file.
 
 Support
 -------
 
-Please open issues `HERE`_.
+Please report problems via `GitHub issues`_.
 
 .. _`Docker`: https://hub.docker.com/r/vmware/webhook-shims/
 .. _`Photon OS`: https://vmware.github.io/photon/
@@ -118,4 +119,4 @@ Please open issues `HERE`_.
 .. _`REST plugin: under Administration > Outbound Settings`: http://pubs.vmware.com/vrealizeoperationsmanager-64/topic/com.vmware.vcom.core.doc/GUID-2A26A734-CD91-43E0-BF42-B079D5B0F5D4.html
 .. _Contribution Document: https://github.com/vmw-loginsight/webhook-shims/blob/master/CONTRIBUTING.md
 .. _LICENSE: https://github.com/vmw-loginsight/webhook-shims/blob/master/LICENSE
-.. _HERE: https://github.com/vmw-loginsight/webhook-shims/issues
+.. _`GitHub Issues`: https://github.com/vmw-loginsight/webhook-shims/issues
