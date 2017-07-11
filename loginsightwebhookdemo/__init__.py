@@ -2,25 +2,18 @@
 
 """
 #Demo webhook shims for Log Insight and vRealize Operations Manager
-
 This is a demo shim, implemented using Flask, that accepts alert webhooks from:
-
 1) VMware vRealize Log Insight 3.3 or newer
-
 2) VMware vRealize Operations Manager 6.0 or newer (6.2 or newer recommended)
-
 You can invoke `runserver.py [<port>]` directly on your development machine or run the Flask app under any WSGI webserver.
 Don't run it on the Log Insight or vRealize Operations Manager virtual appliance, though.
 Some shims require manually setting variables within the shim, while others work via URLs. Only modify variables BEFORE the app.route section in each shim.
-
 As a demonstration, these shims are optimized for readability.
 There is minimal error handling and no attempt to retransmit.
 HTTP errors are passed back to the incoming system.
 THESE SHIMS COME WITH NO SUPPORT - USE AT YOUR OWN RISK.
 Please send feedback to https://github.com/vmw-loginsight/webhook-shims/issues or mailto:li-cord@vmware.com - pull requests welcome.
-
 Known issues: 1) vRealize Operations Manager returns an error when testing a rest plugin to this shim though the test does work (cosmetic issue)
-
 The following functions parse the webhook payload from the above products, translate and send it to other services.
 Note that `<ALERTID>` is sent as part of vRealize Operations Manager webhooks and should not be specified when configuring incoming webhooks.
 """
@@ -199,7 +192,7 @@ def parsevROps(payload, alert):
     return alert
 
 
-def callapi(url, method='post', payload=None, headers=None, auth=None, check=True):
+def callapi(url1, method='post', payload=None, headers=None, auth=None, check=True, url2=None):
     """
     Simple wrapper around `requests.post`, with excessive logging.
     Returns a Flask-friendly tuple on success or failure.
@@ -208,19 +201,42 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
     if not headers:
         headers = {'Content-type': 'application/json'}
     try:
-        logging.info("URL=%s" % url)
+        logging.info("URL1=%s" % url1)
+        logging.info("URL2=%s" % url2)
         logging.info("Headers=%s" % headers)
         logging.info("Body=%s" % payload)
         logging.info("Check=%s" % check)
-        if (auth is not None):
-            r = requests.request(method, url, auth=auth, headers=headers, data=payload, verify=bool(strtobool(str(check))))
+
+        if auth is not None:
+            r = requests.request(method, url1, auth=auth, headers=headers, data=payload, verify=bool(strtobool(str(check))))
         else:
-            r = requests.request(method, url, headers=headers, data=payload, verify=check)
+            r = requests.request(method, url1, headers=headers, data=payload, verify=check)
         if r.status_code >= 200 and r.status_code < 300:
-            if (payload is None):
+            if payload is None:
                 return r.text
             else:
                 return ("OK", r.status_code, None)
+    except requests.exceptions.ConnectionError as err:
+        if url2 is not None:
+            try:
+                logging.info("URL1=%s" % url1)
+                logging.info("URL2=%s" % url2)
+                logging.info("Headers=%s" % headers)
+                logging.info("Body=%s" % payload)
+                logging.info("Check=%s" % check)
+
+                if auth is not None:
+                    r = requests.request(method, url2, auth=auth, headers=headers, data=payload, verify=bool(strtobool(str(check))))
+                else:
+                    r = requests.request(method, url2, headers=headers, data=payload, verify=check)
+                if r.status_code >= 200 and r.status_code < 300:
+                    if payload is None:
+                        return r.text
+                    else:
+                        return ("OK", r.status_code, None)
+            except:
+                logging.exception("Can't create new payload. Check code and try again.")
+                raise
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise
@@ -253,16 +269,16 @@ def test(ALERTID=None):
 
 
 # Import individual shims
-import loginsightwebhookdemo.bugzilla
-import loginsightwebhookdemo.hipchat
-import loginsightwebhookdemo.jenkins
-import loginsightwebhookdemo.jira
-import loginsightwebhookdemo.opsgenie
-import loginsightwebhookdemo.pagerduty
-import loginsightwebhookdemo.pushbullet
-import loginsightwebhookdemo.servicenow
-import loginsightwebhookdemo.slack
-import loginsightwebhookdemo.socialcast
+#import loginsightwebhookdemo.bugzilla
+#import loginsightwebhookdemo.hipchat
+#import loginsightwebhookdemo.jenkins
+#import loginsightwebhookdemo.jira
+#import loginsightwebhookdemo.opsgenie
+#import loginsightwebhookdemo.pagerduty
+#import loginsightwebhookdemo.pushbullet
+#import loginsightwebhookdemo.servicenow
+#import loginsightwebhookdemo.slack
+#import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
 import loginsightwebhookdemo.vrealizeorchestrator
-import loginsightwebhookdemo.zendesk
+#import loginsightwebhookdemo.zendesk
