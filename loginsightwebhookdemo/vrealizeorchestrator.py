@@ -11,7 +11,10 @@ __version__ = "1.3"
 
 
 # vRealize Orchestrator server workflow hostname:port (default port is 8281)
-VROHOSTNAME = ''
+# If both hosts are configured the shim will try the second one in case the first
+# host throws a connection error
+VROHOSTNAME1 = '192.168.0.80:18281'
+VROHOSTNAME2 = '192.168.0.80:8281'
 
 ##########################################################################################
 # You can use the following methods for authentication
@@ -25,14 +28,14 @@ VROHOSTNAME = ''
 # If you intend to use an auth method other than .netrc, flip USENETRC to False
 ##########################################################################################
 
-USENETRC = True
-VROUSER = ''
-VROPASS = ''
+USENETRC = False
+VROUSER = 'r877753@comp01.local'
+VROPASS = 'VMware1!'
 VROTOKEN = ''
 VROHOK = ''
 # For some labs, using self-signed will result in error during request due to cert check
 # flip this flag to False to bypass certificate checking in those cases
-VERIFY = True
+VERIFY = False
 
 
 @app.route("/endpoint/vro/<WORKFLOWID>", methods=['POST'])
@@ -51,8 +54,8 @@ def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):
         return ("WORKFLOWID must be set in the URL (e.g. /endpoint/vro/<WORKFLOWID>", 500, None)
     if not re.match('[a-z0-9-]+', WORKFLOWID, flags=re.IGNORECASE):
         return ("WORKFLOWID must consist of alphanumeric and dash characters only", 500, None)
-    if not VROHOSTNAME:
-	return("VROHOSTNAME parameter is not net, please edit the shim!", 500, None)
+    if not VROHOSTNAME1 and not VROHOSTNAME2:
+	return("VROHOSTNAME1 and VROHOSTNAME2 parameters are not net, please edit the shim!", 500, None)
     if not USENETRC and (not VROUSER and not VROPASS and not VROTOKEN and not TOKEN and not VROHOK and not HOK):
         return ("VRO* authentication parameters must be set, please edit the shim!", 500, None)
 
@@ -128,4 +131,4 @@ def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):
                 }
             ]
         }
-    return callapi("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", 'post', json.dumps(payload), HEADERS, AUTH, VERIFY)
+    return callapi("https://" + VROHOSTNAME1 + "/vco/api/workflows/" + WORKFLOWID + "/executions", 'post', json.dumps(payload), HEADERS, AUTH, VERIFY,  "https://" + VROHOSTNAME2 + "/vco/api/workflows/" + WORKFLOWID + "/executions")
