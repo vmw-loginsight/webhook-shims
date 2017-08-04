@@ -16,17 +16,20 @@ KAFKA_USER=None
 KAFKA_PASSWORD=None
 KAFKA_SASL_MECHANISM=None # Change to 'SASL_PLAINTEXT' for basic plaintext authentication
 
-# Init Kafka producer
-#
-PRODUCER = KafkaProducer(
-    bootstrap_servers=KAFKA_BOOSTRAP_SERVERS,
-    sasl_mechanism=KAFKA_SASL_MECHANISM,
-    sasl_plain_username=KAFKA_USER,
-    sasl_plain_password=KAFKA_PASSWORD)
+PRODUCER = None
 
 @app.route("/endpoint/kafka/<TOPIC>", methods=['POST'])
 
 def kafka(TOPIC=None):
+    # Lazy init of the Kafka producer
+    #
+    global PRODUCER
+    if PRODUCER is None:
+        PRODUCER = KafkaProducer(
+            bootstrap_servers=KAFKA_BOOSTRAP_SERVERS,
+            sasl_mechanism=KAFKA_SASL_MECHANISM,
+            sasl_plain_username=KAFKA_USER,
+            sasl_plain_password=KAFKA_PASSWORD)
     try:
         future = PRODUCER.send(TOPIC, request.get_data())
         future.get(timeout=60)
