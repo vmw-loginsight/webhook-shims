@@ -19,8 +19,8 @@ ZENDESKTOKEN = '' # required if ZENDESKPASS is not specifed or TOKEN is not pass
 
 @app.route("/endpoint/zendesk", methods=['POST'])
 @app.route("/endpoint/zendesk/<EMAIL>/<TOKEN>", methods=['POST'])
-@app.route("/endpoint/zendesk/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/zendesk/<EMAIL>/<TOKEN>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/zendesk/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/zendesk/<EMAIL>/<TOKEN>/<ALERTID>", methods=['POST','PUT'])
 def zendesk(ALERTID=None, EMAIL=None, TOKEN=None):
     """
     Create a new incident for every incoming webhook that does not already have an open incident.

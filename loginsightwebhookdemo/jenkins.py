@@ -19,9 +19,9 @@ JENKINSTOKEN = ''
 
 # Route without <ALERTID> are for LI, with are for vROps
 @app.route("/endpoint/jenkins", methods=['POST'])
-@app.route("/endpoint/jenkins/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/jenkins/<ALERTID>", methods=['POST','PUT'])
 @app.route("/endpoint/jenkins/<JOBNAME>/<TOKEN>", methods=['POST'])
-@app.route("/endpoint/jenkins/<JOBNAME>/<TOKEN>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/jenkins/<JOBNAME>/<TOKEN>/<ALERTID>", methods=['POST','PUT'])
 def jenkins(ALERTID=None, JOBNAME=None, TOKEN=None):
     """
     If called, run a Jenkins job without parameters -- request results are discarded.

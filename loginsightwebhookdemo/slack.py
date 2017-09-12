@@ -32,13 +32,11 @@ def slack_fields(color, message):
 
 
 @app.route("/endpoint/slack", methods=['POST'])
-@app.route("/endpoint/slack/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/slack/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/slack/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/slack/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 @app.route("/endpoint/slack/<T>/<B>/<X>", methods=['POST'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>", methods=['PUT'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>", methods=['POST'])
-@app.route("/endpoint/slack/<T>/<B>/<X>/<int:NUMRESULTS>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>", methods=['POST','PUT'])
+@app.route("/endpoint/slack/<T>/<B>/<X>/<ALERTID>/<int:NUMRESULTS>", methods=['POST','PUT'])
 def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     """
     Consume messages, and send them to Slack as an Attachment object.
@@ -77,19 +75,6 @@ def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise
-    if 'Messages' in a and not a['Messages']: # If a test alert
-        slack_attachments.append({
-            "text": "This is a test webhook alert",
-            "color": "info",
-            "fallback": "This is a test webhook alert",
-            "fields": [
-                {
-                    "title": "Test",
-                    "value": "It works!"
-                }
-            ],
-            "pretext": "Hello from the webhook shim!"
-        })
 
     payload.update({
         "username": a['hookName'],

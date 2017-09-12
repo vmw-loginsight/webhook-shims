@@ -50,7 +50,9 @@ def test_parse_vROps60_test():
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
-    assert alert['moreinfo'] == alert['AlertName'] + ("\n\n") + alert['info']
+    assert alert['moreinfo'] == "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
+        ("Alert Name: ") + alert['AlertName'] + \
+        ("\nAlert Info: ") + alert['info']
 
 
 def test_parseLI_MQ():
@@ -116,7 +118,9 @@ def test_parseLI_test():
     assert alert['HasMoreResults'] == 'False'
     assert alert['NumHits'] == '0'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
-    assert alert['moreinfo'] == 'Hello World\n\nhello world 1'
+    assert alert['moreinfo'] == ("Hello from the webhook shim! This is a test webhook alert.\n\n") + \
+        ("Alert Name: ") + alert['AlertName'] + \
+        ("\nAlert Info: ") + alert['info']
 
 
 def test_parsevROps_LI():
@@ -140,7 +144,9 @@ def test_parsevROps60_test():
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
-    assert alert['moreinfo'] == alert['AlertName'] + ("\n\n") + alert['info']
+    assert alert['moreinfo'] == "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
+        ("Alert Name: ") + alert['AlertName'] + \
+        ("\nAlert Info: ") + alert['info']
 
 
 def test_parsevROps62_test():
@@ -159,7 +165,9 @@ def test_parsevROps62_test():
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
-    assert alert['moreinfo'] == alert['AlertName'] + ("\n\n") + alert['info']
+    assert alert['moreinfo'] == "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
+        ("Alert Name: ") + alert['AlertName'] + \
+        ("\nAlert Info: ") + alert['info']
 
 
 def test_parseLI_vrops():
@@ -219,5 +227,5 @@ def test_wrong_method():
 def test_test():
     rsp = conftest.client.post('/endpoint/test')
     assert rsp.status == '200 OK'
-    rsp = conftest.client.put('/endpoint/test/alertid')
+    rsp = conftest.client.post('/endpoint/test/alertid')
     assert rsp.status == '200 OK'

@@ -68,6 +68,9 @@ def parse(request):
     """
     try:
         payload = request.get_json()
+        if (payload is None):
+            logging.exception("Payload is empty, did you specify a Header in the request?")
+            raise
         alert = {}
         alert = parseLI(payload, alert)
         alert = parsevROps(payload, alert)
@@ -105,11 +108,18 @@ def parseLI(payload, alert):
         alert.update({"info": payload['messages'][0]['text']})
     else:
         alert.update({"info": ""})
-    alert.update({
-        "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'] + \
-            ("\n\nYou can view this alert by clicking: %s" % alert['url'] if alert['url'] else "") + \
-            ("\nYou can edit this alert by clicking: %s" % alert['editurl'] if alert['editurl'] else ""),
-    })
+    if ('Messages' in alert and not alert['Messages']): # If a test alert
+        alert.update({
+            "moreinfo": ("Hello from the webhook shim! This is a test webhook alert.\n\n") + \
+                    ("Alert Name: ") + alert['AlertName'] + \
+                    ("\nAlert Info: ") + alert['info'],
+        })
+    else:
+        alert.update({
+            "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'] + \
+                ("\n\nYou can view this alert by clicking: %s" % alert['url'] if alert['url'] else "") + \
+                ("\nYou can edit this alert by clicking: %s" % alert['editurl'] if alert['editurl'] else ""),
+        })
     if alert['HasMoreResults']:
         alert.update({
             "fields": [
@@ -141,7 +151,7 @@ def parsevROps(payload, alert):
         "Efficiency": payload['Efficiency']     if ('Efficiency' in payload) else "<None>",
         "Health": payload['Health']             if ('Health' in payload) else "<None>",
         "resourceName": payload['resourceName'] if ('resourceName' in payload) else "",
-        "adapterKind": payload['adapterKind']   if ('adapterKind' in payload) else ">",
+        "adapterKind": payload['adapterKind']   if ('adapterKind' in payload) else "",
         "icon": "http://blogs.vmware.com/management/files/2016/09/vrops-256.png",
         "Messages":"",
         "url":"",
@@ -164,9 +174,18 @@ def parsevROps(payload, alert):
             color = "gray"
     else:
         color = "red"
+    if (alert['adapterKind'] == 'sample-adapter-type'): # If a test alert
+        alert.update({
+            "moreinfo": "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
+                    ("Alert Name: ") + alert['AlertName'] + \
+                    ("\nAlert Info: ") + alert['info'],
+        })
+    else:
+        alert.update({
+            "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'],
+        })
     alert.update({
         "color": color,
-        "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'],
         "fields": [
             { "name": 'Health',         "content": str(alert['Health']), },
             { "name": 'Risk',           "content": str(alert['Risk']), },
@@ -226,7 +245,7 @@ def _introduction():
 
 
 @app.route("/endpoint/test", methods=['POST'])
-@app.route("/endpoint/test/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/test/<ALERTID>", methods=['POST'])
 def test(ALERTID=None):
     """Log the request and respond with success. Don't send the payload anywhere."""
     logging.info(request.get_data())
@@ -238,6 +257,7 @@ import loginsightwebhookdemo.bugzilla
 import loginsightwebhookdemo.hipchat
 import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.jira
+import loginsightwebhookdemo.kafkatopic
 import loginsightwebhookdemo.opsgenie
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
@@ -247,3 +267,4 @@ import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
 import loginsightwebhookdemo.vrealizeorchestrator
 import loginsightwebhookdemo.zendesk
+

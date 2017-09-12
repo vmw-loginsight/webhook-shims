@@ -18,9 +18,9 @@ PUSHBULLETTOKEN = ''
 
 
 @app.route("/endpoint/pushbullet", methods=['POST'])
-@app.route("/endpoint/pushbullet/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/pushbullet/<ALERTID>", methods=['POST','PUT'])
 @app.route("/endpoint/pushbullet/<TOKEN>", methods=['POST'])
-@app.route("/endpoint/pushbullet/<TOKEN>/<ALERTID>", methods=['PUT'])
+@app.route("/endpoint/pushbullet/<TOKEN>/<ALERTID>", methods=['POST','PUT'])
 def pushbullet(ALERTID=None, TOKEN=None):
     """
     Send a `link` notification to all devices on pushbullet with a link back to the alert's query.
