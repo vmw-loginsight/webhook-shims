@@ -15,11 +15,11 @@ __verion__ = "1.0"
 # the vROps parameters are required 
 
 # Parameters
-moogsoftURL = 'https://35.196.173.191:3284/'
+moogsoftURL = 'http://35.196.173.191:3284/'
 vropsURL = 'https://10.140.50.30/suite-api/'
 # Basic auth
 moogsoftUSER = 'jdias'
-moogsoftPASS = 'jdias'
+moogsoftPASS = 'password'
 vropsUser = 'admin'
 vropsPass = 'VMware1!'
 # Token auth
@@ -44,13 +44,14 @@ def recommendations(ALERTID=None):
     response = callapi(alertDescURL, method='get', payload=None, headers=headers, auth=auth, check=VERIFY)
 # Fetch recommendations from alert def
     recommendations = json.loads(response)
-    if ('recommendationPriorityMap' in recommendations):
-        for recommendation in recommendations['states']['recommendationPriorityMap']:
-            print("here")
-            if recommendations[recommendation] == 1:
-                return recommendations[recommendation].keys()
+    if recommendations['states'][0]['recommendationPriorityMap']:
+        for recommendation in recommendations['states'][0]['recommendationPriorityMap']:
+            if recommendations['states'][0]['recommendationPriorityMap'][recommendation] == 1:
+                alertDescURL = vropsURL+"api/recommendations/"+recommendation
+                response = callapi(alertDescURL, method='get', payload=None, headers=headers, auth=auth, check=VERIFY)
+                recText = json.loads(response)
+                return recText['description']
     else:
-        print("there")
         return
 
 # Route without <ALERTID> are for LI, with are for vROps
@@ -87,7 +88,7 @@ def moogsoft(ALERTID=None):
 # data not found in alert payload
 #######################################
 
-    custom_info = recommendations(a['alertId'])
+    recommendation = recommendations(a['alertId'])
 
     payload =      {
         "signature":a['adapterKind']+"::"+a['type']+"::"+a['subType'],
@@ -101,9 +102,9 @@ def moogsoft(ALERTID=None):
         "type":a['type']+"::"+a['subType'],
         "severity":sevMap[a['criticality']],
         "description":a['AlertName'],
-        "first_occurred":a['startDate'],
-        "agent_time":a['updateDate'],
-        "custom_info": [custom_info]
+        "first_occurred":a['startDate']/1000,
+        "agent_time":a['updateDate']/1000,
+        "recommendation": [recommendation]
     }
 
 
