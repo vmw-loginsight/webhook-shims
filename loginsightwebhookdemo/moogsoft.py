@@ -1,6 +1,21 @@
 #!/usr/bin/env python
 
 
+"""
+This shim only supports vROps payloads due to requirements for Moogsoft payload (resourceId, criticality/severity,
+and update status such as "closed" or "updated".  If alerting from Log Insight is required, it should be handled 
+through forwarding the query alert to vROps.
+
+The recommendations are not part of the alert payload so callbacks to vROps are made to retreive them and include 
+them in the payload for Moog.
+
+Moog expects a severity of 0 when an alert is cancelled. 
+
+Moog expects timestamp in seconds.
+
+See Moogsoft documentation for payload key descriptions and expected values.
+""" 
+
 from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
@@ -15,18 +30,17 @@ __verion__ = "1.0"
 # the vROps parameters are required 
 
 # Parameters
-moogsoftURL = 'http://35.196.173.191:3284/'
-vropsURL = 'https://10.140.50.30/suite-api/'
+moogsoftURL = ''
+vropsURL = ''
 # Basic auth
-moogsoftUSER = 'jdias'
-moogsoftPASS = 'password'
-vropsUser = 'admin'
-vropsPass = 'VMware1!'
-# Token auth
-moogsoftTOKEN = ''
+moogsoftUSER = ''
+moogsoftPASS = ''
+vropsUser = ''
+vropsPass = ''
+
 # For some labs, using self-signed will result in error during request due to cert check
-# flip this flag to False to bypass certificate checking in those cases
-VERIFY = False
+# flip this flag to False to bypass certificate checking in those cases NOT RECOMMENDED FOR PRODUCTION
+VERIFY = True
 
 ###########################################
 # Call backs for getting more information 
@@ -69,8 +83,9 @@ def moogsoft(ALERTID=None):
     Information about this shim.
     Requires moogsoft* parameters to be defined.
     """
-    if (not moogsoftURL or (not moogsoftUSER ) or (not moogsoftPASS)):
-        return ("moogsoft* parameters must be set, please edit the shim!", 500, None)
+    
+    if (not moogsoftURL or (not moogsoftUSER ) or (not moogsoftPASS) or (not vropsURL) or (not vropsUser) or (not vropsPass)):
+        return ("moogsoft* and vrops* parameters must be set, please edit the shim!", 500, None)
 
     a = parse(request)
 
@@ -83,31 +98,23 @@ def moogsoft(ALERTID=None):
         "ALERT_CRITICALITY_LEVEL_WARNING":3,
         "ALERT_CRITICALITY_LEVEL_INFO":2
     }
-#######################################
-#Example includes retrieving additional 
-# data not found in alert payload
-#######################################
 
     recommendation = recommendations(a['alertId'])
-
     payload =      {
-        "signature":a['adapterKind']+"::"+a['type']+"::"+a['subType'],
+        "signature":ALERTID,
         "source_id":a['resourceId'],
         "external_id":ALERTID,
         "manager":a['hookName'],
-        "source":a['resourceName'],
+        "source":a['resourceName'] if (a['resourceName'] != "") else "Not provided",
         "class":a['subType'],
         "agent":a['adapterKind'],
         "agent_location":"",
         "type":a['type']+"::"+a['subType'],
-        "severity":sevMap[a['criticality']],
+        "severity":sevMap[a['criticality']] if (a['status'] != 'CANCELED') else 0,
         "description":a['AlertName'],
-        "first_occurred":a['startDate']/1000,
         "agent_time":a['updateDate']/1000,
-        "recommendation": [recommendation]
+        "recommendation":recommendation
     }
-
-
 
     # Defaults to Content-type: application/json
     # If changed you must specify the content-type manually
@@ -115,6 +122,5 @@ def moogsoft(ALERTID=None):
     if not headers:
         headers = None
 
-    
-    print(json.dumps(payload))
+    print json.dumps(payload)
     return callapi(moogsoftURL, 'post', json.dumps(payload), headers, check=VERIFY)
