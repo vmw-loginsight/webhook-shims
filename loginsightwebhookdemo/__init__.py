@@ -257,6 +257,7 @@ import loginsightwebhookdemo.bugzilla
 import loginsightwebhookdemo.hipchat
 import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.jira
+import loginsightwebhookdemo.kafkatopic
 import loginsightwebhookdemo.opsgenie
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
@@ -266,3 +267,4 @@ import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
 import loginsightwebhookdemo.vrealizeorchestrator
 import loginsightwebhookdemo.zendesk
+
