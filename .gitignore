@@ -11,4 +11,4 @@ lib
 loginsightwebhookdemo.egg-info
 pip-selfcheck.json
 venv
-.vscode
+.vscode/*
