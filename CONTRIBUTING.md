@@ -38,7 +38,7 @@ To get started:
 virtualenv loginsightwebhookdemo
 cd loginsightwebhookdemo
 source bin/activate
-git clone pip https://github.com/vmware/loginsightwebhookdemo.git
+git clone https://github.com/vmw-loginsight/webhook-shims.git
 cd loginsightwebhookdemo/
 pip install -r test-requirements.txt
 tox
