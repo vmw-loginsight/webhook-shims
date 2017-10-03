@@ -234,14 +234,13 @@ def callapi(url1, method='post', payload=None, headers=None, auth=None, check=Tr
                         return r.text
                     else:
                         return ("OK", r.status_code, None)
+                return ("%s" % r.text, r.status_code, None)
             except:
                 logging.exception("Can't create new payload. Check code and try again.")
                 raise
     except:
         logging.exception("Can't create new payload. Check code and try again.")
         raise
-    return ("%s" % r.text, r.status_code, None)
-
 
 @app.route("/")
 def _introduction():
