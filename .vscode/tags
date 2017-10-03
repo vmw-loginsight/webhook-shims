@@ -1780,6 +1780,7 @@ UserDict	../venv-webhookshims/lib64/python2.7/os.py	/^    import UserDict$/;"	ki
 UserDict.py	../venv-webhookshims/lib/python2.7/UserDict.py	1;"	kind:file	line:1
 UserDict.py	../venv-webhookshims/lib64/python2.7/UserDict.py	1;"	kind:file	line:1
 VERIFY	../loginsightwebhookdemo/bugzilla.py	/^VERIFY = True$/;"	kind:variable	line:25
+VERIFY	../loginsightwebhookdemo/moogsoft.py	/^VERIFY = False$/;"	kind:variable	line:43
 VERIFY	../loginsightwebhookdemo/vrealizeorchestrator.py	/^VERIFY = True$/;"	kind:variable	line:35
 VERSION	../tests/bugzilla_test.py	/^VERSION = 'unspecified'$/;"	kind:variable	line:28
 VROHOK	../loginsightwebhookdemo/vrealizeorchestrator.py	/^VROHOK = ''$/;"	kind:variable	line:32
@@ -1893,7 +1894,7 @@ __author__	../loginsightwebhookdemo/hipchat.py	/^__author__ = "Steve Flanders"$/
 __author__	../loginsightwebhookdemo/jenkins.py	/^__author__ = "Steve Flanders"$/;"	kind:variable	line:8
 __author__	../loginsightwebhookdemo/jira.py	/^__author__ = "Steve Flanders"$/;"	kind:variable	line:8
 __author__	../loginsightwebhookdemo/kafkatopic.py	/^__author__ = "Pontus Rydin"$/;"	kind:variable	line:9
-__author__	../loginsightwebhookdemo/moogsoft.py	/^__author__ = "John Dias"$/;"	kind:variable	line:9
+__author__	../loginsightwebhookdemo/moogsoft.py	/^__author__ = "John Dias"$/;"	kind:variable	line:24
 __author__	../loginsightwebhookdemo/opsgenie.py	/^__author__ = "Steve Flanders"$/;"	kind:variable	line:8
 __author__	../loginsightwebhookdemo/pagerduty.py	/^__author__ = "Steve Flanders"$/;"	kind:variable	line:8
 __author__	../loginsightwebhookdemo/pushbullet.py	/^__author__ = "Adith Sudhakar"$/;"	kind:variable	line:8
@@ -2175,7 +2176,7 @@ __license__	../loginsightwebhookdemo/hipchat.py	/^__license__ = "Apache v2"$/;"	
 __license__	../loginsightwebhookdemo/jenkins.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:9
 __license__	../loginsightwebhookdemo/jira.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:9
 __license__	../loginsightwebhookdemo/kafkatopic.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:10
-__license__	../loginsightwebhookdemo/moogsoft.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:10
+__license__	../loginsightwebhookdemo/moogsoft.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:25
 __license__	../loginsightwebhookdemo/opsgenie.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:9
 __license__	../loginsightwebhookdemo/pagerduty.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:9
 __license__	../loginsightwebhookdemo/pushbullet.py	/^__license__ = "Apache v2"$/;"	kind:variable	line:9
@@ -2280,7 +2281,7 @@ __subclasshook__	../venv-webhookshims/lib64/python2.7/_abcoll.py	/^    def __sub
 __verion__	../loginsightwebhookdemo/bugzilla.py	/^__verion__ = "1.1"$/;"	kind:variable	line:11
 __verion__	../loginsightwebhookdemo/jenkins.py	/^__verion__ = "1.0"$/;"	kind:variable	line:10
 __verion__	../loginsightwebhookdemo/jira.py	/^__verion__ = "1.1"$/;"	kind:variable	line:10
-__verion__	../loginsightwebhookdemo/moogsoft.py	/^__verion__ = "1.0"$/;"	kind:variable	line:11
+__verion__	../loginsightwebhookdemo/moogsoft.py	/^__verion__ = "1.0"$/;"	kind:variable	line:26
 __verion__	../loginsightwebhookdemo/pushbullet.py	/^__verion__ = "1.1"$/;"	kind:variable	line:10
 __verion__	../loginsightwebhookdemo/servicenow.py	/^__verion__ = "1.1"$/;"	kind:variable	line:10
 __verion__	../loginsightwebhookdemo/template.py	/^__verion__ = "1.0"$/;"	kind:variable	line:21
@@ -2483,7 +2484,7 @@ _init_categories	../venv-webhookshims/lib/python2.7/locale.py	/^    def _init_ca
 _init_categories	../venv-webhookshims/lib64/python2.7/locale.py	/^    def _init_categories(categories=categories):$/;"	kind:function	line:1815
 _init_pathinfo	../venv-webhookshims/lib/python2.7/site.py	/^def _init_pathinfo():$/;"	kind:function	line:143
 _init_pathinfo	../venv-webhookshims/lib64/python2.7/site.py	/^def _init_pathinfo():$/;"	kind:function	line:143
-_introduction	../loginsightwebhookdemo/__init__.py	/^def _introduction():$/;"	kind:function	line:231
+_introduction	../loginsightwebhookdemo/__init__.py	/^def _introduction():$/;"	kind:function	line:236
 _inverted_registry	../venv-webhookshims/lib/python2.7/copy_reg.py	/^_inverted_registry = {}                 # code -> key$/;"	kind:variable	line:152
 _inverted_registry	../venv-webhookshims/lib64/python2.7/copy_reg.py	/^_inverted_registry = {}                 # code -> key$/;"	kind:variable	line:152
 _is_64bit	../venv-webhookshims/lib/python2.7/site.py	/^_is_64bit = (getattr(sys, 'maxsize', None) or getattr(sys, 'maxint')) > 2**32$/;"	kind:variable	line:86
@@ -2657,7 +2658,7 @@ app	../loginsightwebhookdemo/hipchat.py	/^from loginsightwebhookdemo import app,
 app	../loginsightwebhookdemo/jenkins.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 app	../loginsightwebhookdemo/jira.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 app	../loginsightwebhookdemo/kafkatopic.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
-app	../loginsightwebhookdemo/moogsoft.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:4
+app	../loginsightwebhookdemo/moogsoft.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:19
 app	../loginsightwebhookdemo/opsgenie.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 app	../loginsightwebhookdemo/pagerduty.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 app	../loginsightwebhookdemo/pushbullet.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
@@ -2712,7 +2713,7 @@ binascii	../venv-webhookshims/lib/python2.7/encodings/hex_codec.py	/^import code
 binascii	../venv-webhookshims/lib/python2.7/encodings/uu_codec.py	/^import codecs, binascii$/;"	kind:namespace	line:11
 binascii	../venv-webhookshims/lib64/python2.7/encodings/hex_codec.py	/^import codecs, binascii$/;"	kind:namespace	line:9
 binascii	../venv-webhookshims/lib64/python2.7/encodings/uu_codec.py	/^import codecs, binascii$/;"	kind:namespace	line:11
-bugzilla	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.bugzilla$/;"	kind:namespace	line:256
+bugzilla	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.bugzilla$/;"	kind:namespace	line:261
 bugzilla	../loginsightwebhookdemo/bugzilla.py	/^def bugzilla(ALERTID=None, TOKEN=None, PRODUCT=None, COMPONENT=None, VERSION=None):$/;"	kind:function	line:34
 bugzilla	../tests/bugzilla_test.py	/^import loginsightwebhookdemo.bugzilla$/;"	kind:namespace	line:8
 bugzilla.py	../loginsightwebhookdemo/bugzilla.py	1;"	kind:file	line:1
@@ -2737,13 +2738,13 @@ bz2_encode	../venv-webhookshims/lib/python2.7/encodings/bz2_codec.py	/^def bz2_e
 bz2_encode	../venv-webhookshims/lib64/python2.7/encodings/bz2_codec.py	/^def bz2_encode(input,errors='strict'):$/;"	kind:function	line:15
 cache	../venv-webhookshims/lib/python2.7/linecache.py	/^cache = {} # The cache$/;"	kind:variable	line:23
 cache	../venv-webhookshims/lib64/python2.7/linecache.py	/^cache = {} # The cache$/;"	kind:variable	line:23
-callapi	../loginsightwebhookdemo/__init__.py	/^def callapi(url, method='post', payload=None, headers=None, auth=None, check=True):$/;"	kind:function	line:202
+callapi	../loginsightwebhookdemo/__init__.py	/^def callapi(url, method='post', payload=None, headers=None, auth=None, check=True):$/;"	kind:function	line:207
 callapi	../loginsightwebhookdemo/bugzilla.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:4
 callapi	../loginsightwebhookdemo/hipchat.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:9
 callapi	../loginsightwebhookdemo/jenkins.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 callapi	../loginsightwebhookdemo/jira.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 callapi	../loginsightwebhookdemo/kafkatopic.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
-callapi	../loginsightwebhookdemo/moogsoft.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:4
+callapi	../loginsightwebhookdemo/moogsoft.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:19
 callapi	../loginsightwebhookdemo/opsgenie.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 callapi	../loginsightwebhookdemo/pagerduty.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 callapi	../loginsightwebhookdemo/pushbullet.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
@@ -4717,6 +4718,7 @@ extsep	../venv-webhookshims/lib64/python2.7/os.py	/^from os.path import (curdir,
 extsep	../venv-webhookshims/lib64/python2.7/posixpath.py	/^extsep = '.'$/;"	kind:variable	line:39
 f	../venv-webhookshims/lib/python2.7/sre_constants.py	/^    f = open("sre_constants.h", "w")$/;"	kind:variable	line:223
 f	../venv-webhookshims/lib64/python2.7/sre_constants.py	/^    f = open("sre_constants.h", "w")$/;"	kind:variable	line:223
+fetchResourceProperties	../loginsightwebhookdemo/moogsoft.py	/^def fetchResourceProperties(resourceId=None):$/;"	kind:function	line:71
 file_encoding	../venv-webhookshims/lib/python2.7/codecs.py	/^    file_encoding = 'unknown'$/;"	kind:variable	line:744
 file_encoding	../venv-webhookshims/lib64/python2.7/codecs.py	/^    file_encoding = 'unknown'$/;"	kind:variable	line:744
 filter	../venv-webhookshims/lib/python2.7/fnmatch.py	/^def filter(names, pat):$/;"	kind:function	line:45
@@ -5096,7 +5098,7 @@ hex_decode	../venv-webhookshims/lib/python2.7/encodings/hex_codec.py	/^def hex_d
 hex_decode	../venv-webhookshims/lib64/python2.7/encodings/hex_codec.py	/^def hex_decode(input,errors='strict'):$/;"	kind:function	line:27
 hex_encode	../venv-webhookshims/lib/python2.7/encodings/hex_codec.py	/^def hex_encode(input,errors='strict'):$/;"	kind:function	line:13
 hex_encode	../venv-webhookshims/lib64/python2.7/encodings/hex_codec.py	/^def hex_encode(input,errors='strict'):$/;"	kind:function	line:13
-hipchat	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.hipchat$/;"	kind:namespace	line:257
+hipchat	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.hipchat$/;"	kind:namespace	line:262
 hipchat	../loginsightwebhookdemo/hipchat.py	/^def hipchat(NUMRESULTS=1, ALERTID=None, TEAM=None, ROOMNUM=None, AUTHTOKEN=None):$/;"	kind:function	line:30
 hipchat	../tests/hipchat_test.py	/^import loginsightwebhookdemo.hipchat$/;"	kind:namespace	line:6
 hipchat.py	../loginsightwebhookdemo/hipchat.py	1;"	kind:file	line:1
@@ -5242,10 +5244,10 @@ itervalues	../venv-webhookshims/lib/python2.7/_abcoll.py	/^    def itervalues(se
 itervalues	../venv-webhookshims/lib64/python2.7/UserDict.py	/^    def itervalues(self): return self.data.itervalues()$/;"	kind:member	line:43
 itervalues	../venv-webhookshims/lib64/python2.7/UserDict.py	/^    def itervalues(self):$/;"	kind:member	line:116
 itervalues	../venv-webhookshims/lib64/python2.7/_abcoll.py	/^    def itervalues(self):$/;"	kind:member	line:379
-jenkins	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jenkins$/;"	kind:namespace	line:258
+jenkins	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jenkins$/;"	kind:namespace	line:263
 jenkins	../loginsightwebhookdemo/jenkins.py	/^def jenkins(ALERTID=None, JOBNAME=None, TOKEN=None):$/;"	kind:function	line:25
 jenkins.py	../loginsightwebhookdemo/jenkins.py	1;"	kind:file	line:1
-jira	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jira$/;"	kind:namespace	line:259
+jira	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jira$/;"	kind:namespace	line:264
 jira	../loginsightwebhookdemo/jira.py	/^def jira(ALERTID=None, PROJECT=None, ISSUETYPE='Bug'):$/;"	kind:function	line:23
 jira	../tests/jira_test.py	/^import loginsightwebhookdemo.jira$/;"	kind:namespace	line:7
 jira.py	../loginsightwebhookdemo/jira.py	1;"	kind:file	line:1
@@ -5264,7 +5266,7 @@ json	../loginsightwebhookdemo/hipchat.py	/^from flask import request, json$/;"	k
 json	../loginsightwebhookdemo/jenkins.py	/^from flask import request, json$/;"	kind:namespace	line:4
 json	../loginsightwebhookdemo/jira.py	/^from flask import request, json$/;"	kind:namespace	line:4
 json	../loginsightwebhookdemo/kafkatopic.py	/^from flask import request, json$/;"	kind:namespace	line:4
-json	../loginsightwebhookdemo/moogsoft.py	/^from flask import request, json$/;"	kind:namespace	line:5
+json	../loginsightwebhookdemo/moogsoft.py	/^from flask import request, json$/;"	kind:namespace	line:20
 json	../loginsightwebhookdemo/opsgenie.py	/^from flask import request, json$/;"	kind:namespace	line:4
 json	../loginsightwebhookdemo/pagerduty.py	/^from flask import request, json$/;"	kind:namespace	line:4
 json	../loginsightwebhookdemo/pushbullet.py	/^from flask import request, json$/;"	kind:namespace	line:4
@@ -5279,7 +5281,7 @@ json	../tests/conftest.py	/^import json$/;"	kind:namespace	line:4
 json	../tests/init_test.py	/^import json$/;"	kind:namespace	line:3
 json	../tests/servicenow_test.py	/^import json$/;"	kind:namespace	line:4
 kafka	../loginsightwebhookdemo/kafkatopic.py	/^def kafka(TOPIC=None):$/;"	kind:function	line:23
-kafkatopic	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.kafkatopic$/;"	kind:namespace	line:260
+kafkatopic	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.kafkatopic$/;"	kind:namespace	line:265
 kafkatopic.py	../loginsightwebhookdemo/kafkatopic.py	1;"	kind:file	line:1
 keys	../venv-webhookshims/lib/python2.7/UserDict.py	/^    def keys(self): return self.data.keys()$/;"	kind:member	line:39
 keys	../venv-webhookshims/lib/python2.7/_abcoll.py	/^    def keys(self):$/;"	kind:member	line:389
@@ -5332,7 +5334,7 @@ logging	../loginsightwebhookdemo/hipchat.py	/^import logging$/;"	kind:namespace	
 logging	../loginsightwebhookdemo/jenkins.py	/^import logging$/;"	kind:namespace	line:5
 logging	../loginsightwebhookdemo/jira.py	/^import logging$/;"	kind:namespace	line:5
 logging	../loginsightwebhookdemo/kafkatopic.py	/^import logging$/;"	kind:namespace	line:5
-logging	../loginsightwebhookdemo/moogsoft.py	/^import logging$/;"	kind:namespace	line:6
+logging	../loginsightwebhookdemo/moogsoft.py	/^import logging$/;"	kind:namespace	line:21
 logging	../loginsightwebhookdemo/opsgenie.py	/^import logging$/;"	kind:namespace	line:5
 logging	../loginsightwebhookdemo/pagerduty.py	/^import logging$/;"	kind:namespace	line:5
 logging	../loginsightwebhookdemo/pushbullet.py	/^import logging$/;"	kind:namespace	line:5
@@ -5342,20 +5344,20 @@ logging	../loginsightwebhookdemo/socialcast.py	/^import logging$/;"	kind:namespa
 logging	../loginsightwebhookdemo/template.py	/^import logging$/;"	kind:namespace	line:16
 logging	../loginsightwebhookdemo/zendesk.py	/^import logging$/;"	kind:namespace	line:5
 logging	../runserver.py	/^import logging$/;"	kind:namespace	line:11
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.bugzilla$/;"	kind:namespace	line:256
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.hipchat$/;"	kind:namespace	line:257
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jenkins$/;"	kind:namespace	line:258
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jira$/;"	kind:namespace	line:259
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.kafkatopic$/;"	kind:namespace	line:260
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.moogsoft$/;"	kind:namespace	line:270
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.opsgenie$/;"	kind:namespace	line:261
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pagerduty$/;"	kind:namespace	line:262
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pushbullet$/;"	kind:namespace	line:263
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.servicenow$/;"	kind:namespace	line:264
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.slack$/;"	kind:namespace	line:265
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.socialcast$/;"	kind:namespace	line:266
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.vrealizeorchestrator$/;"	kind:namespace	line:268
-loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.zendesk$/;"	kind:namespace	line:269
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.bugzilla$/;"	kind:namespace	line:261
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.hipchat$/;"	kind:namespace	line:262
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jenkins$/;"	kind:namespace	line:263
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.jira$/;"	kind:namespace	line:264
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.kafkatopic$/;"	kind:namespace	line:265
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.moogsoft$/;"	kind:namespace	line:275
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.opsgenie$/;"	kind:namespace	line:266
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pagerduty$/;"	kind:namespace	line:267
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pushbullet$/;"	kind:namespace	line:268
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.servicenow$/;"	kind:namespace	line:269
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.slack$/;"	kind:namespace	line:270
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.socialcast$/;"	kind:namespace	line:271
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.vrealizeorchestrator$/;"	kind:namespace	line:273
+loginsightwebhookdemo	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.zendesk$/;"	kind:namespace	line:274
 loginsightwebhookdemo	../tests/bugzilla_test.py	/^import loginsightwebhookdemo$/;"	kind:namespace	line:7
 loginsightwebhookdemo	../tests/bugzilla_test.py	/^import loginsightwebhookdemo.bugzilla$/;"	kind:namespace	line:8
 loginsightwebhookdemo	../tests/conftest.py	/^import loginsightwebhookdemo$/;"	kind:namespace	line:6
@@ -5476,10 +5478,12 @@ module	../venv-webhookshims/lib/python2.7/encodings/zlib_codec.py	/^import zlib 
 module	../venv-webhookshims/lib64/python2.7/distutils/__init__.py	/^import opcode # opcode is not a virtualenv module, so we can use it to find the stdlib$/;"	kind:namespace	line:5
 module	../venv-webhookshims/lib64/python2.7/encodings/bz2_codec.py	/^import bz2 # this codec needs the optional bz2 module !$/;"	kind:namespace	line:11
 module	../venv-webhookshims/lib64/python2.7/encodings/zlib_codec.py	/^import zlib # this codec needs the optional zlib module !$/;"	kind:namespace	line:10
-moogsoft	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.moogsoft$/;"	kind:namespace	line:270
-moogsoft	../loginsightwebhookdemo/moogsoft.py	/^def moogsoft(ALERTID=None, TOKEN=None, EMAIL=None):$/;"	kind:function	line:30
+moogsoft	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.moogsoft$/;"	kind:namespace	line:275
+moogsoft	../loginsightwebhookdemo/moogsoft.py	/^def moogsoft(ALERTID=None):$/;"	kind:function	line:97
 moogsoft.py	../loginsightwebhookdemo/moogsoft.py	1;"	kind:file	line:1
-moogsoftURL	../loginsightwebhookdemo/moogsoft.py	/^moogsoftURL = ''$/;"	kind:variable	line:15
+moogsoftPASS	../loginsightwebhookdemo/moogsoft.py	/^moogsoftPASS = 'vrops'$/;"	kind:variable	line:37
+moogsoftURL	../loginsightwebhookdemo/moogsoft.py	/^moogsoftURL = 'http:\/\/18.220.211.164:8888'$/;"	kind:variable	line:33
+moogsoftUSER	../loginsightwebhookdemo/moogsoft.py	/^moogsoftUSER = 'jdias'$/;"	kind:variable	line:36
 name	../setup.py	/^    name='loginsightwebhookdemo',$/;"	kind:variable	line:72
 name	../venv-webhookshims/lib/python2.7/os.py	/^    name = 'ce'$/;"	kind:variable	line:88
 name	../venv-webhookshims/lib/python2.7/os.py	/^    name = 'nt'$/;"	kind:variable	line:56
@@ -5547,7 +5551,7 @@ opengroup	../venv-webhookshims/lib/python2.7/sre_parse.py	/^    def opengroup(se
 opengroup	../venv-webhookshims/lib64/python2.7/sre_parse.py	/^    def opengroup(self, name=None):$/;"	kind:member	line:73
 operator	../venv-webhookshims/lib/python2.7/locale.py	/^import operator$/;"	kind:namespace	line:18
 operator	../venv-webhookshims/lib64/python2.7/locale.py	/^import operator$/;"	kind:namespace	line:18
-opsgenie	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.opsgenie$/;"	kind:namespace	line:261
+opsgenie	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.opsgenie$/;"	kind:namespace	line:266
 opsgenie	../loginsightwebhookdemo/opsgenie.py	/^def opsgenie(APIKEY=None, TEAM=None, ALERTID=None):$/;"	kind:function	line:21
 opsgenie.py	../loginsightwebhookdemo/opsgenie.py	1;"	kind:file	line:1
 opt_flags	../venv-webhookshims/bin/python-config	/^opt_flags = [flag for (flag, val) in opts]$/;"	kind:variable	line:33
@@ -5580,7 +5584,7 @@ os.py	../venv-webhookshims/lib64/python2.7/os.py	1;"	kind:file	line:1
 os2	../venv-webhookshims/lib/python2.7/os.py	/^    import os2$/;"	kind:namespace	line:83
 os2	../venv-webhookshims/lib64/python2.7/os.py	/^    import os2$/;"	kind:namespace	line:83
 packages	../setup.py	/^    packages=find_packages(),$/;"	kind:variable	line:82
-pagerduty	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pagerduty$/;"	kind:namespace	line:262
+pagerduty	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pagerduty$/;"	kind:namespace	line:267
 pagerduty	../loginsightwebhookdemo/pagerduty.py	/^def pagerduty(SERVICEKEY=None, ALERTID=None):$/;"	kind:function	line:19
 pagerduty	../tests/pagerduty_test.py	/^import loginsightwebhookdemo.pagerduty$/;"	kind:namespace	line:6
 pagerduty.py	../loginsightwebhookdemo/pagerduty.py	1;"	kind:file	line:1
@@ -5599,7 +5603,7 @@ parse	../loginsightwebhookdemo/hipchat.py	/^from loginsightwebhookdemo import ap
 parse	../loginsightwebhookdemo/jenkins.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 parse	../loginsightwebhookdemo/jira.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 parse	../loginsightwebhookdemo/kafkatopic.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
-parse	../loginsightwebhookdemo/moogsoft.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:4
+parse	../loginsightwebhookdemo/moogsoft.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:19
 parse	../loginsightwebhookdemo/opsgenie.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 parse	../loginsightwebhookdemo/pagerduty.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
 parse	../loginsightwebhookdemo/pushbullet.py	/^from loginsightwebhookdemo import app, parse, callapi$/;"	kind:namespace	line:3
@@ -5696,7 +5700,7 @@ punycode_encode	../venv-webhookshims/lib/python2.7/encodings/punycode.py	/^def p
 punycode_encode	../venv-webhookshims/lib64/python2.7/encodings/punycode.py	/^def punycode_encode(text):$/;"	kind:function	line:119
 purge	../venv-webhookshims/lib/python2.7/re.py	/^def purge():$/;"	kind:function	line:192
 purge	../venv-webhookshims/lib64/python2.7/re.py	/^def purge():$/;"	kind:function	line:192
-pushbullet	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pushbullet$/;"	kind:namespace	line:263
+pushbullet	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.pushbullet$/;"	kind:namespace	line:268
 pushbullet	../loginsightwebhookdemo/pushbullet.py	/^def pushbullet(ALERTID=None, TOKEN=None):$/;"	kind:function	line:24
 pushbullet.py	../loginsightwebhookdemo/pushbullet.py	1;"	kind:file	line:1
 pwd	../venv-webhookshims/lib/python2.7/posixpath.py	/^            import pwd$/;"	kind:namespace	line:268
@@ -5775,6 +5779,7 @@ realpath	../venv-webhookshims/lib/python2.7/ntpath.py	/^realpath = abspath$/;"	k
 realpath	../venv-webhookshims/lib/python2.7/posixpath.py	/^def realpath(filename):$/;"	kind:function	line:364
 realpath	../venv-webhookshims/lib64/python2.7/ntpath.py	/^realpath = abspath$/;"	kind:variable	line:481
 realpath	../venv-webhookshims/lib64/python2.7/posixpath.py	/^def realpath(filename):$/;"	kind:function	line:364
+recommendations	../loginsightwebhookdemo/moogsoft.py	/^def recommendations(ALERTID=None):$/;"	kind:function	line:50
 ref	../venv-webhookshims/lib/python2.7/_weakrefset.py	/^from _weakref import ref$/;"	kind:namespace	line:5
 ref	../venv-webhookshims/lib64/python2.7/_weakrefset.py	/^from _weakref import ref$/;"	kind:namespace	line:5
 register	../venv-webhookshims/lib/python2.7/abc.py	/^    def register(cls, subclass):$/;"	kind:member	line:105
@@ -5808,7 +5813,7 @@ request	../loginsightwebhookdemo/hipchat.py	/^from flask import request, json$/;
 request	../loginsightwebhookdemo/jenkins.py	/^from flask import request, json$/;"	kind:namespace	line:4
 request	../loginsightwebhookdemo/jira.py	/^from flask import request, json$/;"	kind:namespace	line:4
 request	../loginsightwebhookdemo/kafkatopic.py	/^from flask import request, json$/;"	kind:namespace	line:4
-request	../loginsightwebhookdemo/moogsoft.py	/^from flask import request, json$/;"	kind:namespace	line:5
+request	../loginsightwebhookdemo/moogsoft.py	/^from flask import request, json$/;"	kind:namespace	line:20
 request	../loginsightwebhookdemo/opsgenie.py	/^from flask import request, json$/;"	kind:namespace	line:4
 request	../loginsightwebhookdemo/pagerduty.py	/^from flask import request, json$/;"	kind:namespace	line:4
 request	../loginsightwebhookdemo/pushbullet.py	/^from flask import request, json$/;"	kind:namespace	line:4
@@ -5915,7 +5920,7 @@ sep	../venv-webhookshims/lib/python2.7/posixpath.py	/^sep = '\/'$/;"	kind:variab
 sep	../venv-webhookshims/lib64/python2.7/ntpath.py	/^sep = '\\\\'$/;"	kind:variable	line:27
 sep	../venv-webhookshims/lib64/python2.7/os.py	/^from os.path import (curdir, pardir, sep, pathsep, defpath, extsep, altsep,$/;"	kind:namespace	line:120
 sep	../venv-webhookshims/lib64/python2.7/posixpath.py	/^sep = '\/'$/;"	kind:variable	line:40
-servicenow	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.servicenow$/;"	kind:namespace	line:264
+servicenow	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.servicenow$/;"	kind:namespace	line:269
 servicenow	../loginsightwebhookdemo/servicenow.py	/^def servicenow(ALERTID=None):$/;"	kind:function	line:21
 servicenow	../tests/servicenow_test.py	/^import loginsightwebhookdemo.servicenow$/;"	kind:namespace	line:7
 servicenow.py	../loginsightwebhookdemo/servicenow.py	1;"	kind:file	line:1
@@ -5983,7 +5988,7 @@ site_packages	../venv-webhookshims/bin/activate_this.py	/^    site_packages = os
 site_packages	../venv-webhookshims/bin/activate_this.py	/^    site_packages = os.path.join(base, 'lib', 'python%s' % sys.version[:3], 'site-packages')$/;"	kind:variable	line:22
 sitecustomize	../venv-webhookshims/lib/python2.7/site.py	/^        import sitecustomize$/;"	kind:namespace	line:548
 sitecustomize	../venv-webhookshims/lib64/python2.7/site.py	/^        import sitecustomize$/;"	kind:namespace	line:548
-slack	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.slack$/;"	kind:namespace	line:265
+slack	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.slack$/;"	kind:namespace	line:270
 slack	../loginsightwebhookdemo/slack.py	/^def slack(NUMRESULTS=10, ALERTID=None, T=None, B=None, X=None):$/;"	kind:function	line:40
 slack	../tests/slack_test.py	/^import loginsightwebhookdemo.slack$/;"	kind:namespace	line:6
 slack.py	../loginsightwebhookdemo/slack.py	1;"	kind:file	line:1
@@ -5991,7 +5996,7 @@ slack_fields	../loginsightwebhookdemo/slack.py	/^def slack_fields(color, message
 slack_test.py	../tests/slack_test.py	1;"	kind:file	line:1
 so	../venv-webhookshims/lib/python2.7/distutils/__init__.py	/^import opcode # opcode is not a virtualenv module, so we can use it to find the stdlib$/;"	kind:namespace	line:5
 so	../venv-webhookshims/lib64/python2.7/distutils/__init__.py	/^import opcode # opcode is not a virtualenv module, so we can use it to find the stdlib$/;"	kind:namespace	line:5
-socialcast	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.socialcast$/;"	kind:namespace	line:266
+socialcast	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.socialcast$/;"	kind:namespace	line:271
 socialcast	../loginsightwebhookdemo/socialcast.py	/^def socialcast(ALERTID=None, NUMRESULTS=10, TEAM=None, I=None, X=None):$/;"	kind:function	line:23
 socialcast.py	../loginsightwebhookdemo/socialcast.py	1;"	kind:file	line:1
 spawnl	../venv-webhookshims/lib/python2.7/os.py	/^    def spawnl(mode, file, *args):$/;"	kind:function	line:601
@@ -6148,7 +6153,7 @@ template	../loginsightwebhookdemo/template.py	/^def template(ALERTID=None, TOKEN
 template	../venv-webhookshims/lib/python2.7/re.py	/^def template(pattern, flags=0):$/;"	kind:function	line:197
 template	../venv-webhookshims/lib64/python2.7/re.py	/^def template(pattern, flags=0):$/;"	kind:function	line:197
 template.py	../loginsightwebhookdemo/template.py	1;"	kind:file	line:1
-test	../loginsightwebhookdemo/__init__.py	/^def test(ALERTID=None):$/;"	kind:function	line:249
+test	../loginsightwebhookdemo/__init__.py	/^def test(ALERTID=None):$/;"	kind:function	line:254
 test_bugzilla_allparams_allurl	../tests/bugzilla_test.py	/^def test_bugzilla_allparams_allurl():$/;"	kind:function	line:109
 test_bugzilla_e2e	../tests/bugzilla_test.py	/^def test_bugzilla_e2e():$/;"	kind:function	line:144
 test_bugzilla_noparams	../tests/bugzilla_test.py	/^def test_bugzilla_noparams():$/;"	kind:function	line:39
@@ -6285,11 +6290,14 @@ virtual_install_main_packages	../venv-webhookshims/lib/python2.7/site.py	/^def v
 virtual_install_main_packages	../venv-webhookshims/lib64/python2.7/site.py	/^def virtual_install_main_packages():$/;"	kind:function	line:552
 virtualenv	../venv-webhookshims/lib/python2.7/distutils/__init__.py	/^import opcode # opcode is not a virtualenv module, so we can use it to find the stdlib$/;"	kind:namespace	line:5
 virtualenv	../venv-webhookshims/lib64/python2.7/distutils/__init__.py	/^import opcode # opcode is not a virtualenv module, so we can use it to find the stdlib$/;"	kind:namespace	line:5
-vrealizeorchestrator	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.vrealizeorchestrator$/;"	kind:namespace	line:268
+vrealizeorchestrator	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.vrealizeorchestrator$/;"	kind:namespace	line:273
 vrealizeorchestrator	../tests/vrealizeorchestrator_test.py	/^import loginsightwebhookdemo.vrealizeorchestrator$/;"	kind:namespace	line:6
 vrealizeorchestrator.py	../loginsightwebhookdemo/vrealizeorchestrator.py	1;"	kind:file	line:1
 vrealizeorchestrator_test.py	../tests/vrealizeorchestrator_test.py	1;"	kind:file	line:1
 vro	../loginsightwebhookdemo/vrealizeorchestrator.py	/^def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):$/;"	kind:function	line:44
+vropsPass	../loginsightwebhookdemo/moogsoft.py	/^vropsPass = 'VMware1!'$/;"	kind:variable	line:39
+vropsURL	../loginsightwebhookdemo/moogsoft.py	/^vropsURL = 'https:\/\/10.140.50.30\/suite-api\/'$/;"	kind:variable	line:34
+vropsUser	../loginsightwebhookdemo/moogsoft.py	/^vropsUser = 'admin'$/;"	kind:variable	line:38
 walk	../venv-webhookshims/lib/python2.7/ntpath.py	/^def walk(top, func, arg):$/;"	kind:function	line:239
 walk	../venv-webhookshims/lib/python2.7/os.py	/^def walk(top, topdown=True, onerror=None, followlinks=False):$/;"	kind:function	line:209
 walk	../venv-webhookshims/lib/python2.7/posixpath.py	/^def walk(top, func, arg):$/;"	kind:function	line:218
@@ -6340,7 +6348,7 @@ xmlcharrefreplace_errors	../venv-webhookshims/lib/python2.7/codecs.py	/^    xmlc
 xmlcharrefreplace_errors	../venv-webhookshims/lib/python2.7/codecs.py	/^    xmlcharrefreplace_errors = lookup_error("xmlcharrefreplace")$/;"	kind:variable	line:1074
 xmlcharrefreplace_errors	../venv-webhookshims/lib64/python2.7/codecs.py	/^    xmlcharrefreplace_errors = None$/;"	kind:variable	line:1081
 xmlcharrefreplace_errors	../venv-webhookshims/lib64/python2.7/codecs.py	/^    xmlcharrefreplace_errors = lookup_error("xmlcharrefreplace")$/;"	kind:variable	line:1074
-zendesk	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.zendesk$/;"	kind:namespace	line:269
+zendesk	../loginsightwebhookdemo/__init__.py	/^import loginsightwebhookdemo.zendesk$/;"	kind:namespace	line:274
 zendesk	../loginsightwebhookdemo/zendesk.py	/^def zendesk(ALERTID=None, EMAIL=None, TOKEN=None):$/;"	kind:function	line:24
 zendesk.py	../loginsightwebhookdemo/zendesk.py	1;"	kind:file	line:1
 zlib	../venv-webhookshims/lib/python2.7/encodings/zlib_codec.py	/^import zlib # this codec needs the optional zlib module !$/;"	kind:namespace	line:10

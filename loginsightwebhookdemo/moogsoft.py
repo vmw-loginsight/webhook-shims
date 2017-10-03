@@ -7,13 +7,14 @@ and update status such as "closed" or "updated".  If alerting from Log Insight i
 through forwarding the query alert to vROps.
 
 The recommendations are not part of the alert payload so callbacks to vROps are made to retreive them and include 
-them in the payload for Moog.
+them in the payload for Moog.  Additionally, the impacted resource properties are also provided in the moog payload.
 
 Moog expects a severity of 0 when an alert is cancelled. 
 
 Moog expects timestamp in seconds.
 
-See Moogsoft documentation for payload key descriptions and expected values.
+See Moogsoft documentation for payload key descriptions and expected values.  Thanks to Ray Webb with Moogsoft for
+help testing this shim. 
 """ 
 
 from loginsightwebhookdemo import app, parse, callapi
@@ -30,7 +31,9 @@ __verion__ = "1.0"
 # the vROps parameters are required 
 
 # Parameters
+# Example: https://<IP of moog server>:<port>
 moogsoftURL = ''
+# Example: https://<IP of vROPs node>/suite-api/
 vropsURL = ''
 # Basic auth
 moogsoftUSER = ''
@@ -68,6 +71,18 @@ def recommendations(ALERTID=None):
     else:
         return
 
+def fetchResourceProperties(resourceId=None):
+    headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+    alertURL = vropsURL+"api/resources/"+resourceId+"/properties"
+    auth = (vropsUser, vropsPass)
+    response = callapi(alertURL, method='get', payload=None, headers=headers, auth=auth, check=VERIFY)
+    rawProps = json.loads(response)
+
+    props = {}
+    for prop in rawProps['property']:
+        props[prop["name"]] = prop["value"]
+    return props
+
 # Route without <ALERTID> are for LI, with are for vROps
 # Adding PUT and POST for vROps so REST Notification test works
 # vROps (as of 6.6.1) will attempt both methods and fail if both
@@ -98,14 +113,16 @@ def moogsoft(ALERTID=None):
         "ALERT_CRITICALITY_LEVEL_WARNING":3,
         "ALERT_CRITICALITY_LEVEL_INFO":2
     }
-
+    link = vropsURL+"/ui/index.action#/object/"+a['resourceId']+"/alertsAndSymptoms/alerts/"+ALERTID
     recommendation = recommendations(a['alertId'])
-    payload =      {
+    resourceProperties = fetchResourceProperties(a['resourceId'])
+
+    payload = {
         "signature":ALERTID,
         "source_id":a['resourceId'],
         "external_id":ALERTID,
         "manager":a['hookName'],
-        "source":a['resourceName'] if (a['resourceName'] != "") else "Not provided",
+        "source":a['resourceName'] if (a['resourceName'] != "") else "undefined",
         "class":a['subType'],
         "agent":a['adapterKind'],
         "agent_location":"",
@@ -113,7 +130,9 @@ def moogsoft(ALERTID=None):
         "severity":sevMap[a['criticality']] if (a['status'] != 'CANCELED') else 0,
         "description":a['AlertName'],
         "agent_time":a['updateDate']/1000,
-        "recommendation":recommendation
+        "recommendation":recommendation,
+        "resource_properties":resourceProperties,
+        "link":link
     }
 
     # Defaults to Content-type: application/json
@@ -122,5 +141,4 @@ def moogsoft(ALERTID=None):
     if not headers:
         headers = None
 
-    print json.dumps(payload)
     return callapi(moogsoftURL, 'post', json.dumps(payload), headers, check=VERIFY)
