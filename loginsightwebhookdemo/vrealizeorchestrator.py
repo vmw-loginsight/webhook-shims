@@ -13,8 +13,8 @@ __version__ = "1.3"
 # vRealize Orchestrator server workflow hostname:port (default port is 8281)
 # If both hosts are configured the shim will try the second one in case the first
 # host throws a connection error
-VROHOSTNAME1 = '192.168.0.80:18281'
-VROHOSTNAME2 = '192.168.0.80:8281'
+VROHOSTNAME1 = 'vRO1:8281'
+VROHOSTNAME2 = 'vRO2:8281'
 
 ##########################################################################################
 # You can use the following methods for authentication
@@ -29,8 +29,8 @@ VROHOSTNAME2 = '192.168.0.80:8281'
 ##########################################################################################
 
 USENETRC = False
-VROUSER = 'r877753@comp01.local'
-VROPASS = 'VMware1!'
+VROUSER = 'admin'
+VROPASS = 'changeme!'
 VROTOKEN = ''
 VROHOK = ''
 # For some labs, using self-signed will result in error during request due to cert check
