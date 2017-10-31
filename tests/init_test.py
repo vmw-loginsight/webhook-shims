@@ -198,10 +198,10 @@ def test_callapi():
         assert True
     else:
         assert False
-    assert 'method' in loginsightwebhookdemo.callapi('https://httpbin.org/anything', 'get')
-    assert 'authenticated' in loginsightwebhookdemo.callapi('https://httpbin.org/basic-auth/user/passwd', 'get', None, {"Cache-control": "no-cache"}, ('user', 'passwd'), False)
-    print(loginsightwebhookdemo.callapi('https://httpbin.org/status/400', 'get', 'test'))
-    assert 400 == loginsightwebhookdemo.callapi('https://httpbin.org/status/400', 'get', 'test')[1]
+    assert 'method' in loginsightwebhookdemo.callapi('http://httpbin.org/anything', 'get')
+    assert 'authenticated' in loginsightwebhookdemo.callapi('http://httpbin.org/basic-auth/user/passwd', 'get', None, {"Cache-control": "no-cache"}, ('user', 'passwd'), False)
+    print(loginsightwebhookdemo.callapi('http://httpbin.org/status/400', 'get', 'test'))
+    assert 400 == loginsightwebhookdemo.callapi('http://httpbin.org/status/400', 'get', 'test')[1]
 
 
 def test_homepage():
