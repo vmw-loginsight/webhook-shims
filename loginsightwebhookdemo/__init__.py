@@ -252,6 +252,7 @@ def _introduction():
 @app.route("/endpoint/test/<ALERTID>", methods=['POST'])
 def test(ALERTID=None):
     """Log the request and respond with success. Don't send the payload anywhere."""
+    logging.info(request.headers['Authorization'])
     logging.info(request.get_data())
     return "OK"
 
