@@ -145,4 +145,4 @@ def test_bugzilla_e2e():
     url = URL + '/rest/bug?api_key=' + TOKEN + '&product=' + PRODUCT + '&component=' + COMPONENT + '&summary=' + json.loads(payload)['AlertName']
     id = json.loads(loginsightwebhookdemo.callapi(url, 'get'))['bugs'][0]['id']
     url = URL + '/rest/bug/' + str(id) + '/comment?api_key=' + TOKEN + '&product=' + PRODUCT + '&component=' + COMPONENT + '&summary=' + json.loads(payload)['AlertName']
-    assert json.loads(loginsightwebhookdemo.callapi(url, 'get'))['bugs'][str(id)]['comments'][1]['text'] == json.loads(payload)['AlertName'] + '\n\nhello world 1'
+    assert json.loads(loginsightwebhookdemo.callapi(url, 'get'))['bugs'][str(id)]['comments'][1]['text'].startswith('Alert Name: ')
