@@ -111,12 +111,15 @@ def parseLI(payload, alert):
     if ('Messages' in alert and not alert['Messages']): # If a test alert
         alert.update({
             "moreinfo": ("Hello from the webhook shim! This is a test webhook alert.\n\n") + \
-                    ("Alert Name: ") + alert['AlertName'] + \
-                    ("\nAlert Info: ") + alert['info'],
+                ("Alert Name: ") + alert['AlertName'] + \
+                ("\nAlert Info: ") + alert['info'] + \
+                ("\nAlert Details: ") + str(alert['Messages']),
         })
     else:
         alert.update({
-            "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'] + \
+            "moreinfo": ("Alert Name: ") + alert['AlertName'] + \
+                ("\nAlert Info: ") + alert['info'] + \
+                ("\nAlert Details: ") + str(alert['Messages']) + \
                 ("\n\nYou can view this alert by clicking: %s" % alert['url'] if alert['url'] else "") + \
                 ("\nYou can edit this alert by clicking: %s" % alert['editurl'] if alert['editurl'] else ""),
         })
@@ -178,16 +181,6 @@ def parsevROps(payload, alert):
             color = "gray"
     else:
         color = "red"
-    if (alert['adapterKind'] == 'sample-adapter-type'): # If a test alert
-        alert.update({
-            "moreinfo": "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
-                    ("Alert Name: ") + alert['AlertName'] + \
-                    ("\nAlert Info: ") + alert['info'],
-        })
-    else:
-        alert.update({
-            "moreinfo": alert['AlertName'] + ("\n\n") + alert['info'],
-        })
     alert.update({
         "color": color,
         "fields": [
@@ -200,6 +193,19 @@ def parsevROps(payload, alert):
             { "name": 'Sub Type',       "content": alert['subType'], },
         ]
     })
+    if (alert['adapterKind'] == 'sample-adapter-type'): # If a test alert
+        alert.update({
+            "moreinfo": "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
+                    ("Alert Name: ") + alert['AlertName'] + \
+                    ("\nAlert Info: ") + alert['info'] + \
+                    ("\nAlert Details: ") + str(alert['fields']),
+        })
+    else:
+        alert.update({
+            "moreinfo": ("Alert Name: ") + alert['AlertName'] + \
+                    ("\nAlert Info: ") + alert['info'] + \
+                    ("\nAlert Details: ") + str(alert['fields']),
+        })
     return alert
 
 
@@ -213,6 +219,7 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
         headers = {'Content-type': 'application/json'}
     try:
         logging.info("URL=%s" % url)
+        logging.info("Auth=%s" % str(auth))
         logging.info("Headers=%s" % headers)
         logging.info("Body=%s" % payload)
         logging.info("Check=%s" % check)
@@ -251,8 +258,14 @@ def _introduction():
 @app.route("/endpoint/test", methods=['POST'])
 @app.route("/endpoint/test/<ALERTID>", methods=['POST'])
 def test(ALERTID=None):
-    """Log the request and respond with success. Don't send the payload anywhere."""
+    """Log the auth header, request, and parsed moreinfo field. Respond with success. Don't send the payload anywhere."""
+    try:
+        logging.info(request.headers['Authorization'])
+    except:
+        pass
     logging.info(request.get_data())
+    a = parse(request)
+    logging.info(a['moreinfo'])
     return "OK"
 
 
