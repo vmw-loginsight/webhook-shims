@@ -184,12 +184,10 @@ def test_callapi():
         assert True
     else:
         assert False
-    assert 'google.j' in loginsightwebhookdemo.callapi('http://www.google.com', 'get')
-    assert 'google.j' in loginsightwebhookdemo.callapi('http://www.google.com', 'get', None, {"Cache-control": "no-cache"}, ('user', 'pass'), False)
-    if any('400' in code for code in loginsightwebhookdemo.callapi('http://www.google.com', 'get', 'test')):
-        assert True
-    else:
-        assert False
+    assert 'method' in loginsightwebhookdemo.callapi('http://httpbin.org/anything', 'get')
+    assert 'authenticated' in loginsightwebhookdemo.callapi('http://httpbin.org/basic-auth/user/passwd', 'get', None, {"Cache-control": "no-cache"}, ('user', 'passwd'), False)
+    print(loginsightwebhookdemo.callapi('http://httpbin.org/status/400', 'get', 'test'))
+    assert 400 == loginsightwebhookdemo.callapi('http://httpbin.org/status/400', 'get', 'test')[1]
 
 
 def test_homepage():

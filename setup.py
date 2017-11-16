@@ -5,8 +5,10 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 from pip.req import parse_requirements
 
-from loginsightwebhookdemo import __version__ as loginsightwebhookdemoversion  # TODO Replace with a static variant?
-
+try:
+    from loginsightwebhookdemo import __version__ as loginsightwebhookdemoversion  # TODO Replace with a static variant?
+except ImportError:
+    loginsightwebhookdemoversion = "0.dev0"
 
 # Hack from https://stackoverflow.com/questions/14399534/how-can-i-reference-requirements-txt-for-the-install-requires-kwarg-in-setuptool
 # parse_requirements() returns generator of pip.req.InstallRequirement objects

@@ -145,6 +145,7 @@ def parsevROps(payload, alert):
     alert.update({
         "hookName": "vRealize Operations Manager",
         "AlertName": payload['alertName']       if ('alertName' in payload) else "<None>",
+        "alertId": payload['alertId']           if ('alertId' in payload) else "",
         "info": payload['info']                 if ('info' in payload and payload['info'] is not None) else "",
         "criticality": payload['criticality']   if ('criticality' in payload) else "",
         "status": payload['status']             if ('status' in payload) else "",
@@ -154,7 +155,10 @@ def parsevROps(payload, alert):
         "Efficiency": payload['Efficiency']     if ('Efficiency' in payload) else "<None>",
         "Health": payload['Health']             if ('Health' in payload) else "<None>",
         "resourceName": payload['resourceName'] if ('resourceName' in payload) else "",
+        "resourceId": payload['resourceId']     if ('resourceId' in payload) else "",
         "adapterKind": payload['adapterKind']   if ('adapterKind' in payload) else "",
+        "startDate": payload['startDate']       if ('startDate' in payload) else "",
+        "updateDate": payload['updateDate']     if ('updateDate' in payload) else "",
         "icon": "http://blogs.vmware.com/management/files/2016/09/vrops-256.png",
         "Messages":"",
         "url":"",
@@ -271,6 +275,7 @@ import loginsightwebhookdemo.bugzilla
 import loginsightwebhookdemo.hipchat
 import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.jira
+import loginsightwebhookdemo.kafkatopic
 import loginsightwebhookdemo.opsgenie
 import loginsightwebhookdemo.pagerduty
 import loginsightwebhookdemo.pushbullet
@@ -280,3 +285,5 @@ import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
 import loginsightwebhookdemo.vrealizeorchestrator
 import loginsightwebhookdemo.zendesk
+import loginsightwebhookdemo.moogsoft
+
