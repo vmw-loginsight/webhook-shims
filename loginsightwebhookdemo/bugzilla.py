@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-from loginsightwebhookdemo import app, parse, callapi
+from loginsightwebhookdemo import app, parse, callapi, basicauth
 from flask import request, json
 import logging
 
@@ -13,7 +13,7 @@ __verion__ = "1.1"
 
 # Parameters
 BUGZILLAURL = ''
-# Basic auth -- required if TOKEN is not passed in URL
+# Basic auth -- required if BASIC or TOKEN is not passed in URL
 BUGZILLAUSER = ''
 BUGZILLAPASS = ''
 # Required fields -- if not passed in URL
@@ -39,6 +39,13 @@ def bugzilla(ALERTID=None, TOKEN=None, PRODUCT=None, COMPONENT=None, VERSION=Non
     Requires BUGZILLA* parameters to be defined.
     You can pass an authentication token in the URL. For basic auth, pass `-` as the token.
     """
+    bauth = basicauth(request)
+    if bauth is not None:
+        global BUGZILLAUSER
+        global BUGZILLAPASS
+        BUGZILLAUSER = bauth[0]
+        BUGZILLAPASS = bauth[1]
+
     if (not BUGZILLAURL or
         ((not BUGZILLAUSER or not BUGZILLAPASS) and (not TOKEN or TOKEN == '-')) or
         ((not BUGZILLAPRODUCT or not BUGZILLACOMPONENT or not BUGZILLAVERSION) and not VERSION)):
