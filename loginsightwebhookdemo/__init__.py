@@ -30,6 +30,7 @@ from flask import Flask, Markup, request, json
 import requests
 import logging
 import re
+import base64
 
 
 app = Flask(__name__)
@@ -229,6 +230,21 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
         logging.exception("Can't create new payload. Check code and try again.")
         raise
     return ("%s" % r.text, r.status_code, None)
+
+
+def basicauth(payload=None):
+    """
+    Decode basic auth if applicable
+    """
+    bauth = None
+    try:
+        bauth = str.split(str(payload.headers['Authorization']))
+        bauth = base64.b64decode(bauth[1])
+        bauth = bauth.split(':')
+        logging.info(bauth)
+    except:
+        pass
+    return bauth
 
 
 @app.route("/")

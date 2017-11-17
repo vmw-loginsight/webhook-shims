@@ -2,6 +2,7 @@
 
 import json
 import requests
+import requests_mock
 
 import loginsightwebhookdemo
 
@@ -202,6 +203,24 @@ def test_callapi():
     assert 'authenticated' in loginsightwebhookdemo.callapi('http://httpbin.org/basic-auth/user/passwd', 'get', None, {"Cache-control": "no-cache"}, ('user', 'passwd'), False)
     print(loginsightwebhookdemo.callapi('http://httpbin.org/status/400', 'get', 'test'))
     assert 400 == loginsightwebhookdemo.callapi('http://httpbin.org/status/400', 'get', 'test')[1]
+
+
+def test_basicauth():
+    adapter = requests_mock.Adapter()
+    session = requests.Session()
+    session.mount('mock', adapter)
+    adapter.register_uri('GET', 'mock://test.com/headers', headers={'a': 'b'}, text='resp')
+    request = session.get('mock://test.com/headers')
+    bauth = loginsightwebhookdemo.basicauth(request)
+    assert bauth is None
+    adapter = requests_mock.Adapter()
+    session = requests.Session()
+    session.mount('mock', adapter)
+    adapter.register_uri('GET', 'mock://test.com/headers', headers={'Authorization': 'Basic YWJjOjEyMw=='}, text='resp')
+    request = session.get('mock://test.com/headers')
+    bauth = loginsightwebhookdemo.basicauth(request)
+    assert bauth[0] == 'abc'
+    assert bauth[1] == '123'
 
 
 def test_homepage():
