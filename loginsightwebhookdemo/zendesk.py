@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, callapi
+from loginsightwebhookdemo import app, parse, callapi, basicauth
 from flask import request, json
 import logging
 
@@ -29,6 +29,12 @@ def zendesk(ALERTID=None, EMAIL=None, TOKEN=None):
     Requires ZENDESK* parameters to be defined.
     """
 
+    bauth = basicauth(request)
+    if bauth is not None:
+        global ZENDESKUSER
+        global ZENDESKPASS
+        ZENDESKUSER = bauth[0]
+        ZENDESKPASS = bauth[1]
     if (not ZENDESKURL or (not ZENDESKUSER and not EMAIL) or (not ZENDESKPASS and not ZENDESKTOKEN and not TOKEN)):
         return ("ZENDESK* parameters must be set, please edit the shim!", 500, None)
     if not ZENDESKUSER:
