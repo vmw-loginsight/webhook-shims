@@ -261,11 +261,14 @@ def test(ALERTID=None):
     """Log the auth header, request, and parsed moreinfo field. Respond with success. Don't send the payload anywhere."""
     try:
         logging.info(request.headers['Authorization'])
-    except:
+    except KeyError:
         pass
     logging.info(request.get_data())
-    a = parse(request)
-    logging.info(a['moreinfo'])
+    try:
+        a = parse(request)
+        logging.info(a['moreinfo'])
+    except KeyError:
+        pass
     return "OK"
 
 

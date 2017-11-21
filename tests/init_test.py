@@ -210,6 +210,6 @@ def test_wrong_method():
 
 def test_test():
     rsp = conftest.client.post('/endpoint/test')
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
+    assert rsp.status == '200 OK'
     rsp = conftest.client.post('/endpoint/test/alertid')
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
+    assert rsp.status == '200 OK'
