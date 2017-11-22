@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, callapi, basicauth
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -29,12 +29,13 @@ def jira(ALERTID=None, PROJECT=None, ISSUETYPE='Bug'):
     Requires JIRA* parameters to be defined.
     """
 
-    bauth = basicauth(request)
+    bauth = request.authorization
     if bauth is not None:
         global JIRAUSER
         global JIRAPASS
-        JIRAUSER = bauth[0]
-        JIRAPASS = bauth[1]
+        JIRAUSER = bauth.username
+        JIRAPASS = bauth.password
+
     if not JIRAURL or not JIRAUSER or not JIRAPASS or not PROJECT:
         return ("JIRA* parameters must be set, please edit the shim!", 500, None)
 

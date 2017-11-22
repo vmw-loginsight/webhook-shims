@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, callapi, basicauth
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -27,12 +27,13 @@ def servicenow(ALERTID=None):
     Requires SERVICENOW* parameters to be defined.
     """
 
-    bauth = basicauth(request)
+    bauth = request.authorization
     if bauth is not None:
         global SERVICENOWUSER
         global SERVICENOWPASS
-        SERVICENOWUSER = bauth[0]
-        SERVICENOWPASS = bauth[1]
+        SERVICENOWUSER = bauth.username
+        SERVICENOWPASS = bauth.password
+
     if not SERVICENOWURL or not SERVICENOWUSER or not SERVICENOWPASS:
         return ("SERVICENOW* parameters must be set, please edit the shim!", 500, None)
 

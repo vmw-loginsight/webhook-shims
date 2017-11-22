@@ -17,7 +17,7 @@ See Moogsoft documentation for payload key descriptions and expected values.  Th
 help testing this shim.
 """
 
-from loginsightwebhookdemo import app, parse, callapi, basicauth
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -98,12 +98,13 @@ def moogsoft(ALERTID=None):
     Information about this shim.
     Requires moogsoft* parameters to be defined.
     """
-    bauth = basicauth(request)
+    bauth = request.authorization
     if bauth is not none:
         global moogsoftUSER
         global moogsoftPASS
-        moogsoftUSER = bauth[0]
-        moogsoftPASS = bauth[1]
+        moogsoftUSER = bauth.username
+        moogsoftPASS = bauth.password
+
     if (not moogsoftURL or (not moogsoftUSER ) or (not moogsoftPASS) or (not vropsURL) or (not vropsUser) or (not vropsPass)):
         return ("moogsoft* and vrops* parameters must be set, please edit the shim!", 500, None)
 

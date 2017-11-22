@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, callapi, basicauth
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import base64
 import re
@@ -47,12 +47,13 @@ def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):
     The `WORKFLOWID` and optionally `TOKEN` is passed in the webhook URL.
     The workflow is responsible for parsing base64 -> json -> messages
     """
-    bauth = basicauth(request)
+    bauth = request.authorization
     if bauth is not None:
         global VROUSER
         global VROPASS
-        VROUSER = bauth[0]
-        VROPASS = bauth[1]
+        VROUSER = bauth.username
+        VROPASS = bauth.password
+
     if not WORKFLOWID:
         return ("WORKFLOWID must be set in the URL (e.g. /endpoint/vro/<WORKFLOWID>", 500, None)
     if not re.match('[a-z0-9-]+', WORKFLOWID, flags=re.IGNORECASE):

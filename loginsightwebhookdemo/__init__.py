@@ -232,21 +232,6 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
     return ("%s" % r.text, r.status_code, None)
 
 
-def basicauth(payload=None):
-    """
-    Decode basic auth if applicable
-    """
-    bauth = None
-    try:
-        bauth = str.split(str(payload.headers['Authorization']))
-        bauth = base64.b64decode(bauth[1])
-        bauth = bauth.split(':')
-        logging.info(bauth)
-    except:
-        pass
-    return bauth
-
-
 @app.route("/")
 def _introduction():
     """This help text."""

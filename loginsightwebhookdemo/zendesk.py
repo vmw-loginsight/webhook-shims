@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from loginsightwebhookdemo import app, parse, callapi, basicauth
+from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 
@@ -28,19 +28,20 @@ def zendesk(ALERTID=None, EMAIL=None, TOKEN=None):
     Uniqueness is determined by the incoming webhook alert name.
     Requires ZENDESK* parameters to be defined.
     """
-
-    bauth = basicauth(request)
+    bauth = request.authorization
     if bauth is not None:
         global ZENDESKUSER
         global ZENDESKPASS
-        ZENDESKUSER = bauth[0]
-        ZENDESKPASS = bauth[1]
+        ZENDESKUSER = bauth.username
+        ZENDESKPASS = bauth.password
+
     if (not ZENDESKURL or (not ZENDESKUSER and not EMAIL) or (not ZENDESKPASS and not ZENDESKTOKEN and not TOKEN)):
         return ("ZENDESK* parameters must be set, please edit the shim!", 500, None)
     if not ZENDESKUSER:
         USER = EMAIL
     else:
         USER = ZENDESKUSER
+
     # Prefer tokens over passwords
     if ZENDESKTOKEN or TOKEN:
         if ZENDESKTOKEN:
