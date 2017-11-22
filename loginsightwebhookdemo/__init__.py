@@ -275,17 +275,20 @@ def test(ALERTID=None):
 
 # Import individual shims
 import loginsightwebhookdemo.bugzilla
+import loginsightwebhookdemo.groove
 import loginsightwebhookdemo.hipchat
 import loginsightwebhookdemo.jenkins
 import loginsightwebhookdemo.jira
 import loginsightwebhookdemo.kafkatopic
 import loginsightwebhookdemo.opsgenie
 import loginsightwebhookdemo.pagerduty
+import loginsightwebhookdemo.pivotaltracker
 import loginsightwebhookdemo.pushbullet
 import loginsightwebhookdemo.servicenow
 import loginsightwebhookdemo.slack
 import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
+import loginsightwebhookdemo.travisci
 import loginsightwebhookdemo.vrealizeorchestrator
 import loginsightwebhookdemo.zendesk
 import loginsightwebhookdemo.moogsoft
