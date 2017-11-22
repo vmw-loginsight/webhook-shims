@@ -30,6 +30,7 @@ from flask import Flask, Markup, request, json
 import requests
 import logging
 import re
+import base64
 
 
 app = Flask(__name__)

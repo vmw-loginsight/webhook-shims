@@ -3,19 +3,19 @@
 
 """
 This shim only supports vROps payloads due to requirements for Moogsoft payload (resourceId, criticality/severity,
-and update status such as "closed" or "updated".  If alerting from Log Insight is required, it should be handled 
+and update status such as "closed" or "updated".  If alerting from Log Insight is required, it should be handled
 through forwarding the query alert to vROps.
 
-The recommendations are not part of the alert payload so callbacks to vROps are made to retreive them and include 
+The recommendations are not part of the alert payload so callbacks to vROps are made to retreive them and include
 them in the payload for Moog.  Additionally, the impacted resource properties are also provided in the moog payload.
 
-Moog expects a severity of 0 when an alert is cancelled. 
+Moog expects a severity of 0 when an alert is cancelled.
 
 Moog expects timestamp in seconds.
 
 See Moogsoft documentation for payload key descriptions and expected values.  Thanks to Ray Webb with Moogsoft for
-help testing this shim. 
-""" 
+help testing this shim.
+"""
 
 from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
@@ -28,7 +28,7 @@ __verion__ = "1.0"
 
 
 # This shim also calls back to vROps for additional info so
-# the vROps parameters are required 
+# the vROps parameters are required
 
 # Parameters
 # Example: https://<IP of moog server>:<port>
@@ -46,7 +46,7 @@ vropsPass = ''
 VERIFY = True
 
 ###########################################
-# Call backs for getting more information 
+# Call backs for getting more information
 # from vROps for impacted resource
 ###########################################
 
@@ -98,7 +98,13 @@ def moogsoft(ALERTID=None):
     Information about this shim.
     Requires moogsoft* parameters to be defined.
     """
-    
+    bauth = request.authorization
+    if bauth is not none:
+        global moogsoftUSER
+        global moogsoftPASS
+        moogsoftUSER = bauth.username
+        moogsoftPASS = bauth.password
+
     if (not moogsoftURL or (not moogsoftUSER ) or (not moogsoftPASS) or (not vropsURL) or (not vropsUser) or (not vropsPass)):
         return ("moogsoft* and vrops* parameters must be set, please edit the shim!", 500, None)
 
