@@ -12,6 +12,7 @@ __verion__ = "1.1"
 
 # jira parameters
 JIRAURL = ''
+# Only required if not passed in URL
 JIRAUSER = ''
 JIRAPASS = ''
 
@@ -27,6 +28,13 @@ def jira(ALERTID=None, PROJECT=None, ISSUETYPE='Bug'):
     If `ISSUETYPE` is passed, blindly attempt to open/check the specified `ISSUETYPE`.
     Requires JIRA* parameters to be defined.
     """
+
+    bauth = request.authorization
+    if bauth is not None:
+        global JIRAUSER
+        global JIRAPASS
+        JIRAUSER = bauth.username
+        JIRAPASS = bauth.password
 
     if not JIRAURL or not JIRAUSER or not JIRAPASS or not PROJECT:
         return ("JIRA* parameters must be set, please edit the shim!", 500, None)
