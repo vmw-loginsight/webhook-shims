@@ -29,9 +29,7 @@ def test_parse_LI_MQ():
     assert alert['HasMoreResults'] == 'False'
     assert alert['NumHits'] == '2'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
-    assert alert['moreinfo'] == 'Hello World\n\nThis is an alert for all the Hello World messages\n\n\
-You can view this alert by clicking: https://10.11.12.13/s/8pgzq6\n\
-You can edit this alert by clicking: https://10.11.12.13/s/56monr'
+    assert alert['moreinfo'].startswith('Alert Name')
 
 
 def test_parse_vROps60_test():
@@ -50,9 +48,7 @@ def test_parse_vROps60_test():
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
-    assert alert['moreinfo'] == "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
-        ("Alert Name: ") + alert['AlertName'] + \
-        ("\nAlert Info: ") + alert['info']
+    assert alert['moreinfo'].startswith('Hello from the webhook shim')
 
 
 def test_parseLI_MQ():
@@ -67,9 +63,7 @@ def test_parseLI_MQ():
     assert alert['HasMoreResults'] == 'False'
     assert alert['NumHits'] == '2'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
-    assert alert['moreinfo'] == 'Hello World\n\nThis is an alert for all the Hello World messages\n\n\
-You can view this alert by clicking: https://10.11.12.13/s/8pgzq6\n\
-You can edit this alert by clicking: https://10.11.12.13/s/56monr'
+    assert alert['moreinfo'].startswith('Alert Name')
 
 
 def test_parseLI_AQ():
@@ -84,9 +78,7 @@ def test_parseLI_AQ():
     assert alert['HasMoreResults'] == 'True'
     assert alert['NumHits'] == '2'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
-    assert alert['moreinfo'] == 'Hello World\n\nThis is an alert for all the Hello World messages\n\n\
-You can view this alert by clicking: https://10.11.12.13/s/8pgzq6\n\
-You can edit this alert by clicking: https://10.11.12.13/s/56monr'
+    assert alert['moreinfo'].startswith('Alert Name')
 
 
 def test_parseLI_sys():
@@ -94,14 +86,14 @@ def test_parseLI_sys():
     assert alert['hookName'] == 'Log Insight'
     assert alert['color'] == 'red'
     assert alert['AlertName'] == 'Hello World'
-    assert alert['info'] == 'hello world 1'
+    assert alert['info'].startswith('hello world 1')
     # assert alert['Messages'] == '[{"text": "hello world 1","timestamp": 1451940578545,"fields": [{"name": "Field_1","content": "Content 1"}, { "name": "Field_2","content": "Content 2"}]'
     assert alert['url'] == ''
     assert alert['editurl'] == ''
     assert alert['HasMoreResults'] == False
     assert alert['NumHits'] == False
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
-    assert alert['moreinfo'] == 'Hello World\n\nhello world 1'
+    assert alert['moreinfo'].startswith('Alert Name')
 
 
 def test_parseLI_test():
@@ -118,9 +110,7 @@ def test_parseLI_test():
     assert alert['HasMoreResults'] == 'False'
     assert alert['NumHits'] == '0'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2015/04/li-logo.png'
-    assert alert['moreinfo'] == ("Hello from the webhook shim! This is a test webhook alert.\n\n") + \
-        ("Alert Name: ") + alert['AlertName'] + \
-        ("\nAlert Info: ") + alert['info']
+    assert alert['moreinfo'].startswith('Hello from the webhook shim')
 
 
 def test_parsevROps_LI():
@@ -144,9 +134,7 @@ def test_parsevROps60_test():
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
-    assert alert['moreinfo'] == "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
-        ("Alert Name: ") + alert['AlertName'] + \
-        ("\nAlert Info: ") + alert['info']
+    assert alert['moreinfo'].startswith('Hello from the webhook shim')
 
 
 def test_parsevROps62_test():
@@ -165,9 +153,7 @@ def test_parsevROps62_test():
     assert alert['resourceName'] == 'sample-object-name'
     assert alert['adapterKind'] == 'sample-adapter-type'
     assert alert['icon'] == 'http://blogs.vmware.com/management/files/2016/09/vrops-256.png'
-    assert alert['moreinfo'] == "Hello from the webhook shim! This is a test webhook alert.\n\n" + \
-        ("Alert Name: ") + alert['AlertName'] + \
-        ("\nAlert Info: ") + alert['info']
+    assert alert['moreinfo'].startswith('Hello from the webhook shim')
 
 
 def test_parseLI_vrops():
@@ -226,4 +212,12 @@ def test_test():
     rsp = conftest.client.post('/endpoint/test')
     assert rsp.status == '200 OK'
     rsp = conftest.client.post('/endpoint/test/alertid')
+    assert rsp.status == '200 OK'
+    headers = {"Authorization": "BASIC YWJjOjEyMw=="}
+    rsp = conftest.client.post('/endpoint/test', headers=headers)
+    assert rsp.status == '200 OK'
+    headers = {'content-type': 'application/json'}
+    rsp = conftest.client.post('/endpoint/test', headers=headers, data={'key': 'value'})
+    assert rsp.status == '200 OK'
+    rsp = conftest.client.post('/endpoint/test', headers=headers, data=conftest.payloadLI_sys)
     assert rsp.status == '200 OK'
