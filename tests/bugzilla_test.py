@@ -70,7 +70,7 @@ def test_bugzilla_wrongpass():
     loginsightwebhookdemo.bugzilla.VERIFY = True
     payload = generate_alertname()
 
-    rsp = client.post('/endpoint/bugzilla/' + TOKEN, data=payload, content_type="application/json")
+    rsp = client.post('/endpoint/bugzilla/' + TOKEN, data=payload, content_type="application/json", headers={'authorization': 'Basic YWJjOjEyMw=='})
     assert rsp.status == '200 OK'
 
     payload = generate_alertname()
@@ -94,6 +94,15 @@ def test_bugzilla_nopass():
     assert rsp.status == '500 INTERNAL SERVER ERROR'
     rsp = client.post('/endpoint/bugzilla/-/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json")
     assert rsp.status == '500 INTERNAL SERVER ERROR'
+
+
+def test_bugzilla_basicauth():
+    payload = generate_alertname()
+
+    rsp = client.post('/endpoint/bugzilla/-/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json", headers={'authorization': 'Basic YWJjOjEyMw=='})
+    assert rsp.status == '401 UNAUTHORIZED'
+    rsp = client.post('/endpoint/bugzilla/-/' + PRODUCT + '/' + COMPONENT + '/' + VERSION, data=payload, content_type="application/json", headers={'authorization': 'Basic bG9naW5zaWdodC1tYXJrZXRwbGFjZUB2bXdhcmUuY29tOkwwZzFuczFnaHQh'})
+    assert rsp.status == '200 OK'
 
 
 def test_bugzilla_wrongtoken():

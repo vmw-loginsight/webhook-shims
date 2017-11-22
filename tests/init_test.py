@@ -213,3 +213,11 @@ def test_test():
     assert rsp.status == '200 OK'
     rsp = conftest.client.post('/endpoint/test/alertid')
     assert rsp.status == '200 OK'
+    headers = {"Authorization": "BASIC YWJjOjEyMw=="}
+    rsp = conftest.client.post('/endpoint/test', headers=headers)
+    assert rsp.status == '200 OK'
+    headers = {'content-type': 'application/json'}
+    rsp = conftest.client.post('/endpoint/test', headers=headers, data={'key': 'value'})
+    assert rsp.status == '200 OK'
+    rsp = conftest.client.post('/endpoint/test', headers=headers, data=conftest.payloadLI_sys)
+    assert rsp.status == '200 OK'

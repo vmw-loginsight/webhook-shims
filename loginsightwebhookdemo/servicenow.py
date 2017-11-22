@@ -12,6 +12,7 @@ __verion__ = "1.1"
 
 # ServiceNow parameters
 SERVICENOWURL = ''
+# Only required if not passed in URL
 SERVICENOWUSER = ''
 SERVICENOWPASS = ''
 
@@ -25,6 +26,13 @@ def servicenow(ALERTID=None):
     Uniqueness is determined by the incoming webhook alert name. Incidents are opened by the user defined.
     Requires SERVICENOW* parameters to be defined.
     """
+
+    bauth = request.authorization
+    if bauth is not None:
+        global SERVICENOWUSER
+        global SERVICENOWPASS
+        SERVICENOWUSER = bauth.username
+        SERVICENOWPASS = bauth.password
 
     if not SERVICENOWURL or not SERVICENOWUSER or not SERVICENOWPASS:
         return ("SERVICENOW* parameters must be set, please edit the shim!", 500, None)
