@@ -263,12 +263,13 @@ def test(ALERTID=None):
         logging.info(request.headers['Authorization'])
     except KeyError:
         pass
-    logging.info(request.get_data())
-    a = parse(request)
-    try:
-        logging.info(a['moreinfo'])
-    except KeyError:
-        pass
+    if request.get_data():
+        logging.info(request.get_data())
+        a = parse(request)
+        try:
+            logging.info(a['moreinfo'])
+        except KeyError:
+            pass
     return "OK"
 
 
