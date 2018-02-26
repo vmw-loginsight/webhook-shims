@@ -22,22 +22,14 @@ def test_opsgenie_nourl():
     assert rsp.status == '404 NOT FOUND'
     rsp = client.post('/endpoint/opsgenie/' + APIKEY, data=conftest.payload, content_type="application/json")
     assert rsp.status == '500 INTERNAL SERVER ERROR'
-    rsp = client.post('/endpoint/opsgenie/' + APIKEY + '/' + TEAM, data=conftest.payload, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
 
 
 def test_opsgenie_allparams():
-    loginsightwebhookdemo.opsgenie.OPSGENIEURL = 'https://api.opsgenie.com/v1/json/alert'
+    loginsightwebhookdemo.opsgenie.OPSGENIEURL = 'https://api.opsgenie.com/v2/alerts'
 
     rsp = client.post('/endpoint/opsgenie/' + APIKEY, data=conftest.payload, content_type="application/json")
-    assert rsp.status == '401 UNAUTHORIZED'
+    assert rsp.status == '422 UNPROCESSABLE ENTITY'
     rsp = client.post('/endpoint/opsgenie/' + APIKEY, data=conftest.payloadvROps60, content_type="application/json")
-    assert rsp.status == '401 UNAUTHORIZED'
+    assert rsp.status == '422 UNPROCESSABLE ENTITY'
     rsp = client.post('/endpoint/opsgenie/' + APIKEY, data=conftest.payloadLI_test, content_type="application/json")
-    assert rsp.status == '401 UNAUTHORIZED'
-    rsp = client.post('/endpoint/opsgenie/' + APIKEY + '/' + TEAM, data=conftest.payload, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
-    rsp = client.post('/endpoint/opsgenie/' + APIKEY + '/' + TEAM, data=conftest.payloadvROps60, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
-    rsp = client.post('/endpoint/opsgenie/' + APIKEY + '/' + TEAM, data=conftest.payloadLI_test, content_type="application/json")
-    assert rsp.status == '500 INTERNAL SERVER ERROR'
+    assert rsp.status == '422 UNPROCESSABLE ENTITY'
