@@ -145,7 +145,7 @@ def parsevROps(payload, alert):
         return alert
     alert.update({
         "hookName": "vRealize Operations Manager",
-        "AlertName": payload['alertName']       if ('alertName' in payload) else "<None>",
+        "AlertName": payload['alertName']       if ('alertName' in payload and payload['alertName'] != "") else "<None>",
         "alertId": payload['alertId']           if ('alertId' in payload) else "",
         "info": payload['info']                 if ('info' in payload and payload['info'] is not None) else "",
         "criticality": payload['criticality']   if ('criticality' in payload) else "",
