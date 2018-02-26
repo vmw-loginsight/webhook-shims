@@ -275,6 +275,7 @@ def test(ALERTID=None):
 
 
 # Import individual shims
+import loginsightwebhookdemo.bigpanda
 import loginsightwebhookdemo.bugzilla
 import loginsightwebhookdemo.groove
 import loginsightwebhookdemo.hipchat
@@ -293,4 +294,3 @@ import loginsightwebhookdemo.travisci
 import loginsightwebhookdemo.vrealizeorchestrator
 import loginsightwebhookdemo.zendesk
 import loginsightwebhookdemo.moogsoft
-
