@@ -118,7 +118,7 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
     "HasMoreResults":false,
     "Url":"https://10.11.12.13/s/8pgzq6",
     "EditUrl":"https://10.11.12.13/s/56monr",
-    "Info":"This is an alert for all the 'Hello World' messages",
+    "Info":"This is an alert for all the Hello World messages",
     "NumHits":2
 }
 ```
@@ -163,7 +163,7 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
     "HasMoreResults":false,
     "Url":null,
     "EditUrl":null,
-    "Info": "This is an alert for all the 'Hello World' messages",
+    "Info": "This is an alert for all the Hello World messages",
     "Recommendation":null,
     "NumHits":2
 }
@@ -215,4 +215,13 @@ The output of a LI webhook depends on the type of webhook (i.e. user or system) 
    "updateDate":1369757346267,
    "info":"sample-info"
 }
+```
+
+## Simulating Tests
+
+You can simulate payloads using tools such as curl. For example:
+
+```
+$ curlj=$(curl -H "content-type: application/json")
+$ curlj -X POST -d '<payload_above>' http://user:pass@localhost:5001/endpoint/test
 ```
