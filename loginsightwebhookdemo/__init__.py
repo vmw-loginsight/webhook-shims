@@ -37,13 +37,13 @@ app = Flask(__name__)
 
 
 __author__ = "Alan Castonguay and Steve Flanders"
-__copyright__ = "Copyright 2016"
+__copyright__ = "Copyright 2016-2018"
 __credits__ = ["Alan Castonguay", "Steve Flanders"]
 __license__ = "Apache v2"
 __maintainer__ = "Alan Castonguay and Steve Flanders"
 __email__ = "li-cord@vmware.com"
 __status__ = "Beta"
-__version__ = "2.1"
+__version__ = "2.2"
 
 
 def _minimal_markdown(markdown):
