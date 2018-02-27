@@ -16,7 +16,7 @@ OPSGENIEURL = 'https://api.opsgenie.com/v2/alerts'
 
 @app.route("/endpoint/opsgenie/<APIKEY>", methods=['POST'])
 @app.route("/endpoint/opsgenie/<APIKEY>/<ALERTID>", methods=['POST','PUT'])
-def opsgenie(APIKEY=None, TEAM=None, ALERTID=None):
+def opsgenie(APIKEY=None, ALERTID=None):
     """
     Create a new incident for the opsgenie service identified by `APIKEY` in the URL.
     Uses https://docs.opsgenie.com/docs/alert-api.
