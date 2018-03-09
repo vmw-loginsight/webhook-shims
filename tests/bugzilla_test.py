@@ -24,7 +24,7 @@ payload_base = {
 URL = 'https://landfill.bugzilla.org/bugzilla-5.0-branch/'
 TOKEN = 'BR8zMD8ywOJSAgRnjylr4G3pa7Zx5zKE6U3xYl76'
 PRODUCT = 'MyOwnBadSelf'
-COMPONENT = 'Comp1'
+COMPONENT = 'comp2'
 VERSION = 'unspecified'
 
 

@@ -25,7 +25,7 @@ def opsgenie(APIKEY=None, ALERTID=None):
         return ("OPSGENIEURL parameter must be set properly, please edit the shim!", 500, None)
     if not APIKEY:
         return ("APIKEY must be set in the URL (e.g. /endpoint/opsgenie/<APIKEY>", 500, None)
-    HEADERS = {"Authorization": "GenieKey " + APIKEY}
+    HEADERS = {"Content-type": "application/json", "Authorization": "GenieKey " + APIKEY}
 
     # Retrieve fields in notification
     a = parse(request)
