@@ -26,7 +26,7 @@ def bigpanda(TOKEN=None, APPKEY=None, ALERTID=None):
         return ("TOKEN must be set in the URL (e.g. /endpoint/bigpanda/<TOKEN>/<APPKEY>", 500, None)
     if not APPKEY:
         return ("APPKEY must be set in the URL (e.g. /endpoint/bigpanda/<TOKEN>/<APPKEY>", 500, None)
-    HEADERS = {"Authorization": "Bearer " + TOKEN}
+    HEADERS = {"Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + TOKEN}
 
     # Retrieve fields in notification
     a = parse(request)
