@@ -2,6 +2,23 @@ sudo: false
 language: python
 python:
     - "2.7_with_system_site_packages"
+    - "3.3"
+    - "3.4"
+    - "3.5"
+    - "3.6"
+    - "3.7-dev"
+    - "nightly"
+    - "pypy"
+matrix:
+  fast_finish: true
+  allow_failures:
+    - python: 3.3
+    - python: 3.4
+    - python: 3.5
+    - python: 3.6
+    - python: 3.7-dev
+    - python: nightly
+    - python: pypy
 install:
     - pip install -r test-requirements.txt
     - pip install coveralls
