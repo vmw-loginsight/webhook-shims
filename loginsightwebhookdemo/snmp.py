@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
 """
-Hello! This template is available to help get you started with creating a shim.
+This example implements most of the functionality of the native trap sender in vR Ops and LogInsight.
+It's not intended as a replacement for any native functionality, but as a template for those who need to
+customize traps beyond what the standard SNMP adapter does.
 
-Start by adjusting the `TEMPLATE` and `template` parameters.
-Next, adjust the payload based on the API specification of your webhook destination.
-Finally, add an import statement to __init__.py like:
-
-import loginsightwebhookdemo.template
+This example uses the standard vR Ops MIB, but can easily be changed to use any MIB.
 """
 
 import os
@@ -39,7 +37,7 @@ VROPSUSER = 'admin'
 VROPSPASS = 'VMware1!'
 VROPSAUTHSOURCE = "Local Users"
 
-##### Internal consrtants. Don't change!
+# =======Internal constants. Don't change!
 
 # vR Ops HTTP headers
 #
@@ -53,9 +51,7 @@ cache_lock = threading.Lock()
 
 # Determine path to compiled MIBs
 this_dir = os.path.dirname(os.path.realpath(__file__))
-print(this_dir)
 mib_dir = os.path.join(this_dir, 'pysnmp_mibs')
-print(mib_dir)
 
 # Add custom MIB dir to engine
 engine = SnmpEngine()
@@ -66,6 +62,7 @@ mibBuilder.setMibSources(*mibSources)
 
 # Preload VMware MIB
 mibBuilder.loadModules('SNMPv2-MIB', 'SNMP-COMMUNITY-MIB', 'VMWARE-VCOPS-EVENT-MIB')
+
 
 def vropsGet(url):
     response = requests.get(VROPSURL + url, verify=False, headers=VROPSHEADERS)
@@ -91,20 +88,24 @@ def vropsGet(url):
             raise Exception("GET " + url + " failed. Status: " + str(response.status_code))
     return response
 
+
 def lookup_alert(alertId):
     response = vropsGet("/suite-api/api/alerts/" + alertId)
     print("Lookup alert: " + response.content)
     return response
+
 
 def lookup_resource(resourceId):
     response = vropsGet("/suite-api/api/resources/" + resourceId)
     print("Lookup resource: " + response.content)
     return response
 
+
 def lookup_alert_definition(definitionId):
     response = vropsGet("/suite-api/api/alertdefinitions/" + definitionId)
     print("Lookup alert definition: " + response.content)
     return response
+
 
 # Route without <ALERTID> are for LI, with are for vROps
 @app.route("/endpoint/snmp", methods=['POST'])
@@ -117,18 +118,13 @@ def snmp(ALERTID=None, TOKEN=None, EMAIL=None):
     """
     Sends a customized SNMP trap.
     """
-    print("SNMP trap")
 
     a = parse(request)
-
-    print(a)
-    ntfOrg = ntforg.NotificationOriginator(engine)
-
     resource_kind = ''
     alert_description = ''
     alert_impact = ''
 
-    if ALERTID:
+    if VROPSURL and ALERTID:
         alert = lookup_alert(ALERTID).json()
         resource = lookup_resource(a['resourceId']).json()
         resource_kind = resource['resourceKey']['resourceKindKey']
@@ -136,43 +132,64 @@ def snmp(ALERTID=None, TOKEN=None, EMAIL=None):
         alert_description = alert_def['description']
 
     alert_impact = ''
-    if a['Health'] > 1:
+    if 'Health' in a and a['Health'] > 1:
         alert_impact = alert_impact + "health, "
-    if a['Risk'] > 1:
+    if 'Risk' in a and a['Risk'] > 1:
         alert_impact = alert_impact + "risk, "
-    if a['Efficiency'] > 1:
+    if 'Efficiency' in a and a['Efficiency'] > 1:
         alert_impact = alert_impact + "efficiency"
     if str.endswith(alert_impact, ", "):
         alert_impact = alert_impact[len(alert_impact)-2:]
 
-    errorIndication = ntfOrg.sendNotification(
-        ntforg.CommunityData('public'),
-        ntforg.UdpTransportTarget(('localhost', 162)),
-        'trap',
-        ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareTrapProblemActive'),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertAliveServerName'), ORIGIN),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertEntityName'), a["resourceName"]),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertEntityType'), "General"),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertTimestamp'), a["updateDate"]),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertCriticality'), a["criticality"]),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertRootCause'), "TODO"),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertURL'), "TODO"),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertID'), a['alertId']),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertMessage'), "TODO"),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertMessage'), a['moreinfo']),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertType'), a['type']),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertSubtype'), a['subType']),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertHealth'), SEVERITIES[a['Health']]),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertRisk'), SEVERITIES[a['Risk']]),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertEfficiency'), SEVERITIES[a['Efficiency']]),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertMetricName'), ''),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertResourceKind'), resource_kind),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertDefinitionName'), a['AlertName']),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertDefinitionDesc'), alert_description),
-        (ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareAlertImpact'), alert_impact))
+    # Send the trap
+    errorIndication = send_trap(a, alert_description, alert_impact, resource_kind)
 
     if errorIndication:
         print('Notification not sent: %s' % errorIndication)
 
     return "OK"
+
+
+def decode_severity(s):
+    if s:
+        try:
+            return SEVERITIES[int(s)]
+        except ValueError:
+            return None
+    else:
+        return None
+
+
+def create_mibvar(name, value):
+    return ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', name), value
+
+
+def send_trap(a, alert_description, alert_impact, resource_kind):
+    ntf_org = ntforg.NotificationOriginator(engine)
+    errorIndication = ntf_org.sendNotification(
+        ntforg.CommunityData('public'),
+        ntforg.UdpTransportTarget(('localhost', 162)),
+        'trap',
+        ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareTrapProblemActive'),
+        create_mibvar('vmwareAlertAliveServerName', ORIGIN),
+        create_mibvar('vmwareAlertEntityName', a.get("resourceName", None)),
+        create_mibvar('vmwareAlertEntityType', "General"),
+        create_mibvar('vmwareAlertTimestamp', a.get("updateDate", None)),
+        create_mibvar('vmwareAlertCriticality', a.get("criticality", None)),
+        create_mibvar('vmwareAlertRootCause', "TODO"),
+        create_mibvar('vmwareAlertURL', "TODO"),
+        create_mibvar('vmwareAlertID', a.get('alertId', None)),
+        create_mibvar('vmwareAlertMessage', "TODO"),
+        create_mibvar('vmwareAlertMessage', a.get('moreinfo', None)),
+        create_mibvar('vmwareAlertType', a.get('type', None)),
+        create_mibvar('vmwareAlertSubtype', a.get('subType', None)),
+        create_mibvar('vmwareAlertHealth', decode_severity(a.get('Health', None))),
+        create_mibvar('vmwareAlertRisk', decode_severity(a.get('Risk', None))),
+        create_mibvar('vmwareAlertEfficiency', decode_severity(a.get('Efficiency', None))),
+        create_mibvar('vmwareAlertMetricName', ''),
+        create_mibvar('vmwareAlertResourceKind', resource_kind),
+        create_mibvar('vmwareAlertDefinitionName', a.get('AlertName', None)),
+        create_mibvar('vmwareAlertDefinitionDesc', alert_description),
+        create_mibvar('vmwareAlertImpact', alert_impact))
+    return errorIndication
 
