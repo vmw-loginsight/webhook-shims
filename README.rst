@@ -53,7 +53,7 @@ Three installation methods exist. Please select the one you are most comfortable
 
 ::
 
-    tdnf install wget python2 python2-xml -y
+    tdnf install wget python2 python-xml -y
     wget https://bootstrap.pypa.io/get-pip.py
     python get-pip.py
     pip install virtualenv
