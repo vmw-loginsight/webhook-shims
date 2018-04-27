@@ -63,7 +63,6 @@ mibBuilder.setMibSources(*mibSources)
 # Preload VMware MIB
 mibBuilder.loadModules('SNMPv2-MIB', 'SNMP-COMMUNITY-MIB', 'VMWARE-VCOPS-EVENT-MIB')
 
-
 def vropsGet(url):
     response = requests.get(VROPSURL + url, verify=False, headers=VROPSHEADERS)
     if response.status_code == 401:
@@ -118,7 +117,7 @@ def snmp(ALERTID=None, TOKEN=None, EMAIL=None):
     """
     Sends a customized SNMP trap.
     """
-
+    print(request)
     a = parse(request)
     resource_kind = ''
     alert_description = ''
@@ -166,29 +165,32 @@ def create_mibvar(name, value):
 
 def send_trap(a, alert_description, alert_impact, resource_kind):
     ntf_org = ntforg.NotificationOriginator(engine)
+    if VROPSURL and 'resourceId' in a and 'alertId' in a:
+        alert_url = VROPSURL + '/ui/index.action#/object/' + a['resourceId'] + '/alertsAndSymptoms/alerts/' + a['alertId']
+    else:
+        alert_url = ""
     errorIndication = ntf_org.sendNotification(
         ntforg.CommunityData('public'),
         ntforg.UdpTransportTarget(('localhost', 162)),
         'trap',
         ntforg.MibVariable('VMWARE-VCOPS-EVENT-MIB', 'vmwareTrapProblemActive'),
         create_mibvar('vmwareAlertAliveServerName', ORIGIN),
-        create_mibvar('vmwareAlertEntityName', a.get("resourceName", None)),
+        create_mibvar('vmwareAlertEntityName', a.get("resourceName", "")),
         create_mibvar('vmwareAlertEntityType', "General"),
-        create_mibvar('vmwareAlertTimestamp', a.get("updateDate", None)),
-        create_mibvar('vmwareAlertCriticality', a.get("criticality", None)),
-        create_mibvar('vmwareAlertRootCause', "TODO"),
-        create_mibvar('vmwareAlertURL', "TODO"),
-        create_mibvar('vmwareAlertID', a.get('alertId', None)),
-        create_mibvar('vmwareAlertMessage', "TODO"),
-        create_mibvar('vmwareAlertMessage', a.get('moreinfo', None)),
-        create_mibvar('vmwareAlertType', a.get('type', None)),
-        create_mibvar('vmwareAlertSubtype', a.get('subType', None)),
-        create_mibvar('vmwareAlertHealth', decode_severity(a.get('Health', None))),
-        create_mibvar('vmwareAlertRisk', decode_severity(a.get('Risk', None))),
-        create_mibvar('vmwareAlertEfficiency', decode_severity(a.get('Efficiency', None))),
+        create_mibvar('vmwareAlertTimestamp', a.get("updateDate", "")),
+        create_mibvar('vmwareAlertCriticality', a.get("criticality", "")),
+        create_mibvar('vmwareAlertRootCause', ""),
+        create_mibvar('vmwareAlertURL', alert_url),
+        create_mibvar('vmwareAlertID', a.get('alertId', "")),
+        create_mibvar('vmwareAlertMessage', a.get('moreinfo', "")),
+        create_mibvar('vmwareAlertType', a.get('type', "")),
+        create_mibvar('vmwareAlertSubtype', a.get('subType', "")),
+        create_mibvar('vmwareAlertHealth', decode_severity(a.get('Health', ""))),
+        create_mibvar('vmwareAlertRisk', decode_severity(a.get('Risk', ""))),
+        create_mibvar('vmwareAlertEfficiency', decode_severity(a.get('Efficiency', ""))),
         create_mibvar('vmwareAlertMetricName', ''),
         create_mibvar('vmwareAlertResourceKind', resource_kind),
-        create_mibvar('vmwareAlertDefinitionName', a.get('AlertName', None)),
+        create_mibvar('vmwareAlertDefinitionName', a.get('AlertName', "")),
         create_mibvar('vmwareAlertDefinitionDesc', alert_description),
         create_mibvar('vmwareAlertImpact', alert_impact))
     return errorIndication
