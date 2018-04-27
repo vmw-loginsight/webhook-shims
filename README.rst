@@ -31,7 +31,7 @@ Three installation methods exist. Please select the one you are most comfortable
 
     docker run -it -p 5001:5001 vmware/webhook-shims
 
-`Photon OS`_
+`Photon OS 1.0`_
 ~~~~~~~~~~~~
 
 ::
@@ -47,6 +47,24 @@ Three installation methods exist. Please select the one you are most comfortable
     git clone https://github.com/vmw-loginsight/webhook-shims.git
     cd webhook-shims/
     pip install -r requirements.txt
+
+`Photon OS 2.0`_
+~~~~~~~~~~~~
+
+::
+
+    tdnf install wget python2 python2-xml -y
+    wget https://bootstrap.pypa.io/get-pip.py
+    python get-pip.py
+    pip install virtualenv
+    tdnf install git -y
+    virtualenv loginsightwebhookdemo
+    cd loginsightwebhookdemo
+    source bin/activate
+    git clone https://github.com/vmw-loginsight/webhook-shims.git
+    cd webhook-shims/
+    pip install -r requirements.txt
+    iptables -A INPUT -p tcp --dport 5001 -j ACCEPT
 
 Manual
 ~~~~~~

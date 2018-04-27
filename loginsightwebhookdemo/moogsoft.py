@@ -99,7 +99,7 @@ def moogsoft(ALERTID=None):
     Requires moogsoft* parameters to be defined.
     """
     bauth = request.authorization
-    if bauth is not none:
+    if bauth is not None:
         global moogsoftUSER
         global moogsoftPASS
         moogsoftUSER = bauth.username
