@@ -71,7 +71,7 @@ def parse(request):
         payload = request.get_json()
         if (payload is None):
             logging.exception("Payload is empty, did you specify a Header in the request?")
-            raise
+            raise Exception("Payload is empty, did you specify a Header in the request?")
         alert = {}
         alert = parseLI(payload, alert)
         alert = parsevROps(payload, alert)
@@ -288,6 +288,7 @@ import loginsightwebhookdemo.pivotaltracker
 import loginsightwebhookdemo.pushbullet
 import loginsightwebhookdemo.servicenow
 import loginsightwebhookdemo.slack
+import loginsightwebhookdemo.snmp
 import loginsightwebhookdemo.socialcast
 #import loginsightwebhookdemo.template
 import loginsightwebhookdemo.travisci

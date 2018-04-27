@@ -4,6 +4,7 @@ from loginsightwebhookdemo import app, parse, callapi
 from flask import request, json
 import logging
 from kafka import KafkaProducer
+from kafka.common import KafkaTimeoutError
 
 
 __author__ = "Pontus Rydin"
