@@ -33,14 +33,8 @@ import re
 import base64
 from opencensus.trace import tracer as tracer_module
 from opencensus.trace import execution_context
-from opencensus.trace.ext.flask.flask_middleware import FlaskMiddleware
-from opencensus.trace.exporters import zipkin_exporter
-from opencensus.trace.exporters.transports.background_thread import BackgroundThreadTransport
 
 app = Flask(__name__)
-
-exporter = zipkin_exporter.ZipkinExporter(service_name="loginsightwebhookdemo", host_name="localhost", transport=BackgroundThreadTransport)
-middleware = FlaskMiddleware(app, exporter=exporter)
 
 
 __author__ = "Alan Castonguay and Steve Flanders"
