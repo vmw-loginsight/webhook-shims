@@ -10,11 +10,17 @@ The following functions parse the webhook payload, translate and send it to othe
 from loginsightwebhookdemo import app
 import logging
 import sys
+from opencensus.trace import tracer as tracer_module
+from opencensus.trace.ext.flask.flask_middleware import FlaskMiddleware
+from opencensus.trace.exporters import zipkin_exporter
+from opencensus.trace.exporters.transports.background_thread import BackgroundThreadTransport
 
 
 # Define if you want to leverage SSL
 SSLCERT = ''
 SSLKEY = ''
+
+ZIPKIN_HOSTNAME = '' #localhost
 
 def main(PORT):
     # Configure logging - overwrite on every start
@@ -29,6 +35,10 @@ def main(PORT):
     root.addHandler(ch)
 
     logging.info("Please navigate to the below URL for the available routes")
+
+    if (ZIPKIN_HOSTNAME):
+        exporter = zipkin_exporter.ZipkinExporter(service_name="loginsightwebhookdemo", host_name=ZIPKIN_HOSTNAME, transport=BackgroundThreadTransport)
+        middleware = FlaskMiddleware(app, exporter=exporter)
 
     if (SSLCERT and SSLKEY):
         context = (SSLCERT, SSLKEY)

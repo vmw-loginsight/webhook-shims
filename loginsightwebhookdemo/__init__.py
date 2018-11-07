@@ -31,7 +31,8 @@ import requests
 import logging
 import re
 import base64
-
+from opencensus.trace import tracer as tracer_module
+from opencensus.trace import execution_context
 
 app = Flask(__name__)
 
@@ -67,10 +68,13 @@ def parse(request):
     Parse incoming JSON.
     Returns a dict or logs an exception.
     """
+    tracer = execution_context.get_opencensus_tracer()
+    tracer.start_span(name='parse')
     try:
         payload = request.get_json()
         if (payload is None):
             logging.exception("Payload is empty, did you specify a Header in the request?")
+            tracer.end_span()
             raise
         alert = {}
         alert = parseLI(payload, alert)
@@ -78,8 +82,10 @@ def parse(request):
     except:
         logging.info("Body=%s" % request.get_data())
         logging.exception("Unexpected payload, is it in proper JSON format?")
+        tracer.end_span()
         raise
     logging.info("Parsed=%s" % alert)
+    tracer.end_span()
     return alert
 
 
@@ -88,7 +94,10 @@ def parseLI(payload, alert):
     Parse LI JSON from alert webhook.
     Returns a dict.
     """
+    tracer = execution_context.get_opencensus_tracer()
+    tracer.start_span(name='parseLI')
     if (not 'AlertName' in payload):
+        tracer.end_span()
         return alert
     alert.update({
         "hookName": "Log Insight",
@@ -133,6 +142,7 @@ def parseLI(payload, alert):
         })
     else:
         alert.update({"fields": []})
+    tracer.end_span()
     return alert
 
 
@@ -141,7 +151,10 @@ def parsevROps(payload, alert):
     Parse vROps JSON from alert webhook.
     Returns a dict.
     """
+    tracer = execution_context.get_opencensus_tracer()
+    tracer.start_span(name='parsevROps')
     if (not 'alertId' in payload):
+        tracer.end_span()
         return alert
     alert.update({
         "hookName": "vRealize Operations Manager",
@@ -207,6 +220,7 @@ def parsevROps(payload, alert):
                     ("\nAlert Info: ") + alert['info'] + \
                     ("\nAlert Details: ") + str(alert['fields']),
         })
+    tracer.end_span()
     return alert
 
 
@@ -216,6 +230,8 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
     Returns a Flask-friendly tuple on success or failure.
     Logs and re-raises any exceptions.
     """
+    tracer = execution_context.get_opencensus_tracer()
+    tracer.start_span(name='callapi')
     if not headers:
         headers = {'Content-type': 'application/json'}
     try:
@@ -230,12 +246,16 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
             r = requests.request(method, url, headers=headers, data=payload, verify=check)
         if r.status_code >= 200 and r.status_code < 300:
             if (payload is None):
+                tracer.end_span()
                 return r.text
             else:
+                tracer.end_span()
                 return ("OK", r.status_code, None)
     except:
         logging.exception("Can't create new payload. Check code and try again.")
+        tracer.end_span()
         raise
+    tracer.end_span()
     return ("%s" % r.text, r.status_code, None)
 
 
