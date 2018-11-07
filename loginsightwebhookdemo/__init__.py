@@ -63,11 +63,12 @@ def _minimal_markdown(markdown):
     return Markup(s)
 
 
-def parse(request, tracer):
+def parse(request):
     """
     Parse incoming JSON.
     Returns a dict or logs an exception.
     """
+    tracer = execution_context.get_opencensus_tracer()
     tracer.start_span(name='parse')
     try:
         payload = request.get_json()
@@ -76,8 +77,8 @@ def parse(request, tracer):
             tracer.end_span()
             raise
         alert = {}
-        alert = parseLI(payload, alert, tracer)
-        alert = parsevROps(payload, alert, tracer)
+        alert = parseLI(payload, alert)
+        alert = parsevROps(payload, alert)
     except:
         logging.info("Body=%s" % request.get_data())
         logging.exception("Unexpected payload, is it in proper JSON format?")
@@ -88,11 +89,12 @@ def parse(request, tracer):
     return alert
 
 
-def parseLI(payload, alert, tracer):
+def parseLI(payload, alert):
     """
     Parse LI JSON from alert webhook.
     Returns a dict.
     """
+    tracer = execution_context.get_opencensus_tracer()
     tracer.start_span(name='parseLI')
     if (not 'AlertName' in payload):
         tracer.end_span()
@@ -144,11 +146,12 @@ def parseLI(payload, alert, tracer):
     return alert
 
 
-def parsevROps(payload, alert, tracer):
+def parsevROps(payload, alert):
     """
     Parse vROps JSON from alert webhook.
     Returns a dict.
     """
+    tracer = execution_context.get_opencensus_tracer()
     tracer.start_span(name='parsevROps')
     if (not 'alertId' in payload):
         tracer.end_span()
@@ -227,6 +230,7 @@ def callapi(url, method='post', payload=None, headers=None, auth=None, check=Tru
     Returns a Flask-friendly tuple on success or failure.
     Logs and re-raises any exceptions.
     """
+    tracer = execution_context.get_opencensus_tracer()
     tracer.start_span(name='callapi')
     if not headers:
         headers = {'Content-type': 'application/json'}
@@ -276,14 +280,13 @@ def _introduction():
 @app.route("/endpoint/test/<ALERTID>", methods=['POST'])
 def test(ALERTID=None):
     """Log the auth header, request, and parsed moreinfo field. Respond with success. Don't send the payload anywhere."""
-    tracer = execution_context.get_opencensus_tracer()
     try:
         logging.info(request.headers['Authorization'])
     except KeyError:
         pass
     if request.get_data():
         logging.info(request.get_data())
-        a = parse(request, tracer)
+        a = parse(request)
         try:
             logging.info(a['moreinfo'])
         except KeyError:
