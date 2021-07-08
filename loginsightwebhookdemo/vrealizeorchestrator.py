@@ -135,4 +135,10 @@ def vro(WORKFLOWID=None, TOKEN=None, HOK=None, ALERTID=None):
                 }
             ]
         }
-    return callapi("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", 'post', json.dumps(payload), HEADERS, AUTH, VERIFY)
+    # Execute the request
+    response = callapi("https://" + VROHOSTNAME + "/vco/api/workflows/" + WORKFLOWID + "/executions", 'post', json.dumps(payload), HEADERS, AUTH, VERIFY)
+    try: # Kludge to get around Log Insight bug (not accepting HTTP 202 as a valid response)
+        if response[1] >= 200 and response[1] < 300:
+            return ("OK", 200, None)
+    except:
+        return response
